@@ -209,6 +209,22 @@ class Builder:
         unresolved = re.findall(r"/\*__[A-Z_]+__\*/|<!--__[A-Z_]+__-->", content)
         if unresolved:
             raise ValueError(f"Unresolved build markers in {name}: {unresolved}")
+        notice_paths = [
+            "LICENSE",
+            "docs/licensing/three-MIT.txt",
+            "docs/licensing/d3-ISC.txt",
+            "docs/licensing/natural-earth-PUBLIC-DOMAIN.txt",
+        ]
+        notice = (
+            "\n<!-- Distribution permissions\n"
+            + "\n\n".join((ROOT / path).read_text() for path in notice_paths)
+            + "\n-->\n"
+        )
+        content = (
+            content.replace("</head>", notice + "</head>", 1)
+            if "</head>" in content
+            else content + notice
+        )
         if self.mode == "web":
 
             def script(match):
@@ -257,7 +273,7 @@ class Builder:
                 "assets/art/factory-fallback.png", 95, True
             )
             replacements["/*__FACTORY_GRID_MASK__*/"] = self.image(
-                "assets/art/grid-mask.png"
+                "assets/textures/factory-grid.png"
             )
         elif kind == "population":
             header = safe_path("assets/art/population-header.png")

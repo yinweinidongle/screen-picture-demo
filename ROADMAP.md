@@ -18,7 +18,7 @@
 
 ## Next: assets and runtime
 
-- Replace or establish explicit redistribution terms for DataV boundaries, Esri relief and example Earth textures. Treat this as a release gate for a cleared-asset distribution, not as completed legal review.
+- Completed: replace DataV boundaries, Esri relief and example Earth textures with checksum-pinned public-domain Natural Earth derivatives, and replace the generated grid with original MIT procedural material. Continue reviewing newly added assets individually.
 - Profile factory/globe on modest devices; introduce measured quality presets and context-loss recovery.
 - Add browser coverage beyond Chromium and reliable visual regression thresholds.
 - Design a contribution path for reusable panels without forcing every scene into one framework.

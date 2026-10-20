@@ -61,10 +61,21 @@
   earthGroup.position.set(CENTER_X, CENTER_Y, 0);
   scene.add(earthGroup);
   const loader = new THREE.TextureLoader();
+  let pendingTextures = 3;
+  stage.dataset.textureReady = 'false';
   function texture(url) {
-    const t = loader.load(url, () => {
-      dirty = true;
-    });
+    const t = loader.load(
+      url,
+      () => {
+        dirty = true;
+        pendingTextures--;
+        stage.dataset.textureReady = String(pendingTextures === 0);
+      },
+      undefined,
+      () => {
+        stage.dataset.textureError = 'true';
+      },
+    );
     t.colorSpace = THREE.NoColorSpace;
     t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
     return t;
