@@ -43,13 +43,13 @@
 
 三维地球与中国地图叠加人口流动弧线、城市节点和分布光柱，支持人口流动、人口分布、各省数据三种模式及统计图表交互。
 
-[![人口：流动、分布与省级数据模式切换](population-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/population.html)
+[![人口：连续拖动旋转三维地球](population-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/population.html)
 
 ### 04 / AI 智能巡检
 
 中国地图包含立体厚度、边缘辉光和巡检节点。支持时间范围切换、事件筛选、车辆详情、轨迹播放、进度与速度调整。
 
-[![巡检：统计周期切换与车辆轨迹回放](inspection-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)
+[![巡检：省份悬停高亮与区域数据提示](inspection-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)
 
 ## 使用与开发
 
@@ -67,8 +67,8 @@
 | [home-mobile-preview.png](home-mobile-preview.png) | 手机单列布局截图 |
 | [wind-demo.gif](wind-demo.gif) | 三维风机拆解、线框、流光与环绕 |
 | [factory-demo.gif](factory-demo.gif) | 厂区日夜扫光与细网格发光 |
-| [population-demo.gif](population-demo.gif) | 人口三维地球模式切换 |
-| [inspection-demo.gif](inspection-demo.gif) | 巡检数据联动与轨迹回放 |
+| [population-demo.gif](population-demo.gif) | 人口三维地球连续转动 |
+| [inspection-demo.gif](inspection-demo.gif) | 巡检地图省份悬停与数据提示 |
 
 页面数据与设备控制均为演示。三维场景按单张参考图重建，未提供原始 CAD 或三维资产；不可见结构和尺寸采用合理建模。
 
