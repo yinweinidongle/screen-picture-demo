@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "path": "assets/art/factory-fallback.png",
+      "source": "ImageGen; docs/assets.md",
+      "license": "Generated asset; separate from code MIT",
+      "status": "generated",
+      "sha256": "f49a0b2b32c69dd7f445f0638f2bb20e36955497924a4ecf0fb7df45de75f74b"
+    },
+    {
+      "path": "assets/art/grid-mask.png",
+      "source": "ImageGen; docs/assets.md",
+      "license": "Generated asset; separate from code MIT",
+      "status": "generated",
+      "sha256": "52f6eead38b8363b1ca159a910670c9f8dcfe94e08f2b34fc53db466cc794e95"
+    },
+    {
+      "path": "assets/art/population-header.png",
+      "source": "ImageGen; docs/assets.md",
+      "license": "Generated asset; separate from code MIT",
+      "status": "generated",
+      "sha256": "79f09126df33a198ca48388b70e4f2e2a0105f67556638ee4f5b1578a4e667f5"
+    },
+    {
+      "path": "assets/geo/china-outline.json",
+      "source": "https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "83ac502aeac66a5527607ec844169418505d990f1a2dc33226743643541eed3c"
+    },
+    {
+      "path": "assets/geo/china.json",
+      "source": "https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275"
+    },
+    {
+      "path": "assets/geo/countries.json",
+      "source": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "license": "Public domain",
+      "status": "provider-stated",
+      "sha256": "3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb"
+    },
+    {
+      "path": "assets/geo/relief-metadata.json",
+      "source": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "fbbc9675978992caabe682f45c0c543141041851434c8ae65c431065d1821be9"
+    },
+    {
+      "path": "assets/models/factory-campus.glb",
+      "source": "src/screens/factory/model.js",
+      "license": "MIT",
+      "status": "original",
+      "sha256": "a2c4f8fdc87cd0ffc75d69c06b24ce6f0a502c67e81986f4611eb6ddc1043a40"
+    },
+    {
+      "path": "assets/previews/factory.webp",
+      "source": "Recorded from project page",
+      "license": "Composite; underlying asset restrictions apply",
+      "status": "composite",
+      "sha256": "0844ed574188059f46deb0547af041d00c251bf701aa1022e5f2a7f1bc0e78c3"
+    },
+    {
+      "path": "assets/previews/inspection.webp",
+      "source": "Recorded from project page",
+      "license": "Composite; underlying asset restrictions apply",
+      "status": "composite",
+      "sha256": "5fa1e034c87db0d1218d81c6c3498ddc1c0ac16f1610e7a88eb79af7fea05a26"
+    },
+    {
+      "path": "assets/previews/population.webp",
+      "source": "Recorded from project page",
+      "license": "Composite; underlying asset restrictions apply",
+      "status": "composite",
+      "sha256": "c8f37b6168b22af628e85cb47abe2d2f1664214cb12764456312a0a13998f2b6"
+    },
+    {
+      "path": "assets/previews/wind.webp",
+      "source": "Recorded from project page",
+      "license": "Composite; underlying asset restrictions apply",
+      "status": "composite",
+      "sha256": "25f4915fbc001090a40fea840d2a8686394f789662a454b3366b7b0154bd2923"
+    },
+    {
+      "path": "assets/textures/earth-day.jpg",
+      "source": "https://github.com/mrdoob/three.js/tree/r160/examples/textures/planets",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "2faa400d1eade3bc44caf6750d1b772bd9bbb6d87362c02bc7c3304e78fa0a9d"
+    },
+    {
+      "path": "assets/textures/earth-night.png",
+      "source": "https://github.com/mrdoob/three.js/tree/r160/examples/textures/planets",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "0564fa57f5fade2f65e56d3ad59b3c6bf5e32c44f60370a3e46fd367b0cabaee"
+    },
+    {
+      "path": "assets/textures/earth-normal.jpg",
+      "source": "https://github.com/mrdoob/three.js/tree/r160/examples/textures/planets",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "3fc43e9639c34e8223c4a871e3bdf5b2d52ee79f7e89ce3f28cba45d4cac031a"
+    },
+    {
+      "path": "assets/textures/relief.png",
+      "source": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer",
+      "license": "Unverified",
+      "status": "review-required",
+      "sha256": "9b46fd4a82753bfd673ff91ac521b874be1d7eeeffbd7693b1e1ce6578802a4d"
+    },
+    {
+      "path": "assets/vendor/d3.min.js",
+      "source": "https://github.com/d3/d3/tree/v7.9.0",
+      "license": "ISC",
+      "status": "verified",
+      "sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539"
+    },
+    {
+      "path": "assets/vendor/three.min.js",
+      "source": "https://github.com/mrdoob/three.js/tree/r160",
+      "license": "MIT",
+      "status": "verified",
+      "sha256": "170c6789f43217c96b3170f4b42fafe135de7f7cd48497a4218f9757ee1d49fa"
+    }
+  ]
+}
