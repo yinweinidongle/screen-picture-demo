@@ -2,7 +2,7 @@ name: Import reviewed source once
 on:
   push:
     branches: [chore/open-source-foundation]
-    paths: [.github/workflows/import-source.yml]
+    paths: [.github/workflows/import-source.yml, _source-import.zip]
 permissions:
   contents: write
 jobs:
