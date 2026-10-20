@@ -57,9 +57,13 @@ test('population: globe renders and keyboard changes view', async ({ page }) => 
   const canvas = page.locator('#earth-canvas');
   await expect(page.locator('#earth-stage')).toHaveAttribute('data-renderer', 'webgl');
   await expect(canvas).toBeVisible();
+  const stage = page.locator('#earth-stage');
+  const before = Number(await stage.getAttribute('data-view-longitude'));
   await canvas.focus();
   await canvas.press('ArrowLeft');
-  await expect(page.locator('#population-screen')).toBeVisible();
+  await expect
+    .poll(async () => Number(await stage.getAttribute('data-view-longitude')))
+    .not.toBe(before);
 });
 test('inspection: province hover exposes tooltip without a dialog', async ({ page }) => {
   await page.goto('/inspection.html');
