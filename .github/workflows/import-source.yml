@@ -1,0 +1,55 @@
+name: Import reviewed source once
+on:
+  push:
+    branches: [chore/open-source-foundation]
+    paths: [.github/workflows/import-source.yml]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify and expand reviewed source
+        env:
+          EXPECTED_SHA: d09513cfcccee27aa56bd6d11f42a5448862ac8d124768f6a4dbe3b259921112
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, os, zipfile
+          archive = Path('_source-import.zip')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == os.environ['EXPECTED_SHA']
+          base = Path.cwd().resolve()
+          allowed = {'src', 'config', 'scripts', 'tests', 'docs', 'assets', '.github'}
+          with zipfile.ZipFile(archive) as z:
+              assert sum(i.file_size for i in z.infolist()) < 100_000_000
+              for item in z.infolist():
+                  destination = (base / item.filename).resolve()
+                  assert destination.is_relative_to(base) and not Path(item.filename).is_absolute()
+                  assert len(Path(item.filename).parts) == 1 or Path(item.filename).parts[0] in allowed
+                  assert not item.filename.startswith('.github/workflows/')
+              z.extractall(base)
+          PY
+          mkdir -p assets/models
+          git mv factory-campus.glb assets/models/factory-campus.glb
+          git rm factory.html home.html index.html inspection.html population.html wind.html factory-demo.gif wind-demo.gif population-demo.gif inspection-demo.gif home-preview.png home-mobile-preview.png screen-picture-source.zip
+          git rm _source-import.zip
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: npm ci
+      - run: npm run setup
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - name: Commit canonical editable source
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src config scripts tests docs assets .github/ISSUE_TEMPLATE .github/dependabot.yml .github/pull_request_template.md README.md LICENSE THIRD_PARTY_NOTICES.md CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md ROADMAP.md package.json package-lock.json requirements.txt .nvmrc .gitignore .prettierignore .prettierrc.json playwright.config.mjs
+          git commit -m 'Establish editable open-source foundation and optimized rendering'
+          git push origin HEAD:chore/open-source-foundation
