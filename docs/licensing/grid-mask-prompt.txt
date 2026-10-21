@@ -1,3 +1,0 @@
-Mode: built-in image_gen, text-to-image, opaque background.
-
-Create a production-ready monochrome seamless material texture for a 3D industrial digital-twin model. Flat 2D black-and-white mask, square 1024 by 1024 composition, exactly 8 by 8 large square cells, matte pure black interiors and fine uniform pure white orthogonal grid lines. Equal spacing, sharp edges, seamless outer boundaries. No perspective, glow, noise, alternating checkerboard fills, diagonals, text or frame. Intended use: luminance mask recolored as subtle navy/ice-blue architectural panel seams.

@@ -701,7 +701,7 @@ function showYearPicker() {
   P('#about-population').onclick = () =>
     pDialog(
       '全国人口统计总览',
-      `<div class="p-detail-grid"><div><label>地球引擎</label><strong>WebGL 实时球体与地理几何</strong></div><div><label>地图来源</label><strong>DataV 省界 / Natural Earth 国界</strong></div><div><label>画面组成</label><strong>地球纹理 / 抬升地图 / 大气辉光</strong></div><div><label>数据交互</label><strong>统计面板 / 迁徙流线 / 省份查询</strong></div></div><p class="p-dialog-note">地球与中国地图为可拖动的实际几何体，图表及文字为可编辑页面元素。所有数据仅用于视觉展示，不代表官方统计；图像与脚本已内嵌。</p>`,
+      `<div class="p-detail-grid"><div><label>地球引擎</label><strong>WebGL 实时球体与地理几何</strong></div><div><label>地图来源</label><strong>Natural Earth 公共领域数据</strong></div><div><label>画面组成</label><strong>地球纹理 / 抬升地图 / 大气辉光</strong></div><div><label>数据交互</label><strong>统计面板 / 迁徙流线 / 省份查询</strong></div></div><p class="p-dialog-note">地球与中国地图为可拖动的实际几何体，图表及文字为可编辑页面元素。所有数据仅用于视觉展示，不代表官方统计；图像与脚本已内嵌。</p>`,
     );
 }
 document.addEventListener('click', (e) => {

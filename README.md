@@ -89,6 +89,6 @@ docs/                     架构、素材、性能记录、场景说明和实际
 
 PR 自动运行构建、格式、单元测试和 Chromium 交互检查；合并 `master` 后由 GitHub Actions 发布 `dist/` 到 Pages。`index.html` 和 `home.html` 均为展厅。开发者提交源码，生成目录不入库。
 
-原创代码和程序化几何采用 **[MIT](LICENSE)**。第三方地图、地形、地球纹理、生成图片及预览素材单独列在 [素材声明](THIRD_PARTY_NOTICES.md) 与 [来源清单](assets/manifest.json) 中；其中部分素材的再分发许可仍待核实，**不包含在原创代码的 MIT 授权内**。
+原创代码和程序化几何采用 **[MIT](LICENSE)**。地图、地形和地球纹理现均来自明确允许商用、修改和再分发的 **Natural Earth 公共领域数据**；工厂网格为原创 MIT 程序纹理。[素材声明](THIRD_PARTY_NOTICES.md)、[来源清单](assets/manifest.json) 和 [重建方法](docs/assets.md) 记录了出处与校验和。原有生成装饰图片单独列明，不纳入这次地图/纹理授权核验。
 
 所有统计和设备控制均为演示。三维场景按单张参考图重建，未提供原始 CAD，不可见结构与尺寸为示意。大屏按固定设计比例适配窗口，横屏桌面效果最佳；Home 支持手机单列浏览。

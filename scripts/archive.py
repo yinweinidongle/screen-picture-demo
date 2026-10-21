@@ -16,6 +16,7 @@ SOURCE_FILES = [
     "package.json",
     "package-lock.json",
     "requirements.txt",
+    "requirements-assets.txt",
     ".nvmrc",
     ".gitignore",
     ".prettierignore",

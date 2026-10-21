@@ -1,0 +1,12 @@
+{
+  "capturedOn": "2026-10-20",
+  "assetInventorySha256": "2575e9fb925bd405cdc97d35afa72110284f3a1946aeecf6083b6f91366df5d6",
+  "notes": "Current local build; textures fully loaded. Old map/texture captures are not included. Population shows continuous globe dragging; inspection shows province hover only.",
+  "files": {
+    "home-preview.png": "72d368bb2dd2592129e379d41e0bcf0962fba58f590c6f2fb03a9f3756c840e3",
+    "home-mobile-preview.png": "9be17d0cdc645450c55d89c1cf315452c26cec4e841f24c7530e07aa5bca4e0f",
+    "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
+    "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
+    "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762"
+  }
+}

@@ -1219,7 +1219,7 @@ $('#export').onclick = () => exportCSV();
 $('#about').onclick = () =>
   openModal(
     'AI智能巡检运营调度平台',
-    `<p>全国巡检运营可视化大屏，将巡检里程、事件、设备和区域运营信息集中呈现。</p><div class="detail-grid"><div><label>运行模式</label><strong>离线交互演示</strong></div><div><label>交互能力</label><strong>区域查询 · 告警处置 · 车辆调度</strong></div></div><p class="demo-indicator">所有业务数据及天气均为演示数据，操作仅作用于当前页面。地图采用阿里云 DataV 行政区边界、Natural Earth 国界和 Esri 阴影地形底图；资源均已内嵌。</p>`,
+    `<p>全国巡检运营可视化大屏，将巡检里程、事件、设备和区域运营信息集中呈现。</p><div class="detail-grid"><div><label>运行模式</label><strong>离线交互演示</strong></div><div><label>交互能力</label><strong>区域查询 · 告警处置 · 车辆调度</strong></div></div><p class="demo-indicator">所有业务数据及天气均为演示数据，操作仅作用于当前页面。地图边界与阴影地形来自 Natural Earth 公共领域数据，允许商用、修改及再分发；资源随页面打包。</p>`,
   );
 window.dashboard = {
   events,

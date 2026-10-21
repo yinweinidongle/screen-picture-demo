@@ -56,6 +56,7 @@ test('population: globe renders and keyboard changes view', async ({ page }) => 
   await page.goto('/population.html');
   const canvas = page.locator('#earth-canvas');
   await expect(page.locator('#earth-stage')).toHaveAttribute('data-renderer', 'webgl');
+  await expect(page.locator('#earth-stage')).toHaveAttribute('data-texture-ready', 'true');
   await expect(canvas).toBeVisible();
   const stage = page.locator('#earth-stage');
   const before = Number(await stage.getAttribute('data-view-longitude'));
@@ -67,6 +68,8 @@ test('population: globe renders and keyboard changes view', async ({ page }) => 
 });
 test('inspection: province hover exposes tooltip without a dialog', async ({ page }) => {
   await page.goto('/inspection.html');
+  await page.waitForLoadState('networkidle');
+  await expect(page.getByRole('button', { name: /^查看.+巡检数据$/ })).toHaveCount(34);
   const province = page.getByRole('button', { name: '查看四川省巡检数据' });
   await province.hover();
   await expect(page.locator('#tooltip')).toBeVisible();

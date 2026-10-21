@@ -35,6 +35,17 @@ def build(target="all", mode="all", out=None):
         builder.home(entries)
     if (ROOT / "docs/media").exists():
         shutil.copytree(ROOT / "docs/media", output / "docs/media", dirs_exist_ok=True)
+    shutil.copytree(
+        ROOT / "docs/licensing", output / "docs/licensing", dirs_exist_ok=True
+    )
+    for source in [
+        "config/asset-sources.json",
+        "assets/manifest.json",
+        "docs/assets.md",
+    ]:
+        destination = output / source
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / source, destination)
     # Retain existing public download/media URLs while keeping their sources organized.
     for item in (ROOT / "docs/media").glob("*"):
         if item.is_file():
