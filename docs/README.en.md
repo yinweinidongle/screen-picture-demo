@@ -6,6 +6,8 @@ Four interactive scenes built with Three.js, custom GLSL and D3: a transparent w
 
 ![Gallery](media/home-preview.png)
 
+Factory details: [English rendering guide](screens/factory.en.md).
+
 ## Run locally
 
 Install Node.js 22+ and Python 3.10+; CI uses Node 24 and Python 3.13.
