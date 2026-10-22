@@ -90,6 +90,11 @@ for (const id of ['agriculture', 'industry', 'park']) {
       await expect(page.locator('#observatory')).toHaveAttribute('data-renderer', 'webgl');
       await expect(canvas).toHaveAttribute('data-ready', 'true');
       expect(Number(await canvas.getAttribute('data-draw-calls'))).toBeLessThan(180);
+      await page.locator('[data-action="orbit"]').click();
+      await expect(page.locator('[data-action="orbit"]')).toHaveAttribute('aria-pressed', 'true');
+      await canvas.focus();
+      await canvas.press('ArrowLeft');
+      await expect(page.locator('[data-action="orbit"]')).toHaveAttribute('aria-pressed', 'false');
       await page.locator('[data-action="running"]').click();
       await expect(canvas).toHaveAttribute('data-running', 'false');
       await page.locator('[data-action="top"]').click();
