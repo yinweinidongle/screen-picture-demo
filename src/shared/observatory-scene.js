@@ -135,6 +135,7 @@
       canvas.dataset.focus = mode;
       canvas.dataset.selected = selected || '';
       canvas.dataset.drawCalls = String(renderer.info.render.calls);
+      options.onView?.({ running, orbit, top: desired.elevation > 1.3 });
     }
     function select(id, notify = true) {
       if (!highlights.has(id)) return;
