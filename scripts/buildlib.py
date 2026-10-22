@@ -254,6 +254,15 @@ class Builder:
             "/*__THREE__*/": (ROOT / "assets/vendor/three.min.js").read_text(),
             "/*__RUNTIME__*/": (ROOT / "src/shared/runtime.js").read_text(),
         }
+        for marker, filename in {
+            "OBSERVATORY_CSS": "observatory.css",
+            "OBSERVATORY_JS": "observatory.js",
+            "OBSERVATORY_SCENE": "observatory-scene.js",
+            "ASTRA_GEOMETRY": "astra-geometry.js",
+        }.items():
+            token = f"/*__{marker}__*/"
+            if token in content:
+                replacements[token] = (ROOT / "src/shared" / filename).read_text()
         for file, markers in {
             "styles.css": ["CSS"],
             "app.js": ["JS"],

@@ -4,9 +4,9 @@
 
 **[打开 Home 展厅](https://yinweinidongle.github.io/screen-picture-demo/home.html)** · [English](docs/README.en.md) · [参与贡献](CONTRIBUTING.md) · [路线图](ROADMAP.md)
 
-四个可交互大屏，一座可以直接探索的作品展厅。用 Three.js、GLSL Shader 和 D3 展示精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
+七个可交互大屏，一座可以直接探索的作品展厅。用 Three.js、GLSL Shader 和 D3 展示精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
 
-[![Home 首页：四个已实现的大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
+[![Home 首页：七个已实现的大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
 
 <details>
 <summary>手机首页预览</summary>
@@ -14,14 +14,17 @@
 <img src="docs/media/home-mobile-preview.png" alt="手机端单列卡片" width="320">
 </details>
 
-## 体验四个大屏
+## 体验七个大屏
 
-| 场景        | 核心交互                                                 | 在线体验                                                                                |
-| ----------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| 智慧风电    | 透明机舱、部件点选、启停、环绕、线框、爆炸拆解与发电流光 | [wind.html](https://yinweinidongle.github.io/screen-picture-demo/wind.html)             |
-| 智慧工厂    | 真实三维厂区、建筑点选、日夜扫光、极细发光网格与菲涅耳光 | [factory.html](https://yinweinidongle.github.io/screen-picture-demo/factory.html)       |
-| 全国人口    | 拖动地球、人口迁徙、分布模式、省级数据与图表交互         | [population.html](https://yinweinidongle.github.io/screen-picture-demo/population.html) |
-| AI 智能巡检 | 地图厚度与辉光、省份悬停、车辆详情、轨迹回放与事件筛选   | [inspection.html](https://yinweinidongle.github.io/screen-picture-demo/inspection.html) |
+| 场景             | 核心交互                                                 | 在线体验                                                                                  |
+| ---------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 智慧风电         | 透明机舱、部件点选、启停、环绕、线框、爆炸拆解与发电流光 | [wind.html](https://yinweinidongle.github.io/screen-picture-demo/wind.html)               |
+| 智慧工厂         | 真实三维厂区、建筑点选、日夜扫光、极细发光网格与菲涅耳光 | [factory.html](https://yinweinidongle.github.io/screen-picture-demo/factory.html)         |
+| 全国人口         | 拖动地球、人口迁徙、分布模式、省级数据与图表交互         | [population.html](https://yinweinidongle.github.io/screen-picture-demo/population.html)   |
+| AI 智能巡检      | 地图厚度与辉光、省份悬停、车辆详情、轨迹回放与事件筛选   | [inspection.html](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)   |
+| 禾境 · 智慧农业  | 温室与农田、模拟灌溉、作物监测、区域指标与农事确认       | [agriculture.html](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html) |
+| NEXUS · 智慧工业 | 机械臂车间、班次计划、设备效率、工单与维护提醒           | [industry.html](https://yinweinidongle.github.io/screen-picture-demo/industry.html)       |
+| 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情         | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)               |
 
 ### 01 / 智慧风电
 
@@ -40,6 +43,16 @@
 ### 04 / AI 智能巡检
 
 [![巡检实录：悬停省份并查看地图提示](docs/media/inspection-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)
+
+### 05—07 / 农业 · 工业 · 园区
+
+三套新增案例来自所有者的 [big-screen-astra](https://github.com/yinweinidongle/big-screen-astra)，经授权适配程序化模型，并重新设计布局、排版和交互。支持主题与指标联动、对象详情、仿真控制、CSV 导出、响应式布局和轻量场景回退。[实现与来源说明](docs/astra-cases.md)
+
+[![禾境：智慧农业与精准灌溉](assets/previews/agriculture.webp)](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html)
+
+[![NEXUS：智慧工业与自动化车间](assets/previews/industry.webp)](https://yinweinidongle.github.io/screen-picture-demo/industry.html)
+
+[![星屿：智慧园区与零碳能源](assets/previews/park.webp)](https://yinweinidongle.github.io/screen-picture-demo/park.html)
 
 ## 本地开发
 

@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+const registry = JSON.parse(readFileSync(new URL('../../config/screens.json', import.meta.url)));
 const errors = new WeakMap();
 test.beforeEach(async ({ page }) => {
   const list = [];
@@ -12,10 +14,12 @@ test.afterEach(async ({ page }, info) => {
 });
 test('Home: registry cards, filters, one live scene and mobile layout', async ({ page }) => {
   await page.goto('/home.html');
-  await expect(page.locator('.screen-card')).toHaveCount(4);
+  await expect(page.locator('.screen-card')).toHaveCount(registry.length);
   await expect(page.locator('.hero')).toHaveCount(0);
   await page.locator('[data-filter="geo"]').click();
   await expect(page.locator('.screen-card:visible')).toHaveCount(2);
+  await page.locator('[data-filter="operations"]').click();
+  await expect(page.locator('.screen-card:visible')).toHaveCount(3);
   await page.locator('[data-filter="all"]').click();
   await page.locator('[data-page="wind.html"] .live-toggle').click();
   await expect(page.locator('iframe')).toHaveCount(1);
@@ -74,4 +78,90 @@ test('inspection: province hover exposes tooltip without a dialog', async ({ pag
   await province.hover();
   await expect(page.locator('#tooltip')).toBeVisible();
   await expect(page.locator('#modal-backdrop')).not.toHaveClass(/open/);
+});
+
+for (const id of ['agriculture', 'industry', 'park']) {
+  test(
+    id + ': real scene, contextual metrics, object details and mobile layout',
+    async ({ page }) => {
+      await page.setViewportSize({ width: 1920, height: 1080 });
+      await page.goto('/' + id + '.html');
+      const canvas = page.locator('#observatory-canvas');
+      await expect(page.locator('#observatory')).toHaveAttribute('data-renderer', 'webgl');
+      await expect(canvas).toHaveAttribute('data-ready', 'true');
+      expect(Number(await canvas.getAttribute('data-draw-calls'))).toBeLessThan(180);
+      await page.locator('[data-action="running"]').click();
+      await expect(canvas).toHaveAttribute('data-running', 'false');
+      await page.locator('[data-action="top"]').click();
+      await expect(canvas).toHaveAttribute('data-view', 'top');
+      const object = page.locator('.ob-object').first();
+      await object.click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('dialog')).not.toBeVisible();
+      await expect(object).toBeFocused();
+      if (id === 'agriculture') {
+        await page.locator('#irrigation-action').click();
+        await page.getByRole('button', { name: '开始模拟灌溉', exact: true }).click();
+        await expect(page.locator('#irrigation-action')).toHaveAttribute('data-active', 'true');
+        await page.locator('#ob-scope').selectOption('greenhouse');
+        await expect(page.locator('.ob-metric').first()).toContainText('680');
+        await page.locator('button[data-period="1"]').click();
+        await expect(page.locator('#ob-trend-metric')).toContainText('14.2');
+      }
+      if (id === 'industry') {
+        await page.locator('#ob-scope').selectOption('night');
+        await expect(page.locator('.ob-metric').first()).toContainText('26,368');
+        await expect(page.locator('[data-bind="completion"]')).toHaveText('82.4');
+        await page.locator('#industry-alert').click();
+        await expect(page.locator('#industry-alert')).toHaveAttribute('data-resolved', 'true');
+      }
+      if (id === 'park') {
+        await page.getByRole('tab', { name: /安防态势/ }).click();
+        await expect(canvas).toHaveAttribute('data-focus', 'security');
+        await page.locator('#park-alert').click();
+        await expect(page.locator('.ob-metric').last()).toContainText('0');
+        await expect(page.locator('#park-alert')).toHaveAttribute('data-resolved', 'true');
+      }
+      const overflow = await page
+        .locator('.ob-panel')
+        .evaluateAll((panels) =>
+          panels
+            .filter((panel) => panel.scrollHeight > panel.clientHeight + 2)
+            .map((panel) => panel.querySelector('h2').textContent),
+        );
+      expect(overflow).toEqual([]);
+      await page.setViewportSize({ width: 390, height: 844 });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+        390,
+      );
+      await page.locator('.ob-object').last().click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.getByRole('button', { name: '关闭详情', exact: true }).click();
+    },
+  );
+}
+test('new dashboards: lightweight fallback keeps data and object details usable', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (kind, ...args) {
+      return /webgl/i.test(kind) ? null : original.call(this, kind, ...args);
+    };
+  });
+  await page.goto('/agriculture.html');
+  await expect(page.locator('#observatory')).toHaveAttribute('data-renderer', 'fallback');
+  await expect(page.locator('.ob-empty')).toBeVisible();
+  await page.locator('.ob-object').first().click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+});
+test('new dashboards: reduced motion and keyboard topic navigation', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/industry.html');
+  await expect(page.locator('#observatory-canvas')).toHaveAttribute('data-running', 'false');
+  await page.locator('#ob-tab-0').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('#ob-tab-1')).toBeFocused();
+  await expect(page.locator('#observatory')).toHaveAttribute('data-topic', '1');
 });

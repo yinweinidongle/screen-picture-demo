@@ -46,5 +46,41 @@
     "preview": "assets/previews/inspection.webp",
     "tags": ["立体地图", "轨迹播放", "运营调度"],
     "renderer": "inspection"
+  },
+  {
+    "id": "agriculture",
+    "title": "禾境 · 智慧农业生态管理中心",
+    "description": "生长有迹，在数字农场中探索作物、气候与精准灌溉。",
+    "category": "operations",
+    "label": "PRECISION AGRICULTURE",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/agriculture.webp",
+    "tags": ["三维农场", "精准灌溉", "生态感知"],
+    "renderer": "generic"
+  },
+  {
+    "id": "industry",
+    "title": "NEXUS · 智慧工业数字运营中心",
+    "description": "深入自动化车间，联动生产、质量、设备与能源。",
+    "category": "operations",
+    "label": "INDUSTRIAL INTELLIGENCE",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/industry.webp",
+    "tags": ["机械臂车间", "生产协同", "设备监控"],
+    "renderer": "generic"
+  },
+  {
+    "id": "park",
+    "title": "星屿 · 智慧园区运营中心",
+    "description": "连接智慧楼宇、绿色能源与园区生活的每一个瞬间。",
+    "category": "operations",
+    "label": "CONNECTED CAMPUS",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/park.webp",
+    "tags": ["三维园区", "楼宇空间", "零碳能源"],
+    "renderer": "generic"
   }
 ]

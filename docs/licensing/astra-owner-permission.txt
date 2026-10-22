@@ -1,0 +1,15 @@
+Owner-authorized scene adaptation
+
+Source: https://github.com/yinweinidongle/big-screen-astra
+Reviewed source commit: d20e80789dee708faff031df840d03d2af8efd72
+Authorization recorded: 2026-10-21
+
+The owner of both repositories explicitly authorized reuse of their big-screen-astra project in this gallery during the maintenance request.
+
+Adapted scope:
+- src/demos/scenes/agriculture.js -> src/screens/agriculture/model.js
+- src/demos/scenes/industry.js -> src/screens/industry/model.js
+- src/demos/scenes/park.js -> src/screens/park/model.js
+- src/demos/scenes/shared.js -> src/shared/astra-geometry.js
+
+The owner-authorized contributions and this repository's new dashboard code are distributed under the root MIT license. This record does not assert an upstream repository-wide public license or grant rights to unrelated third-party assets. No upstream bitmap art or external font files are included in the new cases. Three.js retains its complete MIT notice.
