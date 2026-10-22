@@ -197,6 +197,27 @@
       "license": "MIT",
       "status": "verified",
       "sha256": "170c6789f43217c96b3170f4b42fafe135de7f7cd48497a4218f9757ee1d49fa"
+    },
+    {
+      "path": "assets/previews/agriculture.webp",
+      "source": "Actual page capture of owner-authorized Astra adaptation; docs/astra-cases.md",
+      "license": "MIT",
+      "status": "composite",
+      "sha256": "7dd1987e5797195f7914c4cff58ab0c98922ee66e3f115c56253cac457ddfbf7"
+    },
+    {
+      "path": "assets/previews/industry.webp",
+      "source": "Actual page capture of owner-authorized Astra adaptation; docs/astra-cases.md",
+      "license": "MIT",
+      "status": "composite",
+      "sha256": "9bed842c795f26f3526ebf8540561120bb4ae1db6b59c8ae437960e0b01a5fef"
+    },
+    {
+      "path": "assets/previews/park.webp",
+      "source": "Actual page capture of owner-authorized Astra adaptation; docs/astra-cases.md",
+      "license": "MIT",
+      "status": "composite",
+      "sha256": "61484624d3230fdcbf9fb5fef905d8f8418a8110a95975cad81234a7078e9b28"
     }
   ]
 }

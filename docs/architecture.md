@@ -23,3 +23,7 @@ Home uses per-card registry dimensions when fitting iframes. Starting another pr
 All data is illustrative and deterministic. The wind data adapter is the first extraction boundary; other scenes still own their local fixtures. Add an adapter instead of embedding a real service or credentials into renderer code. Treat external text as untrusted; use `textContent` or escaped templates.
 
 CI runs for pull requests and pushes to `master`, with read-only repository access. A successful default-branch build uploads a Pages artifact; the separate deployment job has only Pages and OIDC write permissions. Preview/build artifacts are available for review. Release automation, GPU-independent visual baselines, and a cleared-asset distribution remain roadmap items.
+
+## Owner-authorized Astra cases
+
+Agriculture, industry and park share observatory.js, observatory-scene.js, observatory.css and astra-geometry.js; screen-specific data, actions, palettes and procedural models remain under each screen directory. The builder resolves these optional markers only when a template uses them. No Vue runtime or new dependency is introduced. Detailed interaction, responsive, permission and lifecycle contracts are documented in [Astra cases](astra-cases.md).

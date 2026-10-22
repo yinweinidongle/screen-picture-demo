@@ -2,11 +2,13 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Four interactive scenes built with Three.js, custom GLSL and D3: a transparent wind turbine, a detailed factory with a day/night sweep, a draggable population globe, and an inspection map with raised borders. The gallery shows real previews and runs at most one live scene at a time.
+Seven interactive scenes built with Three.js, custom GLSL and D3: a transparent wind turbine, a detailed factory with a day/night sweep, a draggable population globe, an inspection map with raised borders, precision agriculture, an automated workshop, and a smart campus. The gallery shows real previews and runs at most one live scene at a time.
 
 ![Gallery](media/home-preview.png)
 
 Factory details: [English rendering guide](screens/factory.en.md).
+
+The three new operations dashboards adapt owner-authorized procedural scenes from [big-screen-astra](https://github.com/yinweinidongle/big-screen-astra), with redesigned layouts, responsive charts, keyboard controls and lightweight fallbacks. See [implementation and provenance](astra-cases.md).
 
 ## Run locally
 
