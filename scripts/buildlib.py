@@ -215,6 +215,8 @@ class Builder:
             "docs/licensing/d3-ISC.txt",
             "docs/licensing/natural-earth-PUBLIC-DOMAIN.txt",
         ]
+        if 'id="observatory"' in content:
+            notice_paths.append("docs/licensing/astra-owner-permission.txt")
         notice = (
             "\n<!-- Distribution permissions\n"
             + "\n\n".join((ROOT / path).read_text() for path in notice_paths)
@@ -258,11 +260,16 @@ class Builder:
             "OBSERVATORY_CSS": "observatory.css",
             "OBSERVATORY_JS": "observatory.js",
             "OBSERVATORY_SCENE": "observatory-scene.js",
+            "OBSERVATORY_HEADER": "observatory-header.js",
             "ASTRA_GEOMETRY": "astra-geometry.js",
         }.items():
             token = f"/*__{marker}__*/"
             if token in content:
                 replacements[token] = (ROOT / "src/shared" / filename).read_text()
+        if "/*__OBSERVATORY_HEADER_ART__*/" in content:
+            replacements["/*__OBSERVATORY_HEADER_ART__*/"] = self.image(
+                f"assets/art/astra/{entry['id']}-header.png", 94
+            )
         for file, markers in {
             "styles.css": ["CSS"],
             "app.js": ["JS"],

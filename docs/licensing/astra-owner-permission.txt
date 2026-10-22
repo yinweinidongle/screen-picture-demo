@@ -11,5 +11,9 @@ Adapted scope:
 - src/demos/scenes/industry.js -> src/screens/industry/model.js
 - src/demos/scenes/park.js -> src/screens/park/model.js
 - src/demos/scenes/shared.js -> src/shared/astra-geometry.js
+- src/components/SvgFlowRails.vue and the three demo header compositions -> src/shared/observatory-header.js and observatory.css
+- public/assets/agriculture-header.png, industry-header.png and park-header.png -> assets/art/astra/
 
-The owner-authorized contributions and this repository's new dashboard code are distributed under the root MIT license. This record does not assert an upstream repository-wide public license or grant rights to unrelated third-party assets. No upstream bitmap art or external font files are included in the new cases. Three.js retains its complete MIT notice.
+The owner-authorized code contributions and this repository's new dashboard code are distributed under the root MIT license. This record does not assert an upstream repository-wide public license or grant rights to unrelated third-party assets. Three.js retains its complete MIT notice.
+
+The three header images are project-generated decorative artwork from the owner's repository. Their reuse and redistribution here are explicitly authorized by the owner's request to use that repository freely and restore the original headers. They remain separate from the code-only MIT grant, consistent with the existing generated-art policy. No exclusivity or independent third-party-clearance guarantee is asserted. Runtime builds create WebP derivatives from the preserved PNG originals. No external font files are included.

@@ -100,6 +100,19 @@ class RegistryTests(unittest.TestCase):
                 "<script>let a=1;</script>", (Path(temp) / "a.html").read_text()
             )
 
+    def test_astra_header_art_and_permission_travel_with_offline_page(self):
+        with tempfile.TemporaryDirectory() as temp:
+            entry = next(row for row in load_registry() if row["id"] == "agriculture")
+            Builder(temp, "standalone").screen(entry)
+            page = (Path(temp) / "agriculture.html").read_text()
+            self.assertIn('data-header-art="data:image/webp;base64,', page)
+            self.assertIn("Owner-authorized scene adaptation", page)
+            self.assertIn("separate from the code-only MIT grant", page)
+            self.assertLess(
+                page.index("window.ObservatoryHeader ="),
+                page.index("window.ObservatoryDashboard ="),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

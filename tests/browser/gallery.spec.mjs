@@ -89,6 +89,15 @@ for (const id of ['agriculture', 'industry', 'park']) {
       const canvas = page.locator('#observatory-canvas');
       await expect(page.locator('#observatory')).toHaveAttribute('data-renderer', 'webgl');
       await expect(canvas).toHaveAttribute('data-ready', 'true');
+      const header = page.locator('.ob-header-art');
+      await expect(header).toHaveAttribute('data-header-kind', id);
+      const imageUrl = await header.locator('image').getAttribute('href');
+      expect((await page.request.get(imageUrl)).ok()).toBe(true);
+      const beam = header.locator('.ob-flow-segment').last();
+      const initialOffset = await beam.evaluate((el) => getComputedStyle(el).strokeDashoffset);
+      await expect
+        .poll(() => beam.evaluate((el) => getComputedStyle(el).strokeDashoffset))
+        .not.toBe(initialOffset);
       expect(Number(await canvas.getAttribute('data-draw-calls'))).toBeLessThan(180);
       await page.locator('[data-action="orbit"]').click();
       await expect(page.locator('[data-action="orbit"]')).toHaveAttribute('aria-pressed', 'true');
@@ -97,6 +106,8 @@ for (const id of ['agriculture', 'industry', 'park']) {
       await expect(page.locator('[data-action="orbit"]')).toHaveAttribute('aria-pressed', 'false');
       await page.locator('[data-action="running"]').click();
       await expect(canvas).toHaveAttribute('data-running', 'false');
+      await expect(page.locator('#observatory')).toHaveAttribute('data-header-motion', 'paused');
+      expect(await beam.evaluate((el) => getComputedStyle(el).animationPlayState)).toBe('paused');
       await page.locator('[data-action="top"]').click();
       await expect(canvas).toHaveAttribute('data-view', 'top');
       const object = page.locator('.ob-object').first();
@@ -165,6 +176,12 @@ test('new dashboards: reduced motion and keyboard topic navigation', async ({ pa
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/industry.html');
   await expect(page.locator('#observatory-canvas')).toHaveAttribute('data-running', 'false');
+  expect(
+    await page
+      .locator('.ob-flow-segment')
+      .last()
+      .evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe('none');
   await page.locator('#ob-tab-0').focus();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#ob-tab-1')).toBeFocused();

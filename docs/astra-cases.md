@@ -6,7 +6,7 @@
 
 模型细节及场景概念来自项目所有者自己的 [big-screen-astra](https://github.com/yinweinidongle/big-screen-astra)，参考提交为 d20e80789dee708faff031df840d03d2af8efd72。所有者于 2026-10-21 在本次维护请求中明确授权复用到本项目。适配后的代码随本仓库按 MIT 分发；这不表示原仓库已设置统一的公开许可证。
 
-具体适配了原项目 src/demos/scenes/ 下三个程序化场景及 shared.js 的几何构造方法。src/shared/astra-geometry.js 保留出处，静态合批改为本地实现，不引入额外 Three.js 工具包。未复制原项目的图片、字体、Vue 或图标运行时，也没有增加 npm 依赖。
+具体适配了原项目 src/demos/scenes/ 下三个程序化场景及 shared.js 的几何构造方法。src/shared/astra-geometry.js 保留出处，静态合批改为本地实现，不引入额外 Three.js 工具包。页眉恢复了所有者授权的三张原始装饰背景，以及 SvgFlowRails 的 SVG 拖尾、节点脉冲与农业叶脉光效；保留 PNG 原件，构建时转换为 WebP 并分别按页面加载。生成装饰图遵循单独的素材授权说明。没有引入字体、Vue、图标运行时或额外 npm 依赖。
 
 ## 布局与交互
 
@@ -18,17 +18,19 @@
 - 主题切换同步核心指标与场景图层；范围筛选更新顶部模拟指标，场景继续保留全域概念背景。时间范围按钮切换趋势，悬浮或聚焦图表可读取数值。
 - 农业提供可停止的模拟灌溉与可撤销的任务确认；工业支持班次、工单与维护提醒；园区支持事件确认与待处理数量联动。所有操作仅在当前页面内存生效，不连接设备。
 - 可导出当前主题及范围的 CSV 指标，下载文件明确带有 demo 标识。
+- Header 背景和 SVG 飞线采用独立图层，不拦截按钮或文字；暂停仿真、切到后台时停止光效，“减少动态效果”下保留静态装饰。手机仍保留完整背景构图。
 
 ## 实现与运行
 
 每套案例的 app.js 定义数据、面板及业务动作，model.js 定义场景，styles.css 定义独立视觉特征。共享文件：
 
-| 文件                            | 职责                                             |
-| ------------------------------- | ------------------------------------------------ |
-| src/shared/observatory.js       | 面板组件、图表、对话框、主题、导出与交互状态     |
-| src/shared/observatory-scene.js | Three.js r160 渲染、摄像机、拾取、图层、生命周期 |
-| src/shared/astra-geometry.js    | 经授权适配的几何构造与静态合批                   |
-| src/shared/observatory.css      | 栅格、可读字号、控件、断点与减少动态效果         |
+| 文件                             | 职责                                             |
+| -------------------------------- | ------------------------------------------------ |
+| src/shared/observatory.js        | 面板组件、图表、对话框、主题、导出与交互状态     |
+| src/shared/observatory-scene.js  | Three.js r160 渲染、摄像机、拾取、图层、生命周期 |
+| src/shared/observatory-header.js | 原始页眉背景构图、SVG 飞线与节点光效             |
+| src/shared/astra-geometry.js     | 经授权适配的几何构造与静态合批                   |
+| src/shared/observatory.css       | 栅格、可读字号、控件、断点与减少动态效果         |
 
 构建器仅在模板包含对应标记时加载共享模块，三个页面复用相同的资源哈希，旧案例仍使用原先的实现。Web 和 standalone 两种分发方式均支持。
 

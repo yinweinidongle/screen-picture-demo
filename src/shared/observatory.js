@@ -140,7 +140,9 @@
     const root = q('#observatory');
     root.dataset.case = config.id;
     root.innerHTML =
-      '<header class="ob-header"><a class="ob-brand" href="home.html" aria-label="返回大屏展厅"><span class="ob-brand-mark">' +
+      '<header class="ob-header">' +
+      ObservatoryHeader.create(config.id, root.dataset.headerArt) +
+      '<a class="ob-brand" href="home.html" aria-label="返回大屏展厅"><span class="ob-brand-mark">' +
       icon(config.glyph) +
       '</span><div><strong>' +
       escape(config.brand) +
@@ -480,6 +482,7 @@
       q('#ob-trend-note').textContent = config.insight.notes[state.period];
     }
     function refresh(redrawChart = false) {
+      headerMotion();
       root.dataset.topic = String(state.topic);
       root.dataset.scope = state.scope;
       q('#ob-workspace').setAttribute('aria-labelledby', 'ob-tab-' + state.topic);
@@ -753,6 +756,10 @@
         refresh();
       }
     };
+    function headerMotion() {
+      root.dataset.headerMotion = state.running && !document.hidden ? 'running' : 'paused';
+    }
+    document.addEventListener('visibilitychange', headerMotion);
     reduced.addEventListener('change', onReduce);
     VizLabRuntime.onDispose(() => {
       if (disposed) return;
@@ -764,6 +771,7 @@
       root.removeEventListener('change', change);
       root.removeEventListener('keydown', key);
       reduced.removeEventListener('change', onReduce);
+      document.removeEventListener('visibilitychange', headerMotion);
       twin?.dispose();
     });
   }

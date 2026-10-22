@@ -201,23 +201,44 @@
     {
       "path": "assets/previews/agriculture.webp",
       "source": "Actual page capture of owner-authorized Astra adaptation; docs/astra-cases.md",
-      "license": "MIT",
+      "license": "Composite; owner-authorized generated decoration and MIT code",
       "status": "composite",
-      "sha256": "7dd1987e5797195f7914c4cff58ab0c98922ee66e3f115c56253cac457ddfbf7"
+      "sha256": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d"
     },
     {
       "path": "assets/previews/industry.webp",
       "source": "Actual page capture of owner-authorized Astra adaptation; docs/astra-cases.md",
-      "license": "MIT",
+      "license": "Composite; owner-authorized generated decoration and MIT code",
       "status": "composite",
-      "sha256": "9bed842c795f26f3526ebf8540561120bb4ae1db6b59c8ae437960e0b01a5fef"
+      "sha256": "78e7375a407fb67bd1f77c7eeb8ee5b03485e4c761c40431d8add40ab102205c"
     },
     {
       "path": "assets/previews/park.webp",
       "source": "Actual page capture of owner-authorized Astra adaptation; docs/astra-cases.md",
-      "license": "MIT",
+      "license": "Composite; owner-authorized generated decoration and MIT code",
       "status": "composite",
-      "sha256": "61484624d3230fdcbf9fb5fef905d8f8418a8110a95975cad81234a7078e9b28"
+      "sha256": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3"
+    },
+    {
+      "path": "assets/art/astra/agriculture-header.png",
+      "source": "Owner-authorized project-generated decoration; big-screen-astra@d20e80789dee708faff031df840d03d2af8efd72; docs/licensing/astra-owner-permission.txt",
+      "license": "Owner-authorized generated asset; separate from code MIT",
+      "status": "generated",
+      "sha256": "74f567c684cbfa84d79a9913c86e2251084bfae9729a21a0c24ff6e8ca36e19d"
+    },
+    {
+      "path": "assets/art/astra/industry-header.png",
+      "source": "Owner-authorized project-generated decoration; big-screen-astra@d20e80789dee708faff031df840d03d2af8efd72; docs/licensing/astra-owner-permission.txt",
+      "license": "Owner-authorized generated asset; separate from code MIT",
+      "status": "generated",
+      "sha256": "9137f49424e2c231d16cbdece2268bf412631f58e88c1cda370dd5a125d9710a"
+    },
+    {
+      "path": "assets/art/astra/park-header.png",
+      "source": "Owner-authorized project-generated decoration; big-screen-astra@d20e80789dee708faff031df840d03d2af8efd72; docs/licensing/astra-owner-permission.txt",
+      "license": "Owner-authorized generated asset; separate from code MIT",
+      "status": "generated",
+      "sha256": "6756cb3cc14b1961932955543e6ec83b03ebd593c55dfcb166ac4dac9789ffdb"
     }
   ]
 }
