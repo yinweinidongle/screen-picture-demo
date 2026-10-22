@@ -719,6 +719,16 @@
         accent: config.accent,
         label: config.sceneTitle + '，方向键旋转，正负键缩放，R 复位',
         onSelect: asset,
+        onView: (view) => {
+          if (
+            state.running === view.running &&
+            state.orbit === view.orbit &&
+            state.top === view.top
+          )
+            return;
+          Object.assign(state, view);
+          refresh();
+        },
         onLost: () => {
           fallback();
           twin = null;
