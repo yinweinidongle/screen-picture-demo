@@ -1,0 +1,39 @@
+name: Import Astra cases
+on:
+  push:
+    branches: [codex/astra-dashboard-cases]
+    paths: [.github/workflows/import-astra-cases.yml]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify reviewed source package
+        shell: python
+        run: |
+          from pathlib import Path
+          import hashlib, zipfile
+          root=Path.cwd().resolve()
+          package=root/'_source-import.zip'
+          assert hashlib.sha256(package.read_bytes()).hexdigest()=='84a582b0fc455b0e5034c1f3c611d68bedb1b3802648f1f992bf56fa9f3f4cb5'
+          allowed={'src','scripts','tests','config','docs','assets'}
+          with zipfile.ZipFile(package) as archive:
+              entries=archive.infolist()
+              assert sum(entry.file_size for entry in entries)<40_000_000
+              for entry in entries:
+                  path=Path(entry.filename)
+                  assert not path.is_absolute() and '..' not in path.parts
+                  assert (len(path.parts)>1 and path.parts[0] in allowed) or entry.filename in {'README.md','THIRD_PARTY_NOTICES.md'}
+                  assert (root/path).resolve().is_relative_to(root)
+              archive.extractall(root)
+      - name: Commit reviewed cases
+        run: |
+          git rm _source-import.zip
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m "Add owner-authorized agriculture, industry and campus dashboards"
+          git push origin HEAD:codex/astra-dashboard-cases
