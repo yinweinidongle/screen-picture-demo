@@ -211,6 +211,212 @@ button:active:not(:disabled) {
   align-items: center;
   border-bottom: 1px solid var(--line);
   position: relative;
+  isolation: isolate;
+}
+.ob-header > :not(.ob-header-art) {
+  position: relative;
+  z-index: 1;
+}
+.ob-header-art {
+  position: absolute;
+  pointer-events: none;
+  top: -10px;
+  left: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 22px);
+  z-index: -1;
+}
+.ob-title {
+  text-shadow:
+    0 2px 15px var(--bg),
+    0 0 30px var(--bg);
+}
+.ob-flow-system {
+  stroke: var(--flow-color);
+  --flow-delay: -1.8s;
+}
+.ob-flow-guide {
+  stroke-width: 0.65;
+  opacity: 0.22;
+}
+.ob-flow-segment {
+  animation: ob-flow-travel var(--flow-duration) linear infinite;
+  animation-delay: var(--flow-delay);
+}
+.ob-flow-envelope {
+  animation: ob-flow-envelope var(--flow-duration) linear infinite;
+  animation-delay: var(--flow-delay);
+}
+.ob-flow-ring {
+  stroke-width: 0.7;
+  opacity: 0.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ob-flow-node var(--flow-duration) ease-out infinite;
+  animation-delay: var(--flow-delay);
+}
+.ob-flow-core {
+  fill: var(--flow-color);
+  stroke: none;
+  animation: ob-flow-light var(--flow-duration) ease-in-out infinite;
+  animation-delay: var(--flow-delay);
+}
+.ob-flow-secondary {
+  opacity: 0.65;
+}
+.ob-flow-secondary .ob-flow-guide {
+  opacity: 0.12;
+}
+.ob-flow-secondary .ob-flow-segment {
+  stroke-width: 0.8 !important;
+}
+.ob-flow-secondary .ob-flow-segment:first-child {
+  display: none;
+}
+.ob-header-vein {
+  fill: none;
+  stroke-linecap: round;
+}
+.ob-header-vein use {
+  vector-effect: non-scaling-stroke;
+}
+.ob-header-vein-halo {
+  stroke: #dfd491;
+  stroke-width: 8;
+  opacity: 0.22;
+}
+.ob-header-vein-core {
+  stroke: #fff8ce;
+  stroke-width: 2.2;
+}
+.ob-header-vein-window {
+  animation: ob-vein-drift 7s linear infinite;
+  animation-delay: -1.8s;
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+.ob-header-arrival {
+  animation: ob-header-arrival 6s linear infinite;
+  animation-delay: -1.8s;
+}
+[data-header-kind='agriculture'] .ob-header-arrival {
+  animation-duration: 7s;
+}
+[data-header-motion='paused'] .ob-header-art * {
+  animation-play-state: paused;
+}
+@keyframes ob-flow-travel {
+  from {
+    stroke-dashoffset: var(--segment-start);
+  }
+  to {
+    stroke-dashoffset: var(--segment-end);
+  }
+}
+@keyframes ob-flow-envelope {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  6%,
+  86% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0;
+  }
+}
+@keyframes ob-flow-node {
+  0%,
+  36%,
+  73%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  46% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  62% {
+    opacity: 0;
+    transform: scale(1.65);
+  }
+}
+@keyframes ob-flow-light {
+  0%,
+  32%,
+  75%,
+  100% {
+    opacity: 0.35;
+  }
+  44%,
+  58% {
+    opacity: 1;
+  }
+}
+@keyframes ob-vein-drift {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(1700px);
+    opacity: 0;
+  }
+}
+@keyframes ob-header-arrival {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+  }
+  75%,
+  82% {
+    opacity: 1;
+  }
+}
+@media (min-width: 1800px) {
+  .ob-header-art {
+    top: -16px;
+    left: -32px;
+    width: calc(100% + 64px);
+    height: calc(100% + 29px);
+  }
+}
+@media (max-width: 1400px) {
+  .ob-header-art {
+    top: -15px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 25px);
+  }
+}
+@media (max-width: 650px) {
+  .ob-header-art {
+    top: -12px;
+    left: -12px;
+    width: calc(100% + 24px);
+    height: calc(100% + 22px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ob-header-art * {
+    animation: none !important;
+  }
+  .ob-flow-envelope,
+  .ob-header-vein {
+    display: none;
+  }
+  .ob-flow-core {
+    opacity: 0.6;
+  }
 }
 .ob-header:after {
   content: '';

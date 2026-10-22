@@ -1,17 +1,17 @@
 {
   "capturedOn": "2026-10-21",
-  "assetInventorySha256": "22a760c5f946ae3860b3be7efe4cc50aadee9c8a27947127058512c2b18b219c",
-  "notes": "Home refreshed with seven cases on 2026-10-21. Existing factory/globe/inspection GIFs retain their 2026-10-20 recordings. New Astra previews are actual fully rendered 1920x1080 captures, not mockups.",
+  "assetInventorySha256": "a3598784d2c27ddc9ce2160ed423c7e75f80513e0436ecb3511d75b4bfe53fe2",
+  "notes": "Home and three Astra previews refreshed on 2026-10-21 with restored original header backgrounds and SVG flow rails. Existing factory/globe/inspection GIFs retain their 2026-10-20 recordings. All previews are actual rendered page captures.",
   "files": {
-    "home-preview.png": "2369b4dfe43cc8b02cb3efdded9c8263a542fc10533fe65a66bf3361a4523162",
-    "home-mobile-preview.png": "d4b68380da8570ee337968ec4cd3e593b40402b6c228b2154d3cbe24a92e9207",
+    "home-preview.png": "f16e2be9b71161725442234ba691ee9d7517c08193298238149086e1c44583ba",
+    "home-mobile-preview.png": "f01179a2fe9e0ea9bed4f586f1c91a783db4f359d108cf99dfbf807af3d88ee6",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
     "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762"
   },
   "previewFiles": {
-    "assets/previews/agriculture.webp": "7dd1987e5797195f7914c4cff58ab0c98922ee66e3f115c56253cac457ddfbf7",
-    "assets/previews/industry.webp": "9bed842c795f26f3526ebf8540561120bb4ae1db6b59c8ae437960e0b01a5fef",
-    "assets/previews/park.webp": "61484624d3230fdcbf9fb5fef905d8f8418a8110a95975cad81234a7078e9b28"
+    "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
+    "assets/previews/industry.webp": "78e7375a407fb67bd1f77c7eeb8ee5b03485e4c761c40431d8add40ab102205c",
+    "assets/previews/park.webp": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3"
   }
 }
