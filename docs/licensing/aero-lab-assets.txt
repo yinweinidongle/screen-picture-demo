@@ -1,0 +1,27 @@
+AERO / LAB — Supercar Wind Tunnel
+
+Car Concept, © 2024 Darmstadt Graphics Group GmbH. Model and textures by Eric
+Chadwick, based on Unity Fan's CC0 Free Concept Car 004. Used under Creative
+Commons Attribution 4.0 International: https://creativecommons.org/licenses/by/4.0/
+Source and original credits:
+https://github.com/KhronosGroup/glTF-Sample-Assets/tree/7d4ba189827916452eeadc82d4b712dbc6280a6f/Models/CarConcept
+The included derivative compresses textures to WebP and meshes using meshoptimizer.
+The scene and its captures add custom finishes, lighting and simulated airflow.
+The Khronos and 3D Commerce marks on the vehicle retain their respective terms:
+https://github.com/KhronosGroup/glTF-Sample-Assets/blob/7d4ba189827916452eeadc82d4b712dbc6280a6f/LICENSES/LicenseRef-LegalMark-Khronos.txt
+
+Studio Small 09 by Sergej Majboroda, distributed by Poly Haven under CC0.
+https://polyhaven.com/a/studio_small_09
+https://polyhaven.com/license
+
+The racing-pilot illustration was generated for this project with OpenAI ImageGen.
+It is supplied as transparent WebP and projected on the vehicle in the studio.
+The prompt and treatment are documented in docs/screens/aero-lab.md.
+Barlow Condensed by The Barlow Project Authors is licensed under SIL OFL 1.1.
+https://github.com/google/fonts/tree/main/ofl/barlowcondensed
+
+GSAP copyright 2008–2026 GreenSock. All rights reserved.
+GSAP Standard License: https://gsap.com/standard-license/
+Three.js r187 and its example components retain the bundled MIT notice.
+meshoptimizer copyright 2016–2026 Arseny Kapoulkine. MIT License:
+https://github.com/zeux/meshoptimizer/blob/master/LICENSE.md

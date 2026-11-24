@@ -2,9 +2,11 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Eight interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus and a global relay network. The gallery shows actual page captures and runs one live preview at a time.
+Nine interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network and a supercar wind tunnel. The gallery shows actual page captures and runs one live preview at a time.
 
 ![Gallery](media/home-preview.png)
+
+AERO / LAB puts Khronos Car Concept in a photographic HDR studio. Scrub a glowing paint reveal across the bodywork, try the original illustrated racing livery or adjust the airspeed and yaw to inspect the streamlines and estimated drag. Embedded GLBs can also be opened locally. [Open the wind tunnel](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html) · [Controls, captures and asset credits](screens/aero-lab.md)
 
 Orbital Relay uses Three.js and TSL to render Earth's day and night sides, drifting clouds and luminous signal trails. Select one of six ground stations to follow its links and inspect simulated throughput and latency. [Open Orbital Relay](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html) · [Rendering notes and captures](screens/earth-link.md)
 

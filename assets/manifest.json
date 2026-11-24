@@ -305,6 +305,65 @@
       "modification": true,
       "generator": "scripts/prepare_assets.py",
       "sha256": "fffd7f68d41b37274822150e54a6ef605af1d3ec35624d9f628c3b896bfa42ed"
+    },
+    {
+      "path": "assets/models/aero-concept.glb",
+      "source": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/7d4ba189827916452eeadc82d4b712dbc6280a6f/Models/CarConcept",
+      "author": "Eric Chadwick / Darmstadt Graphics Group GmbH. Based on a CC0 model by Unity Fan.",
+      "license": "CC-BY-4.0",
+      "status": "verified",
+      "licenseEvidence": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/7d4ba189827916452eeadc82d4b712dbc6280a6f/Models/CarConcept#legal",
+      "upstreamSha256": "c272098089d78c5cd9fd9f24ff50ee8acf8d932c55f2d55fc10adb6c8998966b",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true,
+      "changes": "WebP quality 89 and meshoptimizer medium compression. Khronos and 3D Commerce marks retain separate terms in docs/licensing/aero-lab-assets.txt.",
+      "sha256": "fc3535dc62a171a24282a70fac1ccbf03eb6724eaa5923ebca6219c9711439ad"
+    },
+    {
+      "path": "assets/environments/studio-small-09.hdr",
+      "source": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_09_1k.hdr",
+      "author": "Sergej Majboroda / Poly Haven",
+      "license": "CC0-1.0",
+      "status": "verified",
+      "licenseEvidence": "https://polyhaven.com/license",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true,
+      "sha256": "e7cfda5f4e98e623db12b8bfd0184e048488e4855d9c83e2751fb44a32e80c45"
+    },
+    {
+      "path": "assets/fonts/barlow-condensed-extrabold-italic.ttf",
+      "source": "https://github.com/google/fonts/blob/main/ofl/barlowcondensed/BarlowCondensed-ExtraBoldItalic.ttf",
+      "author": "The Barlow Project Authors",
+      "license": "OFL-1.1",
+      "status": "verified",
+      "licenseEvidence": "https://github.com/google/fonts/blob/main/ofl/barlowcondensed/OFL.txt",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true,
+      "sha256": "331783dae9ec0c398f4d32c9fd5a56d4c602caa0c1628c2b9cbfe93f48eb68c9"
+    },
+    {
+      "path": "assets/art/aero-racer.webp",
+      "source": "Original racing-pilot vinyl illustration generated with OpenAI ImageGen. Full prompt in docs/screens/aero-lab.md. Converted from RGBA to transparent WebP.",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "7e08d6a053200fdd8975f34928e99db74d32c697b79c7dddd77305d5c25f18ca"
+    },
+    {
+      "path": "assets/art/aero-studio.webp",
+      "source": "Clean capture of the AERO / LAB WebGL scene showing Car Concept in the Studio Small 09 HDRI. Credits in docs/licensing/aero-lab-assets.txt.",
+      "license": "Composite with CC BY 4.0 model, CC0 lighting and original studio design",
+      "status": "composite",
+      "sha256": "9328a18cd5b9c4c4779575963f1f7caab06b4b9a427858c90c6f2ede6f6dca86"
+    },
+    {
+      "path": "assets/previews/aero-lab.webp",
+      "source": "Desktop capture of aero-lab.html. Model and asset credits in docs/licensing/aero-lab-assets.txt.",
+      "license": "Composite with CC BY 4.0 model, CC0 lighting, OFL font and project-generated art",
+      "status": "composite",
+      "sha256": "f7dde3e2a6ec080f5839b4af576f977173a846e5a9609dfaf72a1063206e54f6"
     }
   ]
 }
