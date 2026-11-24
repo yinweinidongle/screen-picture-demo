@@ -94,5 +94,17 @@
     "preview": "assets/previews/earth-link.webp",
     "tags": ["Three.js TSL", "GSAP 动效", "地面站点"],
     "renderer": "generic"
+  },
+  {
+    "id": "aero-lab",
+    "title": "超跑风洞实验室",
+    "description": "在影棚中调试超跑涂层，观察侧风、绕流与气动力。",
+    "category": "3d",
+    "label": "AERO LAB",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/aero-lab.webp",
+    "tags": ["物理车漆", "噪声裁剪", "风洞试验"],
+    "renderer": "generic"
   }
 ]

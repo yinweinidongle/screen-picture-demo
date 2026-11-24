@@ -300,22 +300,42 @@ class Builder:
                 f"assets/art/astra/{entry['id']}-header.png", 94
             )
         extra_notices = []
-        if "/*__EARTH_BUNDLE__*/" in content:
-            replacements["/*__EARTH_BUNDLE__*/"] = subprocess.run(
+        for bundle in ["/*__EARTH_BUNDLE__*/", "/*__MODULE_BUNDLE__*/"]:
+            if bundle not in content:
+                continue
+            replacements[bundle] = subprocess.run(
                 ["node", "scripts/bundle-screen.mjs", str(source / "app.js")],
                 cwd=ROOT,
                 stdout=subprocess.PIPE,
                 check=True,
             ).stdout.decode("utf-8")
-            extra_notices.extend(
-                [
-                    "docs/licensing/three-webgpu-MIT.txt",
-                    "docs/licensing/earth-link-assets.txt",
-                ]
-            )
+            extra_notices.append("docs/licensing/three-webgpu-MIT.txt")
+        if "/*__RELAY_LOCATOR__*/" in content:
+            extra_notices.append("docs/licensing/earth-link-assets.txt")
             replacements["/*__RELAY_LOCATOR__*/"] = self.resource(
                 locator_mask(), "relay-landmask", "png"
             )
+        if "/*__AERO_CAR__*/" in content:
+            extra_notices.append("docs/licensing/aero-lab-assets.txt")
+            extra_notices.append("docs/licensing/barlow-condensed-OFL.txt")
+            extra_notices.append("docs/licensing/meshoptimizer-MIT.txt")
+            for token, file, mime in [
+                ("AERO_CAR", "models/aero-concept.glb", "model/gltf-binary"),
+                (
+                    "AERO_STUDIO",
+                    "environments/studio-small-09.hdr",
+                    "application/octet-stream",
+                ),
+                (
+                    "AERO_FONT",
+                    "fonts/barlow-condensed-extrabold-italic.ttf",
+                    "font/ttf",
+                ),
+            ]:
+                asset = safe_path("assets/" + file)
+                replacements[f"/*__{token}__*/"] = self.resource(
+                    asset.read_bytes(), asset.stem, asset.suffix[1:], mime
+                )
         for marker, filename, quality in [
             ("EARTH_DAY", "textures/earth-day.jpg", 91),
             ("EARTH_NIGHT", "textures/earth-night.png", 90),
@@ -325,6 +345,8 @@ class Builder:
             ("RELAY_CLOUDS", "textures/relay-clouds.jpg", 87),
             ("RELAY_HEADER", "art/earth-link-header.webp", None),
             ("EARTH_FALLBACK", "art/earth-link-globe.webp", None),
+            ("AERO_POSTER", "art/aero-studio.webp", None),
+            ("AERO_LIVERY", "art/aero-racer.webp", None),
         ]:
             token = f"/*__{marker}__*/"
             if token in content:
@@ -444,10 +466,10 @@ class Builder:
             ("RUNTIME", "src/shared/runtime.js"),
         ]:
             content = content.replace(f"/*__{marker}__*/", (ROOT / file).read_text())
-        notices = (
-            ["docs/licensing/earth-link-assets.txt"]
-            if any(entry["id"] == "earth-link" for entry in entries)
-            else []
-        )
+        notices = [
+            f"docs/licensing/{entry['id']}-assets.txt"
+            for entry in entries
+            if entry["id"] in {"earth-link", "aero-lab"}
+        ]
         self.finish("home.html", content, notices)
         shutil.copyfile(self.out / "home.html", self.out / "index.html")

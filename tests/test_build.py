@@ -124,6 +124,19 @@ class RegistryTests(unittest.TestCase):
             self.assertIn("Earth Clouds by Solar System Scope", page)
             self.assertIn("GSAP Standard License", page)
 
+    def test_aero_lab_offline_page_carries_model_environment_and_licenses(self):
+        with tempfile.TemporaryDirectory() as temp:
+            entry = next(row for row in load_registry() if row["id"] == "aero-lab")
+            Builder(temp, "standalone").screen(entry)
+            page = (Path(temp) / "aero-lab.html").read_text()
+            self.assertIn('data-model="data:model/gltf-binary;base64,', page)
+            self.assertIn('data-studio="data:application/octet-stream;base64,', page)
+            self.assertIn('data-livery="data:image/webp;base64,', page)
+            self.assertIn("data:font/ttf;base64,", page)
+            self.assertIn("Darmstadt Graphics Group GmbH", page)
+            self.assertIn("SIL OPEN FONT LICENSE", page)
+            self.assertNotIn("<script src=", page)
+
 
 if __name__ == "__main__":
     unittest.main()
