@@ -12,7 +12,7 @@ function build() {
     return;
   }
   running = true;
-  const child = spawn(python(), ['scripts/build.py', '--mode', 'web'], {
+  const child = spawn(python(), ['-X', 'utf8', 'scripts/build.py', '--mode', 'web'], {
     cwd: root,
     stdio: 'inherit',
   });

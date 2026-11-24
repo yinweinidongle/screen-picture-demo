@@ -11,6 +11,8 @@ try {
   ))
     run(process.execPath, ['--check', file]);
   run(python(), [
+    '-X',
+    'utf8',
     '-c',
     'import sys; sys.path.insert(0,"scripts"); from buildlib import load_registry; print("Registry:", len(load_registry()), "screens")',
   ]);

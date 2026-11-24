@@ -113,6 +113,17 @@ class RegistryTests(unittest.TestCase):
                 page.index("window.ObservatoryDashboard ="),
             )
 
+    def test_orbital_relay_offline_page_carries_scene_textures_and_credits(self):
+        with tempfile.TemporaryDirectory() as temp:
+            entry = next(row for row in load_registry() if row["id"] == "earth-link")
+            Builder(temp, "standalone").screen(entry)
+            page = (Path(temp) / "earth-link.html").read_text()
+            for name in ["day", "night", "normal", "clouds", "src"]:
+                self.assertIn(f'data-{name}="data:image/webp;base64,', page)
+            self.assertNotIn("<script src=", page)
+            self.assertIn("Earth Clouds by Solar System Scope", page)
+            self.assertIn("GSAP Standard License", page)
+
 
 if __name__ == "__main__":
     unittest.main()

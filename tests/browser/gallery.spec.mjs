@@ -17,9 +17,13 @@ test('Home: registry cards, filters, one live scene and mobile layout', async ({
   await expect(page.locator('.screen-card')).toHaveCount(registry.length);
   await expect(page.locator('.hero')).toHaveCount(0);
   await page.locator('[data-filter="geo"]').click();
-  await expect(page.locator('.screen-card:visible')).toHaveCount(2);
+  await expect(page.locator('.screen-card:visible')).toHaveCount(
+    registry.filter((entry) => entry.category === 'geo').length,
+  );
   await page.locator('[data-filter="operations"]').click();
-  await expect(page.locator('.screen-card:visible')).toHaveCount(3);
+  await expect(page.locator('.screen-card:visible')).toHaveCount(
+    registry.filter((entry) => entry.category === 'operations').length,
+  );
   await page.locator('[data-filter="all"]').click();
   await page.locator('[data-page="wind.html"] .live-toggle').click();
   await expect(page.locator('iframe')).toHaveCount(1);

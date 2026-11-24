@@ -239,6 +239,72 @@
       "license": "Owner-authorized generated asset; separate from code MIT",
       "status": "generated",
       "sha256": "6756cb3cc14b1961932955543e6ec83b03ebd593c55dfcb166ac4dac9789ffdb"
+    },
+    {
+      "path": "assets/art/earth-link-header.webp",
+      "source": "Project header generated with OpenAI ImageGen for Orbital Relay. Prompt and crop in docs/screens/earth-link.md.",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "81af1afde360134e2cd95abdbe700a8229a524762c92fa55a6a46e24739075cf"
+    },
+    {
+      "path": "assets/art/earth-link-globe.webp",
+      "source": "Transparent render of the Orbital Relay scene. Solar System Scope day, night and cloud maps, Natural Earth relief, original route graphics.",
+      "license": "Composite with Solar System Scope imagery under CC BY 4.0 and public-domain Natural Earth data",
+      "status": "composite",
+      "sha256": "3fdbb6479837253e0f865eb83693abe5acd191b77be575ec3466049ca4e129af"
+    },
+    {
+      "path": "assets/previews/earth-link.webp",
+      "source": "Desktop page capture of earth-link.html. Credits in docs/licensing/earth-link-assets.txt.",
+      "license": "Composite with CC BY 4.0 imagery from Solar System Scope, public-domain Natural Earth terrain and project-generated header art",
+      "status": "composite",
+      "sha256": "00d93da56e6f7547516bc2eac86065d8bcef05d8d02cb911f616890ca6c8ffa3"
+    },
+    {
+      "path": "assets/textures/relay-day.jpg",
+      "source": "Solar System Scope. https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg",
+      "license": "CC-BY-4.0",
+      "status": "verified",
+      "upstream": [
+        "relay-day"
+      ],
+      "licenseEvidence": "https://www.solarsystemscope.com/textures/",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true,
+      "generator": "scripts/prepare_assets.py",
+      "sha256": "767ee1dc6eb3802699bfccf6f264880f8acd0b80de3191cd24984fe279b07b7c"
+    },
+    {
+      "path": "assets/textures/relay-night.jpg",
+      "source": "Solar System Scope. https://www.solarsystemscope.com/textures/download/2k_earth_nightmap.jpg",
+      "license": "CC-BY-4.0",
+      "status": "verified",
+      "upstream": [
+        "relay-night"
+      ],
+      "licenseEvidence": "https://www.solarsystemscope.com/textures/",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true,
+      "generator": "scripts/prepare_assets.py",
+      "sha256": "c16fd1bc096ab91a5c5265c6ff9847c43f489f2e2ee790ccdbcbd03251cf3a5a"
+    },
+    {
+      "path": "assets/textures/relay-clouds.jpg",
+      "source": "Solar System Scope. https://www.solarsystemscope.com/textures/download/2k_earth_clouds.jpg",
+      "license": "CC-BY-4.0",
+      "status": "verified",
+      "upstream": [
+        "relay-clouds"
+      ],
+      "licenseEvidence": "https://www.solarsystemscope.com/textures/",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true,
+      "generator": "scripts/prepare_assets.py",
+      "sha256": "fffd7f68d41b37274822150e54a6ef605af1d3ec35624d9f628c3b896bfa42ed"
     }
   ]
 }

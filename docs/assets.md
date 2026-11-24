@@ -1,10 +1,10 @@
 # Asset provenance and regeneration
 
-`assets/manifest.json` tracks runtime asset paths, SHA-256, permission status and source identifiers. `config/asset-sources.json` records each Natural Earth archive's exact download URL, checksum, actual archive version, provider page and permission evidence. These are separate from the root MIT code license.
+`assets/manifest.json` tracks runtime asset paths, SHA-256, permission status and source identifiers. `config/asset-sources.json` records the download URLs, checksums, providers and permission evidence for the Natural Earth archives and Solar System Scope images.
 
 ## Current map and texture permissions
 
-All runtime files under `assets/geo/` and geographic files under `assets/textures/` derive exclusively from public-domain Natural Earth data. The factory grid is original procedural material under MIT. Their recorded permissions allow commercial use, modification and redistribution. DataV geometry, Esri relief and Three.js example Earth images are no longer inputs or current runtime assets. The city-light map is an illustrative rendering of populated places, not an observed satellite product.
+All files under `assets/geo/`, the population globe's textures and the relief map derive from public-domain Natural Earth data. The population globe's city lights are an illustration derived from populated places. The factory grid is original procedural material under MIT. Orbital Relay uses three 2K equirectangular JPEGs by Solar System Scope for its day, night and cloud layers. Both the page and its exports credit the publisher and describe the adaptations. [Original textures](https://www.solarsystemscope.com/textures/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 Natural Earth geometries follow the upstream dataset's generalized boundaries. Admin-1 regions for Taiwan, Hong Kong and Macao are dissolved into the existing demo groups; other names are mapped to stable display identifiers. A shared-edge simplification at 0.018° keeps adjacent borders aligned. The outline is dissolved from the same polygons. The relief retains the existing Mercator extent and design dimensions so material placement, glow, side depth and hover coordinates remain aligned.
 
@@ -19,7 +19,7 @@ npm run setup
 npm run build
 ```
 
-On Windows use `.venv\Scripts\python.exe`. The generator downloads about 69 MB once into ignored `.local/asset-sources/`, verifies every SHA-256 before opening an archive, and fails if a provider file changes. It does not read the previous project maps or textures. For an offline repeat use `--offline --cache /path/to/verified/archives`; cached filenames are the source identifiers plus `.zip`.
+On Windows use `.venv\Scripts\python.exe`. The generator stores downloads in ignored `.local/asset-sources/` and verifies every SHA-256 before processing. An offline repeat uses `--offline --cache /path/to/verified/archives`. Cached filenames use the source identifier with the original `.zip` or `.jpg` extension.
 
 The generator rebuilds the 34-region GeoJSON, merged outline and world background, colour-adjusts the day texture, calculates a normal/detail field, renders illustrative city emission, reprojects relief with bilinear sampling, and generates a periodic factory grid. Upstream versions differ between themes. In particular the relief archive identifies itself as 2.0.0 despite its download page's 3.2.0 label; the archive checksum is authoritative.
 

@@ -1,4 +1,4 @@
-"""Rebuild cleared map/texture assets from checksum-pinned Natural Earth archives.
+"""Rebuild geographic assets from checksum-pinned Natural Earth and Solar System Scope files.
 
 Optional: Python 3.12+, requirements-assets.txt and curl. Normal builds use the
 committed derivatives and never contact these providers. No old project map or
@@ -11,6 +11,7 @@ import hashlib
 import io
 import json
 import math
+import shutil
 import subprocess
 import zipfile
 
@@ -77,7 +78,7 @@ def sha256(path):
 def acquire(folder, offline=False):
     folder.mkdir(parents=True, exist_ok=True)
     for source in SOURCES:
-        target = folder / (source["id"] + ".zip")
+        target = folder / (source["id"] + Path(source["url"]).suffix)
         if not target.exists():
             if offline:
                 raise FileNotFoundError(f"Missing pinned archive: {target}")
@@ -176,7 +177,9 @@ def write_geo(filename, features, inputs):
         "features": features,
     }
     (ROOT / "assets/geo" / filename).write_text(
-        json.dumps(value, ensure_ascii=False, separators=(",", ":")) + "\n"
+        json.dumps(value, ensure_ascii=False, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
 
 
@@ -344,7 +347,7 @@ def textures(folder):
         "extent": EXTENT,
     }
     (ROOT / "assets/geo/relief-metadata.json").write_text(
-        json.dumps(metadata, indent=2) + "\n"
+        json.dumps(metadata, indent=2) + "\n", encoding="utf-8", newline="\n"
     )
     print(
         "Rebuilt day, illustrative city light, normal and Mercator relief textures",
@@ -372,13 +375,19 @@ def main():
     acquire(args.cache, args.offline)
     boundaries(args.cache)
     textures(args.cache)
+    for name in ["relay-day.jpg", "relay-night.jpg", "relay-clouds.jpg"]:
+        shutil.copyfile(args.cache / name, ROOT / "assets/textures" / name)
     grid()
     manifest_path = ROOT / "assets/manifest.json"
     manifest = json.loads(manifest_path.read_text())
     for row in manifest["assets"]:
         if row["path"].startswith(("assets/geo/", "assets/textures/")):
             row["sha256"] = sha256(ROOT / row["path"])
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
 
 
 if __name__ == "__main__":

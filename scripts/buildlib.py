@@ -1,8 +1,8 @@
 """Deterministic, local-only resource assembly for web and standalone distributions."""
 
 from pathlib import Path
-import base64, hashlib, html as html_module, io, json, mimetypes, re, shutil
-from PIL import Image, ImageOps, ImageFilter, __version__ as PIL_VERSION
+import base64, hashlib, html as html_module, io, json, mimetypes, re, shutil, subprocess
+from PIL import Image, ImageDraw, ImageOps, ImageFilter, __version__ as PIL_VERSION
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = {"3d": "3D 数字孪生", "geo": "地理可视化", "operations": "运营监测"}
@@ -174,6 +174,34 @@ def terrain_images():
     )
 
 
+def locator_mask():
+    raw = (ROOT / "assets/geo/countries.json").read_bytes()
+
+    def produce():
+        width, height = 630, 315
+        alpha = Image.new("L", (width, height))
+        draw = ImageDraw.Draw(alpha)
+        for feature in json.loads(raw)["features"]:
+            geometry = feature["geometry"]
+            polygons = geometry["coordinates"]
+            if geometry["type"] == "Polygon":
+                polygons = [polygons]
+            for polygon in polygons:
+                for index, ring in enumerate(polygon):
+                    points = [
+                        ((lon + 180) * width / 360, (90 - lat) * height / 180)
+                        for lon, lat in ring
+                    ]
+                    draw.polygon(points, fill=255 if index == 0 else 0)
+        image = Image.new("RGBA", alpha.size, "white")
+        image.putalpha(alpha)
+        output = io.BytesIO()
+        image.save(output, "PNG", optimize=True)
+        return output.getvalue()
+
+    return cached("relay-landmask", [raw], produce, "png")
+
+
 class Builder:
     def __init__(self, out, mode):
         self.out = Path(out)
@@ -205,7 +233,7 @@ class Builder:
             data, source.stem, "webp" if quality else source.suffix[1:]
         )
 
-    def finish(self, name, content):
+    def finish(self, name, content, extra_notices=()):
         unresolved = re.findall(r"/\*__[A-Z_]+__\*/|<!--__[A-Z_]+__-->", content)
         if unresolved:
             raise ValueError(f"Unresolved build markers in {name}: {unresolved}")
@@ -214,6 +242,7 @@ class Builder:
             "docs/licensing/three-MIT.txt",
             "docs/licensing/d3-ISC.txt",
             "docs/licensing/natural-earth-PUBLIC-DOMAIN.txt",
+            *extra_notices,
         ]
         if 'id="observatory"' in content:
             notice_paths.append("docs/licensing/astra-owner-permission.txt")
@@ -270,6 +299,36 @@ class Builder:
             replacements["/*__OBSERVATORY_HEADER_ART__*/"] = self.image(
                 f"assets/art/astra/{entry['id']}-header.png", 94
             )
+        extra_notices = []
+        if "/*__EARTH_BUNDLE__*/" in content:
+            replacements["/*__EARTH_BUNDLE__*/"] = subprocess.run(
+                ["node", "scripts/bundle-screen.mjs", str(source / "app.js")],
+                cwd=ROOT,
+                stdout=subprocess.PIPE,
+                check=True,
+            ).stdout.decode("utf-8")
+            extra_notices.extend(
+                [
+                    "docs/licensing/three-webgpu-MIT.txt",
+                    "docs/licensing/earth-link-assets.txt",
+                ]
+            )
+            replacements["/*__RELAY_LOCATOR__*/"] = self.resource(
+                locator_mask(), "relay-landmask", "png"
+            )
+        for marker, filename, quality in [
+            ("EARTH_DAY", "textures/earth-day.jpg", 91),
+            ("EARTH_NIGHT", "textures/earth-night.png", 90),
+            ("EARTH_NORMAL", "textures/earth-normal.jpg", 89),
+            ("RELAY_DAY", "textures/relay-day.jpg", 91),
+            ("RELAY_NIGHT", "textures/relay-night.jpg", 91),
+            ("RELAY_CLOUDS", "textures/relay-clouds.jpg", 87),
+            ("RELAY_HEADER", "art/earth-link-header.webp", None),
+            ("EARTH_FALLBACK", "art/earth-link-globe.webp", None),
+        ]:
+            token = f"/*__{marker}__*/"
+            if token in content:
+                replacements[token] = self.image(f"assets/{filename}", quality)
         for file, markers in {
             "styles.css": ["CSS"],
             "app.js": ["JS"],
@@ -314,15 +373,6 @@ class Builder:
                     "/*__POPULATION_CHINA__*/": compact_geo("china.json"),
                     "/*__POPULATION_OUTLINE__*/": compact_geo("china-outline.json"),
                     "/*__POPULATION_WORLD__*/": compact_geo("countries.json", 2),
-                    "/*__EARTH_DAY__*/": self.image(
-                        "assets/textures/earth-day.jpg", 91
-                    ),
-                    "/*__EARTH_NIGHT__*/": self.image(
-                        "assets/textures/earth-night.png", 90
-                    ),
-                    "/*__EARTH_NORMAL__*/": self.image(
-                        "assets/textures/earth-normal.jpg", 89
-                    ),
                 }
             )
         elif kind == "inspection":
@@ -351,7 +401,7 @@ class Builder:
                 lambda m: text + (";" if m.group(1) else ""),
                 content,
             ).replace(marker, text)
-        self.finish(entry["id"] + ".html", content)
+        self.finish(entry["id"] + ".html", content, extra_notices)
 
     def home(self, entries):
         content = (ROOT / "src/home/template.html").read_text()
@@ -394,5 +444,10 @@ class Builder:
             ("RUNTIME", "src/shared/runtime.js"),
         ]:
             content = content.replace(f"/*__{marker}__*/", (ROOT / file).read_text())
-        self.finish("home.html", content)
+        notices = (
+            ["docs/licensing/earth-link-assets.txt"]
+            if any(entry["id"] == "earth-link" for entry in entries)
+            else []
+        )
+        self.finish("home.html", content, notices)
         shutil.copyfile(self.out / "home.html", self.out / "index.html")
