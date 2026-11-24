@@ -25,10 +25,11 @@ export function run(command, args, options = {}) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [task, ...args] = process.argv.slice(2);
   try {
-    if (task === 'build') run(python(), ['scripts/build.py', ...args]);
-    else if (task === 'format-python') run(python(), ['-m', 'black', 'scripts', 'tests', ...args]);
+    if (task === 'build') run(python(), ['-X', 'utf8', 'scripts/build.py', ...args]);
+    else if (task === 'format-python')
+      run(python(), ['-X', 'utf8', '-m', 'black', 'scripts', 'tests', ...args]);
     else if (task === 'test')
-      run(python(), ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_*.py']);
+      run(python(), ['-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_*.py']);
     else throw new Error('Unknown task: ' + task);
   } catch (error) {
     console.error(error.message);

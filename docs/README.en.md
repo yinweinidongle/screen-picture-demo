@@ -2,9 +2,11 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Seven interactive scenes built with Three.js, custom GLSL and D3: a transparent wind turbine, a detailed factory with a day/night sweep, a draggable population globe, an inspection map with raised borders, precision agriculture, an automated workshop, and a smart campus. The gallery shows real previews and runs at most one live scene at a time.
+Eight interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus and a global relay network. The gallery shows actual page captures and runs one live preview at a time.
 
 ![Gallery](media/home-preview.png)
+
+Orbital Relay uses Three.js and TSL to render Earth's day and night sides, drifting clouds and luminous signal trails. Select one of six ground stations to follow its links and inspect simulated throughput and latency. [Open Orbital Relay](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html) · [Rendering notes and captures](screens/earth-link.md)
 
 Factory details: [English rendering guide](screens/factory.en.md).
 
@@ -28,4 +30,4 @@ Open `http://127.0.0.1:5173/home.html`. Source changes rebuild automatically; re
 
 Sources are in `src/screens/<id>/`; gallery metadata lives in `config/screens.json`. Run `npm run new:screen -- solar` for a registered starter. See [architecture](architecture.md), [the contribution guide](../CONTRIBUTING.md), and [the roadmap](../ROADMAP.md). Small improvements to charts, shaders, models, accessibility, tests and documentation are welcome.
 
-Original code and procedural geometry use the [MIT license](../LICENSE). Current maps and geographic textures come from public-domain Natural Earth data, permitting commercial use, modification and redistribution. The factory grid is original MIT procedural material. Existing generated decoration and composite previews have separate provenance. Read [third-party notices](../THIRD_PARTY_NOTICES.md) before reusing assets. All device controls and statistics are simulated. The scenes are illustrative reconstructions, not engineering CAD models. Desktop landscape viewing is recommended; the gallery supports mobile layouts.
+Original code, procedural geometry and the factory grid use the MIT license. Maps and terrain come from public-domain Natural Earth data. Solar System Scope provides Orbital Relay's day, night and cloud textures under CC BY 4.0. Generated decoration, third-party software and composite previews have separate provenance. Controls and statistics are simulated. [Code license](../LICENSE) · [Third-party notices](../THIRD_PARTY_NOTICES.md)

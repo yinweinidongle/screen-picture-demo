@@ -82,5 +82,17 @@
     "preview": "assets/previews/park.webp",
     "tags": ["三维园区", "楼宇空间", "零碳能源"],
     "renderer": "generic"
+  },
+  {
+    "id": "earth-link",
+    "title": "全球链路监测",
+    "description": "查看地球的昼夜分界、跨洲链路与地面站的模拟吞吐。",
+    "category": "geo",
+    "label": "ORBITAL RELAY",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/earth-link.webp",
+    "tags": ["Three.js TSL", "GSAP 动效", "地面站点"],
+    "renderer": "generic"
   }
 ]

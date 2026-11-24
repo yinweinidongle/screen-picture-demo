@@ -4,9 +4,9 @@
 
 **[打开 Home 展厅](https://yinweinidongle.github.io/screen-picture-demo/home.html)** · [English](docs/README.en.md) · [参与贡献](CONTRIBUTING.md) · [路线图](ROADMAP.md)
 
-七个可交互大屏，一座可以直接探索的作品展厅。用 Three.js、GLSL Shader 和 D3 展示精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
+八个可交互大屏，一座可以直接探索的作品展厅。用 Three.js、TSL、GLSL 和 D3 展示精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
 
-[![Home 首页：七个已实现的大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
+[![Home 首页的八个大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
 
 <details>
 <summary>手机首页预览</summary>
@@ -14,7 +14,7 @@
 <img src="docs/media/home-mobile-preview.png" alt="手机端单列卡片" width="320">
 </details>
 
-## 体验七个大屏
+## 体验八个大屏
 
 | 场景             | 核心交互                                                 | 在线体验                                                                                  |
 | ---------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -25,6 +25,7 @@
 | 禾境 · 智慧农业  | 温室与农田、模拟灌溉、作物监测、区域指标与农事确认       | [agriculture.html](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html) |
 | NEXUS · 智慧工业 | 机械臂车间、班次计划、设备效率、工单与维护提醒           | [industry.html](https://yinweinidongle.github.io/screen-picture-demo/industry.html)       |
 | 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情         | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)               |
+| 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势         | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)   |
 
 ### 01 / 智慧风电
 
@@ -53,6 +54,12 @@
 [![NEXUS：智慧工业与自动化车间](assets/previews/industry.webp)](https://yinweinidongle.github.io/screen-picture-demo/industry.html)
 
 [![星屿：智慧园区与零碳能源](assets/previews/park.webp)](https://yinweinidongle.github.io/screen-picture-demo/park.html)
+
+### 08 / 全球链路监测
+
+点选地面站，沿铜色飞线追踪与它相连的站点。切到夜间，可以同时看到城市灯光和沿航线渐隐的信号拖尾。右侧显示所选站点的模拟吞吐和往返延迟。[渲染与交互说明](docs/screens/earth-link.md)
+
+[![全球链路监测，中央地球与八条跨洲链路](assets/previews/earth-link.webp)](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)
 
 ## 本地开发
 
@@ -102,6 +109,6 @@ docs/                     架构、素材、性能记录、场景说明和实际
 
 PR 自动运行构建、格式、单元测试和 Chromium 交互检查；合并 `master` 后由 GitHub Actions 发布 `dist/` 到 Pages。`index.html` 和 `home.html` 均为展厅。开发者提交源码，生成目录不入库。
 
-原创代码和程序化几何采用 **[MIT](LICENSE)**。地图、地形和地球纹理现均来自明确允许商用、修改和再分发的 **Natural Earth 公共领域数据**；工厂网格为原创 MIT 程序纹理。[素材声明](THIRD_PARTY_NOTICES.md)、[来源清单](assets/manifest.json) 和 [重建方法](docs/assets.md) 记录了出处与校验和。原有生成装饰图片单独列明，不纳入这次地图/纹理授权核验。
+原创代码、程序化几何和工厂网格采用 **[MIT](LICENSE)**。地图和地形来自 Natural Earth 公共领域数据。全球链路监测的日面、夜光和云层贴图由 Solar System Scope 提供，采用 CC BY 4.0。生成的装饰图和第三方软件各自保留许可。[素材声明](THIRD_PARTY_NOTICES.md) · [来源清单](assets/manifest.json) · [重建方法](docs/assets.md)
 
 所有统计和设备控制均为演示。三维场景按单张参考图重建，未提供原始 CAD，不可见结构与尺寸为示意。大屏按固定设计比例适配窗口，横屏桌面效果最佳；Home 支持手机单列浏览。

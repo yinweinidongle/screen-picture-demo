@@ -12,6 +12,8 @@
 
 ## Rendering and lifecycle
 
+Orbital Relay imports Three.js WebGPU, TSL and GSAP as modules. The builder uses esbuild to bundle its entry only for templates with the Earth bundle marker. Its four globe textures, header and fallback use the same hashed web and embedded offline resource paths as the other screens. [Orbital Relay rendering notes](screens/earth-link.md)
+
 The wind scene separates DOM charts, deterministic demo data (`data.js`), procedural geometry and material shaders (`model.js`). Opaque static leaf parts sharing geometry/material under the same parent become `InstancedMesh` batches. Glass, selectable parts and objects with children remain separate; animated parent groups and exploded transforms still work. Hidden source meshes retain the transforms used by the optional wire view.
 
 `VizLabRuntime.mountStage()` fits fixed design coordinates into the viewport and returns a cleanup handle. `onDispose()` runs registered cleanup on non-persisted `pagehide`. Wind disposal stops its animation, disconnects observers and releases unique geometries/materials and the environment render target. Other scenes retain their original adaptation code; migrating their lifecycles is a planned incremental improvement.

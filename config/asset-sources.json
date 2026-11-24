@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "checkedOn": "2026-10-20",
-  "provider": "Natural Earth / NACIS",
+  "checkedOn": "2026-11-24",
+  "provider": "Natural Earth / NACIS and Solar System Scope",
   "sources": [
     {
       "id": "admin1",
@@ -77,6 +77,48 @@
       "sourcePage": "https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-1/",
       "license": "Public domain",
       "licenseEvidence": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true
+    },
+    {
+      "id": "relay-day",
+      "provider": "Solar System Scope",
+      "url": "https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg",
+      "bytes": 463087,
+      "sha256": "767ee1dc6eb3802699bfccf6f264880f8acd0b80de3191cd24984fe279b07b7c",
+      "version": "2K Earth Day Map",
+      "sourcePage": "https://www.solarsystemscope.com/textures/",
+      "license": "CC-BY-4.0",
+      "licenseEvidence": "https://www.solarsystemscope.com/textures/",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true
+    },
+    {
+      "id": "relay-night",
+      "provider": "Solar System Scope",
+      "url": "https://www.solarsystemscope.com/textures/download/2k_earth_nightmap.jpg",
+      "bytes": 255287,
+      "sha256": "c16fd1bc096ab91a5c5265c6ff9847c43f489f2e2ee790ccdbcbd03251cf3a5a",
+      "version": "2K Earth Night Map",
+      "sourcePage": "https://www.solarsystemscope.com/textures/",
+      "license": "CC-BY-4.0",
+      "licenseEvidence": "https://www.solarsystemscope.com/textures/",
+      "commercialUse": true,
+      "redistribution": true,
+      "modification": true
+    },
+    {
+      "id": "relay-clouds",
+      "provider": "Solar System Scope",
+      "url": "https://www.solarsystemscope.com/textures/download/2k_earth_clouds.jpg",
+      "bytes": 965676,
+      "sha256": "fffd7f68d41b37274822150e54a6ef605af1d3ec35624d9f628c3b896bfa42ed",
+      "version": "2K Earth Clouds",
+      "sourcePage": "https://www.solarsystemscope.com/textures/",
+      "license": "CC-BY-4.0",
+      "licenseEvidence": "https://www.solarsystemscope.com/textures/",
       "commercialUse": true,
       "redistribution": true,
       "modification": true

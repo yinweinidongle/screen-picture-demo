@@ -18,6 +18,7 @@ SOURCE_FILES = [
     "requirements.txt",
     "requirements-assets.txt",
     ".nvmrc",
+    ".gitattributes",
     ".gitignore",
     ".prettierignore",
     ".prettierrc.json",

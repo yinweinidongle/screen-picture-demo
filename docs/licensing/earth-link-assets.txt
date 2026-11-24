@@ -1,0 +1,19 @@
+Orbital Relay / 全球链路监测
+
+Earth Day Map, Earth Night Map and Earth Clouds by Solar System Scope.
+Publisher and originals: https://www.solarsystemscope.com/textures/
+Creative Commons Attribution 4.0 International (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+The repository includes the publisher's 2K JPEGs. The build encodes them as WebP.
+The scene applies lighting, cloud drift, atmosphere, and illustrative network overlays.
+The gallery preview and the static globe include these adaptations.
+
+The relief normal map and locator silhouettes derive from public-domain Natural Earth data.
+https://www.naturalearthdata.com/about/terms-of-use/
+
+The blank titanium fascia is project artwork generated with OpenAI ImageGen and
+cropped and resized for the header. It follows the repository's generated-art policy.
+
+GSAP 3.15.1 copyright 2008-2026, GreenSock. All rights reserved.
+Author: Jack Doyle. GSAP Standard License: https://gsap.com/standard-license/
+The bundled code retains the upstream notices. Three.js r187 retains its MIT license.

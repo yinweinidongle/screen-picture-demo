@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090e14" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b131b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23c7e9f3' stroke-width='1.5'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='4.8' transform='rotate(-32 16 16)' fill='none' stroke='%23edab71' stroke-width='1.6'/%3E%3C/svg%3E"
+    />
+    <title>全球链路监测 · VIZ / LAB</title>
+    <style>
+      /*__SCREEN_CSS__*/
+      .masthead {
+        --header-art: url('/*__RELAY_HEADER__*/');
+      }
+      .locator-map {
+        --world-mask: url('/*__RELAY_LOCATOR__*/');
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="i-orbit" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="7.2" />
+        <ellipse cx="12" cy="12" rx="11" ry="3.7" transform="rotate(-32 12 12)" />
+      </symbol>
+      <symbol id="i-station" viewBox="0 0 24 24">
+        <path
+          d="M4 4a11 11 0 0 0 15 15L4 4ZM10 17l-3 4m0 0h10m-4-8 5-5m-1-3a4 4 0 0 1 4 4m-4-8a8 8 0 0 1 8 8"
+        />
+      </symbol>
+      <symbol id="i-link" viewBox="0 0 24 24">
+        <circle cx="5" cy="15" r="2.6" />
+        <circle cx="12" cy="6" r="2.6" />
+        <circle cx="19" cy="16" r="2.6" />
+        <path d="m6.6 12.9 3.8-4.8m3.1.1 4 5.7M8 15.3l8 .5" />
+      </symbol>
+      <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 13h4l3-8 5 15 3-10 2 3h3" /></symbol>
+      <symbol id="i-delay" viewBox="0 0 24 24">
+        <path d="M3.3 17.3a9.2 9.2 0 1 1 17.4 0M12 4v2.5m-6.6.4 1.8 1.8m10.6-1.8-4.6 5.4" />
+        <circle cx="12" cy="14" r="1.8" />
+      </symbol>
+      <symbol id="i-locate" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="6.7" />
+        <circle cx="12" cy="12" r="2" />
+        <path d="M12 2v4m0 12v4M2 12h4m12 0h4" />
+      </symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <ellipse cx="12" cy="12" rx="4" ry="9" />
+        <path d="M3 12h18" />
+      </symbol>
+      <symbol id="i-reset" viewBox="0 0 24 24">
+        <path d="M5 5v5h5M5.2 9.6a7.7 7.7 0 1 1-.1 5" />
+      </symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16" /></symbol>
+    </svg>
+    <main id="screen">
+      <header class="masthead">
+        <a class="back-link" href="home.html">
+          <svg class="icon" aria-hidden="true"><use href="#i-back" /></svg>
+          <span><small>VIZ / LAB</small><strong>返回展厅</strong></span>
+        </a>
+        <div class="masthead-title">
+          <h1>全球链路监测</h1>
+          <p lang="en">Orbital Relay</p>
+        </div>
+        <div class="clock-bay">
+          <div><span>UTC</span><time id="utc-date"></time></div>
+          <time id="utc-clock" aria-label="当前协调世界时">--:--:--</time>
+        </div>
+      </header>
+
+      <section class="telemetry" aria-label="全网模拟指标">
+        <div class="metric">
+          <svg class="metric-icon" aria-hidden="true"><use href="#i-station" /></svg>
+          <div>
+            <h2>在线地面站</h2>
+            <p><b id="online-count">—</b><small id="station-total"></small></p>
+          </div>
+        </div>
+        <div class="metric">
+          <svg class="metric-icon" aria-hidden="true"><use href="#i-link" /></svg>
+          <div>
+            <h2>启用链路</h2>
+            <p><b id="link-count">—</b><small>条</small></p>
+          </div>
+        </div>
+        <div class="metric">
+          <svg class="metric-icon" aria-hidden="true"><use href="#i-wave" /></svg>
+          <div>
+            <h2>全网吞吐</h2>
+            <p><b id="total-rate">—</b><small>Gb/s</small></p>
+          </div>
+        </div>
+        <div class="metric">
+          <svg class="metric-icon" aria-hidden="true"><use href="#i-delay" /></svg>
+          <div>
+            <h2>平均往返延迟</h2>
+            <p><b id="mean-rtt">—</b><small>ms</small></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="board">
+        <aside class="column column-start" aria-label="网络与地理分布">
+          <section class="panel stations-panel" aria-labelledby="stations-heading">
+            <div class="panel-heading">
+              <h2 id="stations-heading">
+                <svg class="icon" aria-hidden="true"><use href="#i-station" /></svg>地面站点
+              </h2>
+              <span class="panel-note" id="station-hint">选择以聚焦</span>
+            </div>
+            <div class="station-key" aria-hidden="true">
+              <span>站点 / 代号</span><span>24h 吞吐</span><span>往返</span>
+            </div>
+            <ul id="stations" class="stations"></ul>
+          </section>
+          <section class="panel locator-panel" aria-labelledby="locator-heading">
+            <div class="panel-heading">
+              <h2 id="locator-heading">
+                <svg class="icon" aria-hidden="true"><use href="#i-globe" /></svg>站点分布
+              </h2>
+              <span class="panel-note">经纬投影</span>
+            </div>
+            <div class="locator-map" id="locator-map" role="group" aria-label="地图选站">
+              <div class="locator-land" aria-hidden="true"></div>
+            </div>
+            <div class="map-key"><i></i>当前站点 <strong id="map-station"></strong></div>
+          </section>
+        </aside>
+
+        <section class="orbit-stage" aria-labelledby="orbit-heading">
+          <div class="orbit-heading">
+            <h2 id="orbit-heading">
+              <svg class="icon" aria-hidden="true"><use href="#i-orbit" /></svg>轨道视图
+            </h2>
+            <span id="view-center"></span>
+          </div>
+          <div class="viewport">
+            <canvas id="star-field" aria-hidden="true"></canvas>
+            <div class="reticle" aria-hidden="true"></div>
+            <div
+              id="earth-surface"
+              class="orbit-surface"
+              data-renderer="loading"
+              data-day="/*__RELAY_DAY__*/"
+              data-night="/*__RELAY_NIGHT__*/"
+              data-normal="/*__EARTH_NORMAL__*/"
+              data-clouds="/*__RELAY_CLOUDS__*/"
+            >
+              <canvas
+                id="relay-earth"
+                tabindex="-1"
+                aria-label="可旋转的三维地球"
+                aria-describedby="view-help"
+              ></canvas>
+              <img
+                id="earth-fallback"
+                data-src="/*__EARTH_FALLBACK__*/"
+                alt="地球与跨洲链路的静态预览"
+                hidden
+              />
+              <div id="earth-labels" class="earth-labels" aria-hidden="true"></div>
+            </div>
+          </div>
+          <p id="scene-status" class="scene-status" role="status">正在渲染三维地球…</p>
+          <div class="orbit-legend" aria-label="地球图例">
+            <span><i class="legend-focus"></i>所选站点链路</span
+            ><span><i class="legend-other"></i>其他链路</span>
+          </div>
+          <div class="control-group" aria-label="地球控制" role="group">
+            <div class="light-controls" aria-label="地球照明" role="group">
+              <button type="button" data-light="day" aria-pressed="false" disabled>白昼</button>
+              <button type="button" data-light="terminator" aria-pressed="true" disabled>
+                昼夜交界
+              </button>
+              <button type="button" data-light="night" aria-pressed="false" disabled>夜间</button>
+            </div>
+            <button type="button" id="toggle-links" aria-pressed="true" disabled>
+              <svg class="icon" aria-hidden="true"><use href="#i-link" /></svg>链路
+            </button>
+            <button type="button" id="toggle-motion" aria-pressed="true" disabled>
+              <svg class="icon" aria-hidden="true"><use href="#i-wave" /></svg>动效
+            </button>
+            <button type="button" id="reset-view" disabled>
+              <svg class="icon" aria-hidden="true"><use href="#i-reset" /></svg>重置视角
+            </button>
+          </div>
+          <p id="view-help" class="view-help" hidden>拖动或方向键旋转 <i></i> 滚轮或 + / − 缩放</p>
+        </section>
+
+        <aside class="column column-end" aria-label="所选站点详情">
+          <section class="panel detail-panel" aria-labelledby="detail-heading">
+            <div class="panel-heading">
+              <h2 id="detail-heading">
+                <svg class="icon" aria-hidden="true"><use href="#i-locate" /></svg>站点遥测
+              </h2>
+              <span class="site-online">在线</span>
+            </div>
+            <div class="site-identity" aria-live="polite">
+              <div>
+                <h3 id="site-name">—</h3>
+                <p id="site-coordinates"></p>
+              </div>
+              <span id="site-code" class="site-code"></span>
+            </div>
+            <dl class="detail-readout">
+              <dt>往返延迟</dt>
+              <dd><b id="site-rtt">—</b> <small>ms</small></dd>
+            </dl>
+          </section>
+          <section class="panel chart-panel" aria-labelledby="chart-heading">
+            <div class="panel-heading">
+              <h2 id="chart-heading">
+                <svg class="icon" aria-hidden="true"><use href="#i-wave" /></svg>吞吐趋势
+              </h2>
+              <span class="panel-note">24 小时 · UTC</span>
+            </div>
+            <div class="chart-value"><b id="site-rate">—</b><span>Gb/s</span></div>
+            <div class="trend">
+              <div class="trend-axis" aria-hidden="true">
+                <span>12</span><span>8</span><span>4</span><span>0</span>
+              </div>
+              <svg
+                id="throughput-chart"
+                viewBox="0 0 270 126"
+                preserveAspectRatio="none"
+                role="img"
+                aria-labelledby="chart-description"
+              >
+                <title id="chart-description">站点 24 小时吞吐量</title>
+                <defs>
+                  <linearGradient id="trend-shade" x1="0" x2="0" y1="0" y2="1">
+                    <stop stop-color="#f4ac78" stop-opacity=".38" />
+                    <stop offset="1" stop-color="#d5946c" stop-opacity=".02" />
+                  </linearGradient>
+                </defs>
+                <path class="trend-grid" d="M0 3H270 M0 43H270 M0 83H270 M0 123H270" />
+                <path id="trend-area" fill="url(#trend-shade)" />
+                <path id="trend-line" />
+                <circle id="trend-end" r="3" />
+              </svg>
+              <div class="trend-time" aria-hidden="true">
+                <span>00:00</span><span>08:00</span><span>16:00</span><span>24:00</span>
+              </div>
+            </div>
+          </section>
+          <section class="panel route-panel" aria-labelledby="routes-heading">
+            <div class="panel-heading">
+              <h2 id="routes-heading">
+                <svg class="icon" aria-hidden="true"><use href="#i-link" /></svg>关联链路
+              </h2>
+              <span id="route-count" class="panel-note"></span>
+            </div>
+            <ul id="site-links" class="site-links"></ul>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="footer">
+        <span class="demo-flag"><i></i>模拟数据</span>
+        <span class="credit"
+          >地理纹理 ·
+          <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener"
+            >Solar System Scope</a
+          >
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener"
+            >(CC BY 4.0)</a
+          >
+          / Natural Earth</span
+        >
+        <span class="render-info"><i></i>图形渲染 <output id="render-mode">加载中</output></span>
+      </footer>
+    </main>
+    <script>
+      /*__RUNTIME__*/
+    </script>
+    <script>
+      /*__EARTH_BUNDLE__*/
+    </script>
+  </body>
+</html>

@@ -62,7 +62,7 @@ def validate_inventory(root=ROOT):
             if any(key not in upstream for key in row.get("upstream", [])):
                 raise ValueError("Unknown upstream source: " + name)
     actual = {
-        str(p.relative_to(root))
+        p.relative_to(root).as_posix()
         for folder in ["geo", "textures"]
         for p in (root / "assets" / folder).rglob("*")
         if p.is_file()

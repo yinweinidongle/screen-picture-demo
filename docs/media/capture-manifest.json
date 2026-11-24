@@ -1,17 +1,20 @@
 {
-  "capturedOn": "2026-10-21",
-  "assetInventorySha256": "a3598784d2c27ddc9ce2160ed423c7e75f80513e0436ecb3511d75b4bfe53fe2",
-  "notes": "Home and three Astra previews refreshed on 2026-10-21 with restored original header backgrounds and SVG flow rails. Existing factory/globe/inspection GIFs retain their 2026-10-20 recordings. All previews are actual rendered page captures.",
+  "capturedOn": "2026-11-24",
+  "assetInventorySha256": "42bf4594232916f72fd430f792423d7abe0dc5e1b8b39d2656b952a594dd978d",
+  "notes": "The Home views and Orbital Relay captures were recorded on 2026-11-24. The 4-second flight recording uses a fixed camera. Day and night share one view and signal phase. The Astra previews date to 2026-10-21; previous scene recordings retain their original capture dates.",
   "files": {
-    "home-preview.png": "f16e2be9b71161725442234ba691ee9d7517c08193298238149086e1c44583ba",
-    "home-mobile-preview.png": "f01179a2fe9e0ea9bed4f586f1c91a783db4f359d108cf99dfbf807af3d88ee6",
+    "home-preview.png": "012a7f4af5239ba36c57de3157f5b3cac2484504391f711d8106f8c2dd185dd5",
+    "home-mobile-preview.png": "bcac7080fa1e791f7be7e5e2f2e8089794d53bc1fd078c26ce7018115cacb5fa",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
-    "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762"
+    "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762",
+    "earth-link-lighting.webp": "56b185b7e094d06d30ec06a79bea7eda4b19bd4a01ea0d0f5f4dd08aaee6564d",
+    "earth-link-trails.webp": "8a894082807975e392c49e0d941d23d52db5cc015685c36bd5bfe270e23cbd4b"
   },
   "previewFiles": {
     "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
     "assets/previews/industry.webp": "78e7375a407fb67bd1f77c7eeb8ee5b03485e4c761c40431d8add40ab102205c",
-    "assets/previews/park.webp": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3"
+    "assets/previews/park.webp": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3",
+    "assets/previews/earth-link.webp": "00d93da56e6f7547516bc2eac86065d8bcef05d8d02cb911f616890ca6c8ffa3"
   }
 }
