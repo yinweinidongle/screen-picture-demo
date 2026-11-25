@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-import { laneWidth, radarRange } from './driving.js';
+import { laneWidth, radarRange, trafficX } from './radar.js';
 
 function scope(canvas, sim) {
   const ctx = canvas.getContext('2d'),
@@ -34,9 +34,21 @@ function scope(canvas, sim) {
     ctx.stroke();
   } else {
     const X = (x) => w * 0.5 - x * 19,
-      Y = (z) => h - 18 - (z * (h - 25)) / radarRange;
+      Y = (z) => h * 0.7 - (z * h * 0.67) / radarRange;
     for (let n = -1.5; n <= 1.5; n++) line(X(n * laneWidth), 0, X(n * laneWidth), h, '#40565b');
     for (const z of [20, 40, 60]) line(X(-5.4), Y(z), X(5.4), Y(z), '#2f4348');
+    for (const beam of sim.radar.beams) {
+      if (beam.energy < 0.01) continue;
+      const x = X(sim.x + beam.direction.x * beam.length);
+      const y = Y(beam.direction.z * beam.length);
+      ctx.globalAlpha = beam.energy;
+      line(X(sim.x), Y(0), x, y, '#79ced8', 1.35);
+      if (beam.vehicleHit) {
+        ctx.fillStyle = '#ffcb87';
+        ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
+      }
+    }
+    ctx.globalAlpha = 1;
     const horizon = sim.pathLength;
     const gradient = ctx.createLinearGradient(0, Y(0), 0, Y(horizon));
     gradient.addColorStop(0, '#4288ff');
@@ -53,9 +65,8 @@ function scope(canvas, sim) {
     ctx.stroke();
     for (const car of sim.cars)
       if (car.detected) {
-        ctx.fillStyle =
-          Math.abs(sim.x - car.lane * laneWidth) < 2.8 && car.z > 0 ? '#ffc180' : '#7ccddd';
-        ctx.fillRect(X(car.lane * laneWidth) - 4, Y(car.z) - 3, 8, 6);
+        ctx.fillStyle = Math.abs(sim.x - trafficX(car)) < 2.8 && car.z > 0 ? '#ffc180' : '#7ccddd';
+        ctx.fillRect(X(trafficX(car)) - 4, Y(car.z) - 3, 8, 6);
       }
     ctx.fillStyle = '#e1f5f0';
     ctx.beginPath();
@@ -104,15 +115,18 @@ export function driveControls(getStudio, signal) {
     for (const el of driveParts) el.hidden = !active;
     by('warp-settings').hidden = pilot;
     by('traffic-settings').hidden = !pilot;
+    by('reset-view').hidden = name !== 'tunnel';
     text('drive-title', pilot ? '自动驾驶控制' : '加速控制');
     text('telemetry-title', pilot ? '雷达与路径' : '穿梭遥测');
-    text('telemetry-unit', pilot ? 'RADAR / 68 m' : 'SPEED / TIME');
-    text('primary-label', pilot ? '前向最近目标' : '行驶距离');
+    text('telemetry-unit', pilot ? '360° / 68 m' : 'SPEED / TIME');
+    text('primary-label', pilot ? '最近车辆回波' : '行驶距离');
     text('primary-unit', ' m');
     text('drive-restart', pilot ? '重置路况' : '重新起跑');
     text(
       'drive-note',
-      pilot ? '封闭道路模拟 · 规划路线由近端蓝渐变至远端紫' : '时空隧道 · 模拟行驶数据',
+      pilot
+        ? '封闭道路模拟 · 规划路线由近端蓝渐变至远端紫'
+        : '拖动环绕 · 滚轮或双指缩放 · Home 复位视角',
     );
   }
   function update(sim, force = false) {
@@ -137,7 +151,12 @@ export function driveControls(getStudio, signal) {
     text(
       'drive-secondary',
       pilot
-        ? '跟踪 ' + sim.targetCount + ' 个目标'
+        ? '跟踪 ' +
+            sim.targetCount +
+            ' 个目标 · 可行轨迹 ' +
+            sim.trajectory.feasible +
+            '/' +
+            sim.trajectory.tried
         : '加速度 ' + sim.acceleration.toFixed(1) + ' m/s²',
     );
     text('drive-plan', sim.decision);
@@ -147,6 +166,7 @@ export function driveControls(getStudio, signal) {
     scope(by('road-scope'), sim);
   }
   for (const b of modes) on(b, 'click', () => getStudio()?.setMode(b.dataset.mode));
+  on(by('reset-view'), 'click', () => getStudio()?.resetTunnelCamera());
   on(find('.back-studio'), 'click', () => {
     getStudio()?.setMode('studio');
     modes[0].focus();

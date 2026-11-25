@@ -7,13 +7,14 @@ const floorShader = {
   uniforms: {
     ...Reflector.ReflectorShader.uniforms,
     driveMode: { value: 0 },
+    windLevel: { value: 0 },
     roadPose: { value: new T.Vector3() },
   },
   vertexShader: Reflector.ReflectorShader.vertexShader
     .replace('varying vec4 vUv;', 'varying vec4 vUv; varying vec2 vFloor;')
     .replace('vUv = textureMatrix', 'vFloor=position.xy; vUv = textureMatrix'),
   fragmentShader: `
-    uniform sampler2D tDiffuse; uniform float driveMode;uniform vec3 roadPose;
+    uniform sampler2D tDiffuse; uniform float driveMode,windLevel;uniform vec3 roadPose;
     varying vec4 vUv; varying vec2 vFloor;
     float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
     float landNoise(vec2 p){
@@ -34,6 +35,7 @@ const floorShader = {
       vec3 base=vec3(.032,.039,.041)+platform*vec3(.012,.014,.014);
       base+=(grain-.5)*.0016+vec3(.22,.245,.14)*stripe*dashed;
       gl_FragColor=vec4(base+image*(.145+platform*.03),1.);
+      if(windLevel>.5 && driveMode<.5)gl_FragColor.rgb=vec3(.0019,.0028,.0031)+image*.082;
       if(driveMode>.5 && driveMode<1.5){
         gl_FragColor.rgb=vec3(.0011,.0010,.0025)+image*.13;
       } else if(driveMode>1.5){
@@ -192,12 +194,6 @@ export function makeStudio(scene, renderer) {
       }
     },
     road(simulation) {
-      if (simulation.mode === 'tunnel') {
-        const phase = simulation.distance * 0.0019;
-        rim.color.setHSL((phase + 0.69) % 1, 0.68, 0.72);
-        face.color.setHSL((phase + 0.49) % 1, 0.61, 0.75);
-        rim.intensity = 1.03 + 0.21 * Math.sin(simulation.distance * 0.071);
-      }
       floor.material.uniforms.roadPose.value.set(
         simulation.x,
         simulation.heading,
@@ -214,7 +210,22 @@ export function makeStudio(scene, renderer) {
         patches.add(patch);
       }
     },
-    light(dark) {
+    light(dark, wind = false) {
+      scene.background.set(wind ? '#040809' : '#455052');
+      lightBars.visible = wall.visible = !wind;
+      floor.material.uniforms.windLevel.value = Number(wind);
+      if (wind) {
+        key.color.set('#cedfea');
+        rim.color.set('#cce6f1');
+        face.color.set('#cddde4');
+        key.intensity = dark ? 0.4 : 0.72;
+        rim.intensity = dark ? 0.64 : 0.98;
+        fill.intensity = 0.1;
+        face.intensity = 0.16;
+        scene.environmentIntensity = dark ? 0.27 : 0.49;
+        renderer.toneMappingExposure = dark ? 0.83 : 0.94;
+        return;
+      }
       key.color.set('#fff0d8');
       rim.color.set('#cdeaff');
       face.color.set('#fbf3e2');

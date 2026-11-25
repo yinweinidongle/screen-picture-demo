@@ -8,6 +8,7 @@ import {
   AdditiveBlending,
   Vector2,
   Vector3,
+  CatmullRomCurve3,
 } from 'three';
 
 export function readings(kmh, yaw, section) {
@@ -124,7 +125,7 @@ export function carProfile(meshes, modelHeight, displayScale) {
 
 export function flowField(profile) {
   const steps = 156,
-    lanes = 40,
+    lanes = 12,
     points = [],
     tangents = [],
     uvs = [],
@@ -165,19 +166,21 @@ export function flowField(profile) {
         vec4 d=projectionMatrix*modelViewMatrix*vec4(along,0.);
         vec2 tangent=(d.xy*c.w-c.xy*d.w)*uViewport;
         vec2 side=vec2(-tangent.y,tangent.x)/max(length(tangent),.0001);
-        c.xy+=side*uv.y*(3.4+1.5*fract(lane*.618))/uViewport*c.w;
+        c.xy+=side*uv.y*(6.4+.85*cos(lane*1.8))/uViewport*c.w;
         gl_Position=c;ribbon=uv;strand=lane;station=position.z;}`,
     fragmentShader: `uniform float uPhase,uStrength;varying vec2 ribbon;varying float strand;
       varying float station;
-      void main(){float seed=fract(strand*.618034);
-        float p=fract(ribbon.x*.34-uPhase+seed*2.7);
-        float pulse=exp(-pow((p-.75)/mix(.19,.026,step(.75,p)),2.));
-        float d=ribbon.y*ribbon.y;
-        float core=exp(-d*13.), veil=exp(-d*3.8);
-        float ends=1.-smoothstep(4.45,7.,abs(station));
-        vec3 col=mix(vec3(.27,.62,.70),vec3(.76,1.,1.),pulse);
-        float opacity=(.18+.25*seed+.54*pulse)*core+.08*veil;
-        gl_FragColor=vec4(col,opacity*ends*uStrength);
+      void main(){
+        float seed=fract(strand*.618034),y=ribbon.y;
+        float along=fract(ribbon.x/6.35-uPhase+seed*.52);
+        float glint=exp(-pow((along-.54)/.175,2.));
+        float core=exp(-y*y*38.), shoulder=exp(-y*y*11.), halo=exp(-y*y*3.1);
+        float taper=(1.-smoothstep(4.15,7.,abs(station)))*mix(1.,.46,smoothstep(1.5,5.5,-station));
+        float filament=mix(.44,.73,seed)+glint*.43;
+        if(strand>=8.)filament*=.50;
+        vec3 silver=mix(vec3(.55,.69,.73),vec3(1.28,1.33,1.35),core+glint*.18);
+        float opacity=(filament*core+.20*shoulder+.065*halo)*taper*uStrength;
+        gl_FragColor=vec4(silver,opacity);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }`,
@@ -188,39 +191,63 @@ export function flowField(profile) {
   mesh.frustumCulled = false;
   const samples = Array.from({ length: steps + 1 }, () => new Vector3());
   const tangent = new Vector3();
+  let revision = 0;
   function setYaw(degrees) {
+    revision++;
     const drift = Math.tan((degrees * Math.PI) / 180);
-    function point(lane, t, out) {
-      const z = 7 - t * 14,
-        above = lane < 22,
-        side = lane % 2 === 0 ? -1 : 1;
-      const band = Math.floor((lane - 22) / 2),
-        seed = (lane * 0.618034) % 1;
-      const flat = above ? (lane - 10.5) * 0.115 : side * (0.75 + (band % 3) * 0.19);
-      const y0 = above ? 0.39 + 0.34 * seed : 0.15 + band * 0.098;
-      const wake = Math.max(0, -z - 2.25);
-      const influence = Math.exp(-(Math.max(0, Math.abs(z) - 2.32) ** 2) / (z < 0 ? 3.8 : 0.95));
-      const x0 = flat - drift * z;
-      const { roof, halfWidth } = profile(z, x0);
-      const lift = roof + 0.075 + 0.12 * seed - y0;
-      const y = above
-        ? y0 + 0.5 * (lift + Math.hypot(lift, 0.09)) * influence
-        : y0 + 0.075 * influence;
-      const shift = halfWidth + 0.065 + 0.043 * band - side * x0;
-      const x = above
-        ? x0 + flat * 0.09 * influence
-        : x0 + side * 0.5 * (shift + Math.hypot(shift, 0.08)) * influence;
-      const vortex = (above ? 0.033 : 0.085) * wake * Math.exp(-wake * 0.67);
-      out.set(
-        x + vortex * Math.sin(wake * 2.2 + lane * 0.7),
-        y + vortex * Math.cos(wake * 2.2 + lane * 0.7),
-        z,
-      );
-    }
+    const stations = [
+      7, 5.2, 3.65, 2.8, 2.35, 1.91, 1.35, 0.78, 0.16, -0.48, -1.12, -1.76, -2.34, -2.96, -3.85,
+      -5.1, -7,
+    ];
+    const envelopeAt = (z) =>
+      Math.exp(-(Math.max(0, Math.abs(z) - 2.3) ** 2) / (z > 0 ? 3.2 : 4.2));
     const pos = geometry.attributes.position,
       dir = geometry.attributes.along;
     for (let lane = 0; lane < lanes; lane++) {
-      for (let j = 0; j <= steps; j++) point(lane, j / steps, samples[j]);
+      const crown = lane < 8,
+        side = lane % 2 === 0 ? -1 : 1;
+      const offset = crown
+        ? (lane - 3.5) * 0.242
+        : side * (0.9 + 0.13 * Math.floor((lane - 8) / 2));
+      const guides = stations.map((z) => {
+        const envelope = envelopeAt(z);
+        const localX = offset - drift * z * (1 - 0.48 * envelope);
+        const { roof, halfWidth } = profile(z, localX);
+        const layer = crown ? 0.055 + 0.035 * (1 - Math.abs(offset)) : 0.08;
+        const ambient = z > 0 ? 0.17 + 0.032 * offset : 0.52 + 0.025 * offset;
+        const crownHeight = Math.max(roof, 0.71 * profile(z, 0).roof + 0.29 * roof);
+        const roofY = ambient + (crownHeight + layer - ambient) * envelope;
+        const sideY = 0.32 + 0.14 * Math.floor((lane - 8) / 2) + 0.16 * envelope;
+        const clearance = Math.max(
+          0,
+          halfWidth + 0.044 + 0.077 * Math.floor((lane - 8) / 2) - side * localX,
+        );
+        const x = crown ? localX * (1 + 0.035 * envelope) : localX + side * clearance * envelope;
+        return new Vector3(x, crown ? roofY : sideY, z);
+      });
+      if (crown) {
+        // A streamline bridges the rear glass, engine cover and spoiler.
+        // Limit descent into their gaps and fair the transitions at both ends.
+        for (let k = 1; k < guides.length; k++) {
+          const previous = guides[k - 1],
+            p = guides[k];
+          p.y = Math.max(p.y, previous.y - 0.155 * (previous.z - p.z));
+        }
+        for (let k = guides.length - 2; k >= 0; k--) {
+          const next = guides[k + 1],
+            p = guides[k];
+          p.y = Math.max(p.y, next.y - 0.48 * (p.z - next.z));
+        }
+        const heights = guides.map((p) => p.y);
+        for (let k = 1; k < guides.length - 1; k++)
+          guides[k].y =
+            0.22 * heights[k - 1] +
+            0.56 * heights[k] +
+            0.22 * heights[k + 1] +
+            0.018 * envelopeAt(guides[k].z);
+      }
+      const curve = new CatmullRomCurve3(guides, false, 'centripetal');
+      for (let j = 0; j <= steps; j++) curve.getPoint(j / steps, samples[j]);
       let arc = 0;
       for (let j = 0; j <= steps; j++) {
         const p = samples[j];
@@ -241,12 +268,17 @@ export function flowField(profile) {
   setYaw(0);
   return {
     mesh,
+    emitters: [mesh],
+    get revision() {
+      return revision;
+    },
     setYaw,
     resize(w, h) {
       uniforms.uViewport.value.set(w, h);
     },
     advance(dt, speed) {
-      uniforms.uPhase.value = (uniforms.uPhase.value + (dt * speed) / 200) % 1;
+      if (dt * speed || uniforms.uStrength.value !== Math.min(1, speed / 35)) revision++;
+      uniforms.uPhase.value = (uniforms.uPhase.value + (dt * speed) / 245) % 1;
       uniforms.uStrength.value = Math.min(1, speed / 35);
     },
   };

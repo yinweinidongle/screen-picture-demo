@@ -64,9 +64,9 @@
 
 ### 09 / 超跑风洞实验室
 
-在兰博基尼 Aventador 上切换金属车漆和动漫贴花，观察侧风怎样改变车顶、轮拱与车尾的绕流。进入「时空隧道」，看多色光迹随加速拉长。「自动驾驶」提供前方慢车和密集车流两种路况，路面上的蓝紫渐变色带会随雷达探测结果变道或缩短。[操作与渲染说明](docs/screens/aero-lab.md)
+在兰博基尼 Aventador 上切换金属车漆和动漫贴花。启动风洞，银白细线沿风挡爬上车顶，倒影掠过车漆。进入时空隧道后可拖动绕车观察彩色光束。自动驾驶提供前方慢车、密集车流和混合车流三种路况。青色雷达射线向四周分批发出，在车辆和护栏处截止，路面上的蓝紫色带显示车辆即将执行的路线。[操作与渲染说明](docs/screens/aero-lab.md)
 
-[![超跑风洞实验室实录，依次展示车漆、侧风绕流、时空隧道和自动驾驶的变道与跟车](docs/media/aero-lab-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)
+[![超跑风洞实验室实录，展示换漆、贴体风线、隧道环绕，以及雷达探测下的变道和跟车](docs/media/aero-lab-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)
 
 ## 本地开发
 

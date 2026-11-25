@@ -110,7 +110,10 @@
             <div><b id="hud-speed">0</b><small>KM/H</small></div>
             <span id="hud-state"></span>
           </div>
-          <button type="button" class="back-studio" hidden>返回影棚</button>
+          <div class="drive-view-tools">
+            <button type="button" id="reset-view" hidden>复位视角</button>
+            <button type="button" class="back-studio" hidden>返回影棚</button>
+          </div>
         </div>
       </section>
       <div class="instruments">
@@ -220,6 +223,7 @@
             <div class="scenario-options" role="group" aria-label="测试路况">
               <button type="button" data-scenario="pass" aria-pressed="true">前方慢车</button>
               <button type="button" data-scenario="follow" aria-pressed="false">密集车流</button>
+              <button type="button" data-scenario="mixed" aria-pressed="false">混合车流</button>
             </div>
           </div>
           <div class="drive-actions">

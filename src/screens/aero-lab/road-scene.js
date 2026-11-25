@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 import * as T from 'three';
-import { laneWidth, radarRange } from './driving.js';
+import { trafficX } from './radar.js';
+import { radarRays } from './radar-rays.js';
 import { createWarpField } from './warp.js';
 
 const vert = `varying vec2 vUv;varying vec3 point;
@@ -39,7 +40,8 @@ function duskSky() {
   return sky;
 }
 const pose = new T.Object3D();
-function place(batch, index, x, y, z, sx = 1, sy = 1, sz = 1) {
+function place(batch, index, x, y, z, sx = 1, sy = 1, sz = 1, yaw = 0) {
+  pose.rotation.y = yaw;
   pose.position.set(x, y, z);
   pose.scale.set(sx, sy, sz);
   pose.updateMatrix();
@@ -249,44 +251,38 @@ function trafficMeshes() {
       let segments = 0;
       for (const car of sim.cars) {
         const i = car.id,
-          x = car.lane * laneWidth,
-          z = car.z;
-        place(bodies, i, x, 0, z);
-        place(cabins, i, x, 0, z);
-        place(shadow, i, x, 0.02, z);
+          x = trafficX(car),
+          z = car.z,
+          yaw = car.heading || 0,
+          cs = Math.cos(yaw),
+          sn = Math.sin(yaw);
+        const part = (batch, index, dx, y, dz, sx = 1, sy = 1, sz = 1) =>
+          place(batch, index, x + cs * dx + sn * dz, y, z - sn * dx + cs * dz, sx, sy, sz, yaw);
+        part(bodies, i, 0, 0, 0);
+        part(cabins, i, 0, 0, 0);
+        part(shadow, i, 0, 0.02, 0);
         for (let wheel = 0; wheel < 4; wheel++)
-          place(
-            wheels,
-            i * 4 + wheel,
-            x + (wheel % 2 ? -0.88 : 0.88),
-            0.32,
-            z + (wheel < 2 ? -1.37 : 1.3),
-          );
+          part(wheels, i * 4 + wheel, wheel % 2 ? -0.88 : 0.88, 0.32, wheel < 2 ? -1.37 : 1.3);
         for (let side = 0; side < 2; side++)
-          place(
-            lamps,
-            i * 2 + side,
-            x + (side ? -0.58 : 0.58),
-            0.71,
-            z - 2.132,
-            0.44,
-            0.062,
-            0.034,
-          );
+          part(lamps, i * 2 + side, side ? -0.58 : 0.58, 0.71, -2.132, 0.44, 0.062, 0.034);
         if (!car.detected) continue;
         const warning = Math.abs(x - sim.x) < 2.8 && z > 0 && z < 45;
         for (const sx of [-1, 1])
           for (const sy of [-1, 1])
             for (const sz of [-1, 1]) {
-              const px = x + sx * 1.08,
+              const px = x + cs * sx * 1.08 + sn * sz * 2.3,
                 py = 0.82 + sy * 0.76,
-                pz = z + sz * 2.3;
+                pz = z - sn * sx * 1.08 + cs * sz * 2.3;
               for (let dim = 0; dim < 3; dim++) {
                 const j = segments++ * 6;
                 coords[j] = coords[j + 3] = px;
                 coords[j + 1] = coords[j + 4] = py;
                 coords[j + 2] = coords[j + 5] = pz;
-                coords[j + 3 + dim] -= dim === 0 ? sx * 0.35 : dim === 1 ? sy * 0.34 : sz * 0.65;
+                const dx = dim === 0 ? sx * 0.35 : 0,
+                  dz = dim === 2 ? sz * 0.65 : 0;
+                coords[j + 3] -= cs * dx + sn * dz;
+                coords[j + 4] -= dim === 1 ? sy * 0.34 : 0;
+                coords[j + 5] -= cs * dz - sn * dx;
                 for (let n = j; n <= j + 3; n += 3) {
                   colors[n] = warning ? 1.8 : 0.2;
                   colors[n + 1] = warning ? 0.69 : 1.12;
@@ -316,7 +312,7 @@ function guidance() {
   g.setAttribute('position', new T.BufferAttribute(verts, 3).setUsage(T.DynamicDrawUsage));
   g.setAttribute('uv', new T.Float32BufferAttribute(uv, 2));
   g.setIndex(indices);
-  const uniforms = { sweep: { value: 0 } };
+
   const path = new T.Mesh(
     g,
     shader(
@@ -337,31 +333,9 @@ function guidance() {
   );
   path.frustumCulled = false;
   path.renderOrder = 7;
-  const radar = new T.Mesh(
-    new T.PlaneGeometry(radarRange * 2, radarRange + 20)
-      .rotateX(-Math.PI / 2)
-      .translate(0, 0.031, (radarRange - 20) / 2),
-    shader(
-      `uniform float sweep;void main(){
-      vec2 p=point.xz;float r=length(p),a=atan(p.x,p.y);
-      float sector=1.-smoothstep(.91,.96,abs(a));
-      float cutoff=1.-smoothstep(62.,68.,r);
-      float circle=abs(mod(r+8.,16.)-8.);
-      float ring=1.-smoothstep(.045,.08+fwidth(r),circle);
-      float front=exp(-abs(a-sweep)*27.)*.23+exp(-abs(a-sweep)*3.8)*.084;
-      float side=(1.-smoothstep(7.,10.,r))*(1.-sector);
-      float alpha=(.023+ring*.28+front)*sector*cutoff+ring*.28*side;
-      gl_FragColor=vec4(.09,.71,.84,alpha);`,
-      uniforms,
-      { transparent: true, side: T.DoubleSide, depthWrite: false, blending: T.AdditiveBlending },
-    ),
-  );
-  radar.renderOrder = 6;
   return {
     path,
-    radar,
     update(sim) {
-      uniforms.sweep.value = 0.9 * Math.sin(sim.time * 2.45);
       const horizon = sim.pathLength;
       for (let i = 0; i <= count; i++) {
         const z = 1.5 + (i / count) * (horizon - 1.5),
@@ -386,17 +360,19 @@ export function createRoadScene() {
     verge = roadside(),
     trees = roadsideTrees(),
     traffic = trafficMeshes(),
-    route = guidance();
-  track.add(verge, trees, traffic.group, route.path);
+    route = guidance(),
+    rays = radarRays();
+  track.add(verge, trees, traffic.group, route.path, rays.mesh);
   rotated.add(track);
-  root.add(vault.mesh, sky, rotated, route.radar);
+  root.add(vault.mesh, sky, rotated);
   root.visible = false;
   return {
     root,
+    emitters: { tunnel: [vault.mesh], pilot: [rays.mesh, route.path] },
     show(mode) {
       root.visible = mode !== 'studio';
       vault.mesh.visible = mode === 'tunnel';
-      sky.visible = rotated.visible = route.radar.visible = mode === 'pilot';
+      sky.visible = rotated.visible = mode === 'pilot';
     },
     update(sim) {
       if (sim.mode === 'tunnel') {
@@ -408,6 +384,7 @@ export function createRoadScene() {
         trees.position.z = -(sim.distance % grovePeriod);
         traffic.update(sim);
         route.update(sim);
+        rays.update(sim);
       }
     },
   };

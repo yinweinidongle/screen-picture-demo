@@ -1,7 +1,7 @@
 {
   "capturedOn": "2026-11-25",
   "assetInventorySha256": "36ba1bfa367375bf9ec47336766cd7c65c576edc26be4456e8e392663a112242",
-  "notes": "Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 16.83-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, crosswind, multicolour warp, radar-guided passing and following. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
+  "notes": "Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, straight radar rays stopping at their first contact and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
   "files": {
     "home-preview.png": "ac231fb5c7a31b3e938d32a3617d2c4ec6ebc334fafc8b918bc08b1ab3f040ab",
     "home-mobile-preview.png": "ea9c7377af5d1d2ee6f4d578bf04aec3b18dc314ee631ff06270f69a278cd801",
@@ -11,9 +11,9 @@
     "earth-link-lighting.webp": "56b185b7e094d06d30ec06a79bea7eda4b19bd4a01ea0d0f5f4dd08aaee6564d",
     "earth-link-trails.webp": "8a894082807975e392c49e0d941d23d52db5cc015685c36bd5bfe270e23cbd4b",
     "aero-lab-demo.webp": "8e2f95b45406423eef135f05c81513ad4caa3076bd121abb7aa5d6a427640728",
-    "aero-lab-states.webp": "2acedfdec34f62953fa623e355792d8176721b01955b48f6c4cdb3995c3c1c83",
+    "aero-lab-states.webp": "bf367c0af5b9aae99ecc93bdc7403837c57ad2a90e0f9f1e97aba727672e2047",
     "aero-lab-livery.webp": "f879fba86b7d8c52c9aeb5405959ed3fccd69b102cc3bc1feddcfbfb66054931",
-    "aero-lab-demo.gif": "2f86619fac9c2bc87a2dd95df5f79a2779211e7f9150c47d3bc28eb7580be8ed"
+    "aero-lab-demo.gif": "3acc9775fe2af90654d274338e6c0be7b8a8bc2741f5dfb81ef747c12aa385a1"
   },
   "previewFiles": {
     "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
