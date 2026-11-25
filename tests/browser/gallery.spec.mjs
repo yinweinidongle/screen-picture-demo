@@ -75,6 +75,8 @@ test('population: globe renders and keyboard changes view', async ({ page }) => 
     .not.toBe(before);
 });
 test('inspection: province hover exposes tooltip without a dialog', async ({ page }) => {
+  // Traced software rendering of the province paths and review capture can exceed 45 seconds.
+  test.slow();
   await page.goto('/inspection.html');
   await page.waitForLoadState('networkidle');
   await expect(page.getByRole('button', { name: /^查看.+巡检数据$/ })).toHaveCount(34);
