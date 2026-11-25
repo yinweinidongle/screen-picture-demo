@@ -37,13 +37,13 @@ function scope(canvas, sim) {
       Y = (z) => h * 0.7 - (z * h * 0.67) / radarRange;
     for (let n = -1.5; n <= 1.5; n++) line(X(n * laneWidth), 0, X(n * laneWidth), h, '#40565b');
     for (const z of [20, 40, 60]) line(X(-5.4), Y(z), X(5.4), Y(z), '#2f4348');
-    for (const beam of sim.radar.beams) {
-      if (beam.energy < 0.01) continue;
-      const x = X(sim.x + beam.direction.x * beam.length);
-      const y = Y(beam.direction.z * beam.length);
-      ctx.globalAlpha = beam.energy;
-      line(X(sim.x), Y(0), x, y, '#79ced8', 1.35);
-      if (beam.vehicleHit) {
+    for (const segment of sim.radar.segments) {
+      if (segment.energy < 0.01) continue;
+      const x = X(segment.endX),
+        y = Y(segment.endZ);
+      ctx.globalAlpha = segment.energy;
+      line(X(segment.startX), Y(segment.startZ), x, y, '#9de3ea', 1.8);
+      if (segment.vehicleHit) {
         ctx.fillStyle = '#ffcb87';
         ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
       }
@@ -105,7 +105,8 @@ export function driveControls(getStudio, signal) {
     const el = by(id);
     if (el.textContent !== s) el.textContent = s;
   };
-  let last = -1;
+  let last = -1,
+    lastScope = -1;
   function display(name) {
     const active = name !== 'studio',
       pilot = name === 'pilot';
@@ -131,9 +132,14 @@ export function driveControls(getStudio, signal) {
   }
   function update(sim, force = false) {
     if (force || lab.dataset.mode !== sim.mode) display(sim.mode);
-    if (sim.mode === 'studio' || (!force && sim.time >= last && sim.time - last < 0.095)) return;
-    last = sim.time;
+    if (sim.mode === 'studio') return;
     const pilot = sim.mode === 'pilot';
+    if (pilot && (force || sim.time < lastScope || sim.time - lastScope >= 1 / 30)) {
+      scope(by('road-scope'), sim);
+      lastScope = sim.time;
+    }
+    if (!force && sim.time >= last && sim.time - last < 0.095) return;
+    last = sim.time;
     text('hud-speed', String(Math.round(sim.speed * 3.6)));
     text('hud-state', sim.decision);
     text('drive-status', sim.paused ? '已暂停' : '运行中');
@@ -163,7 +169,7 @@ export function driveControls(getStudio, signal) {
     if (force)
       for (const b of scenarios)
         b.setAttribute('aria-pressed', String(b.dataset.scenario === sim.scenario));
-    scope(by('road-scope'), sim);
+    if (!pilot) scope(by('road-scope'), sim);
   }
   for (const b of modes) on(b, 'click', () => getStudio()?.setMode(b.dataset.mode));
   on(by('reset-view'), 'click', () => getStudio()?.resetTunnelCamera());
