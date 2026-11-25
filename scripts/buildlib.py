@@ -320,7 +320,7 @@ class Builder:
             extra_notices.append("docs/licensing/barlow-condensed-OFL.txt")
             extra_notices.append("docs/licensing/meshoptimizer-MIT.txt")
             for token, file, mime in [
-                ("AERO_CAR", "models/aero-concept.glb", "model/gltf-binary"),
+                ("AERO_CAR", "models/aero-aventador.glb", "model/gltf-binary"),
                 (
                     "AERO_STUDIO",
                     "environments/studio-small-09.hdr",

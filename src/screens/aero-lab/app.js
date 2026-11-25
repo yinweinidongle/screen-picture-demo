@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { finishes } from './finish.js';
 import { readings } from './airflow.js';
 import { VehicleStudio } from './vehicle.js';
+import { driveControls } from './drive-controls.js';
 
 const get = (id) => document.getElementById(id);
 const stage = get('stage'),
@@ -26,6 +27,7 @@ const state = {
 let studio,
   paintTween,
   importId = 0;
+const drivingUI = driveControls(() => studio, controller.signal);
 const fmt = (n) => Math.round(n).toLocaleString('en-US');
 const percentage = (el) =>
   el.style.setProperty('--fill', ((el.value - el.min) / (el.max - el.min)) * 100 + '%');
@@ -135,6 +137,7 @@ media.addEventListener(
   'change',
   () => {
     if (media.matches && paintTween) paintTween.progress(1);
+    studio?.reducedMotion();
     studio?.wind(state.speed, state.yaw, state.wind);
   },
   options,
@@ -260,13 +263,15 @@ function model(info, count, section) {
     credit.textContent = '本地载入模型';
     credit.removeAttribute('href');
   } else {
-    credit.textContent = 'Car Concept · Eric Chadwick / DGG';
-    credit.href = 'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept';
+    credit.textContent = 'Aventador · Arion Digital';
+    credit.href =
+      'https://sketchfab.com/3d-models/lamborghini-aventador-888e37a3641d4f7b94bc1a39396e2441';
     license.textContent = 'CC BY 4.0';
     license.href = 'https://creativecommons.org/licenses/by/4.0/';
   }
   license.hidden = !!info.custom;
   stage.dataset.renderer = 'webgl2';
+  drivingUI.enable(true);
   canvas.tabIndex = 0;
   for (const el of document.querySelectorAll('[data-camera],#import,#light,#run'))
     el.disabled = false;
@@ -282,6 +287,7 @@ function fallback(text) {
   get('poster').src = get('poster').dataset.src;
   get('poster').hidden = false;
   stage.dataset.renderer = 'fallback';
+  drivingUI.enable(false);
   for (const el of document.querySelectorAll(
     '[data-camera],#import,#light,#run,#paints button,#reveal,#replay',
   ))
@@ -337,6 +343,7 @@ async function initialize() {
     studio = new VehicleStudio(stage, {
       model,
       camera,
+      driving: drivingUI.update,
       failure: fallback,
       reading(speed) {
         if (state.actual !== speed) {

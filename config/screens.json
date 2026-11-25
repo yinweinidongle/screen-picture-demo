@@ -98,13 +98,13 @@
   {
     "id": "aero-lab",
     "title": "超跑风洞实验室",
-    "description": "在影棚中调试超跑涂层，观察侧风、绕流与气动力。",
+    "description": "调试金属车漆与侧风绕流，加速穿越光隧道，观察雷达规划变道与跟车。",
     "category": "3d",
     "label": "AERO LAB",
     "width": 1920,
     "height": 1080,
     "preview": "assets/previews/aero-lab.webp",
-    "tags": ["物理车漆", "噪声裁剪", "风洞试验"],
+    "tags": ["物理车漆", "风洞试验", "时空隧道", "自动驾驶"],
     "renderer": "generic"
   }
 ]

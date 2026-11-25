@@ -546,6 +546,175 @@ footer a:hover {
   display: flex;
   gap: 7px;
 }
+.modes,
+.scenario-options,
+.drive-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.modes {
+  margin-left: auto;
+  padding: 3px;
+  background: #111719;
+  border: 1px solid #414a4c;
+}
+.modes button,
+.scenario-options button,
+.drive-actions button,
+.back-studio {
+  padding: 7px 14px;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #b9c5c5;
+  white-space: nowrap;
+}
+.modes button[aria-pressed='true'] {
+  background: #303938;
+  color: var(--signal);
+  box-shadow: inset 0 -2px var(--signal);
+}
+.modes button:hover,
+.scenario-options button:hover,
+.drive-actions button:hover,
+.back-studio:hover {
+  color: var(--signal);
+}
+.mast .return {
+  margin-left: 0;
+}
+#lab[data-mode='tunnel'] {
+  --signal: #a8deff;
+}
+#lab[data-mode='pilot'] {
+  --signal: #94ebc9;
+}
+#lab:not([data-mode='studio']) .car-heading h2 {
+  font-size: clamp(27px, 3.1vw, 62px);
+}
+#lab:not([data-mode='studio']) .car-heading {
+  filter: drop-shadow(0 1px 5px #0c192c94);
+}
+.drive-hud {
+  color: #f8fbfa;
+  pointer-events: none;
+  text-shadow:
+    0 2px 12px #091320,
+    0 1px 2px #091320;
+}
+.drive-hud div {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+.drive-hud b {
+  font: italic 800 clamp(42px, 5.3vw, 94px)/0.95 var(--display);
+  font-variant-numeric: tabular-nums;
+}
+.drive-hud small,
+.drive-hud span {
+  font: 600 11px/1.6 var(--mono);
+  letter-spacing: 0.08em;
+}
+.drive-hud span {
+  display: block;
+  margin-top: 3px;
+  color: var(--signal);
+}
+.back-studio {
+  border: 1px solid #80908e8a;
+  background: #101c23c9;
+  backdrop-filter: blur(6px);
+  color: #eff7f6;
+  pointer-events: auto;
+}
+.drive-panel,
+.telemetry-panel {
+  display: flex;
+  flex-direction: column;
+}
+.drive-panel .control-label {
+  margin: 9px 0 7px;
+}
+.drive-panel input {
+  margin-top: 10px;
+}
+.scenario-options {
+  margin-top: 7px;
+  gap: 6px;
+}
+.scenario-options button,
+.drive-actions button {
+  border: 1px solid #465254;
+  background: #172023;
+}
+.scenario-options button[aria-pressed='true'] {
+  border-color: #81b3a5;
+  color: #bdf5dd;
+  background: #1d3331;
+}
+.drive-actions {
+  margin-top: auto;
+  padding-top: 12px;
+  gap: 6px;
+}
+.drive-actions button:first-child {
+  background: var(--signal);
+  color: #132024;
+  border-color: transparent;
+  min-width: 66px;
+}
+.drive-actions button:first-child:hover {
+  color: #132024;
+}
+.road-telemetry {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-height: 70px;
+  gap: 8px;
+}
+.road-telemetry > div {
+  flex: 0 0 auto;
+  min-width: 75px;
+}
+.road-telemetry span {
+  display: block;
+  font-size: 12px;
+  color: var(--sub);
+}
+.road-telemetry strong {
+  font: italic 800 clamp(32px, 2.9vw, 59px)/1.15 var(--display);
+}
+.road-telemetry small,
+.telemetry-foot {
+  font: 500 11px/1.45 var(--mono);
+  color: var(--sub);
+}
+#road-scope {
+  width: 0;
+  min-width: 0;
+  flex: 1;
+  height: clamp(60px, 8.5vh, 102px);
+}
+.telemetry-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid var(--edge);
+  padding-top: 6px;
+}
+.telemetry-foot span:last-child {
+  color: var(--signal);
+}
+@media (max-width: 920px) {
+  .modes button {
+    padding: 6px 8px;
+  }
+  .mast {
+    gap: 12px;
+  }
+}
 .wind-actions {
   display: flex;
   gap: 7px;
@@ -598,11 +767,28 @@ footer a:hover {
   #lab {
     min-height: 100svh;
     height: auto;
-    grid-template-rows: 56px auto auto auto;
+    grid-template-rows: auto auto auto auto;
     padding: 0 10px;
   }
   .mast {
-    gap: 12px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0 9px;
+    padding: 10px 0 7px;
+  }
+  .modes {
+    grid-row: 2;
+    grid-column: 1/-1;
+    margin: 8px 0 0;
+    justify-content: stretch;
+  }
+  .modes button {
+    flex: 1;
+    min-height: 29px;
+  }
+  .mast .return {
+    grid-column: 3;
+    grid-row: 1;
   }
   .mast h1 {
     font-size: 12px;
