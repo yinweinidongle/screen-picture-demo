@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 import * as T from 'three';
-import { beamCount } from './radar.js';
+import { radarSegmentCount } from './radar.js';
 
-// One camera-facing ribbon per transmitted bearing. The measured first
-// surface terminates the geometry itself, including in the body reflections.
+// Both endpoints arrive in road coordinates. Draw only the occupied interval
+// of each travelling packet so the dark gaps also appear in the paint reflections.
 export function radarRays() {
   const geometry = new T.InstancedBufferGeometry();
   geometry.setAttribute(
@@ -11,60 +11,64 @@ export function radarRays() {
     new T.Float32BufferAttribute([0, -1, 0, 0, 1, 0, 1, -1, 0, 1, 1, 0], 3),
   );
   geometry.setIndex([0, 1, 2, 2, 1, 3]);
-  const rays = new T.InstancedBufferAttribute(new Float32Array(beamCount * 4), 4).setUsage(
+  const ends = new T.InstancedBufferAttribute(new Float32Array(radarSegmentCount * 4), 4).setUsage(
     T.DynamicDrawUsage,
   );
-  const returns = new T.InstancedBufferAttribute(new Float32Array(beamCount), 1).setUsage(
-    T.DynamicDrawUsage,
-  );
-  geometry.setAttribute('ray', rays);
-  geometry.setAttribute('vehicleEcho', returns);
-  geometry.instanceCount = beamCount;
+  const signal = new T.InstancedBufferAttribute(
+    new Float32Array(radarSegmentCount * 2),
+    2,
+  ).setUsage(T.DynamicDrawUsage);
+  geometry.setAttribute('segmentEnds', ends);
+  geometry.setAttribute('segmentSignal', signal);
+  geometry.instanceCount = radarSegmentCount;
   const material = new T.ShaderMaterial({
     transparent: true,
     blending: T.AdditiveBlending,
     side: T.DoubleSide,
     forceSinglePass: true,
     depthWrite: false,
-    vertexShader: `attribute vec4 ray;attribute float vehicleEcho;
-      varying vec4 beam;varying float echo;
+    vertexShader: `attribute vec4 segmentEnds;
+      attribute vec2 segmentSignal;
+      varying vec4 ribbon;varying float echo;
       void main(){
-        vec3 direction=vec3(ray.x,0.,ray.y);
-        vec4 eye=modelViewMatrix*vec4(vec3(0.,.48,0.)+direction*position.x*ray.z,1.);
-        vec3 side=cross(mat3(modelViewMatrix)*direction,-eye.xyz);
-        float width=.047+clamp(-eye.z*.0016,0.,.09);
-        eye.xyz+=side/max(length(side),.0001)*position.y*width;
-        beam=vec4(position.xy,ray.z,ray.w);echo=vehicleEcho;
+        vec2 start=segmentEnds.xy, end=segmentEnds.zw, delta=end-start;
+        float span=length(delta);
+        ribbon=vec4(position.xy,span,segmentSignal.x); echo=segmentSignal.y;
+        if(segmentSignal.x<.005||span<.015){gl_Position=vec4(2.,2.,2.,1.);return;}
+        vec2 p=mix(start,end,position.x);
+        vec4 eye=modelViewMatrix*vec4(p.x,.48,p.y,1.);
+        vec3 across=cross(mat3(modelViewMatrix)*vec3(delta.x,0.,delta.y),-eye.xyz);
+        float width=.060+clamp(-eye.z*.0015,0.,.078);
+        eye.xyz+=across/max(length(across),.0001)*position.y*width;
         gl_Position=projectionMatrix*eye;
-        if(ray.w<.005||ray.z<.08)gl_Position=vec4(2.,2.,2.,1.);
       }`,
-    fragmentShader: `varying vec4 beam;varying float echo;
+    fragmentShader: `varying vec4 ribbon;varying float echo;
       void main(){
-        float t=beam.x,across=beam.y,lengthM=beam.z;
-        float core=exp(-32.*across*across),glow=exp(-4.2*across*across);
-        float tip=exp(-pow((1.-t)*lengthM/.58,2.));
-        float shaft=(.43+.36*t)*smoothstep(.1,.9,t*lengthM);
-        vec3 cold=mix(vec3(.032,.51,.68),vec3(.52,1.10,1.16),core);
-        vec3 light=mix(cold,vec3(1.65,.69,.18),tip*echo);
-        float alpha=beam.w*((core*.85+glow*.20)*shaft+tip*(core*.69+glow*.26));
-        gl_FragColor=vec4(light,alpha);
+        float t=ribbon.x,y=ribbon.y,span=ribbon.z;
+        float fromTail=t*span,toHead=(1.-t)*span;
+        float ends=smoothstep(0.,.10,fromTail)*smoothstep(0.,.045,toHead);
+        float core=exp(-24.*y*y),halo=exp(-3.5*y*y);
+        float leading=smoothstep(.36,.92,t),tip=exp(-toHead*toHead/.045);
+        vec3 color=mix(vec3(.015,.62,.89),vec3(.33,1.39,1.60),core*(.45+.55*leading));
+        color=mix(color,vec3(1.80,.77,.23),echo*tip);
+        float alpha=ribbon.w*ends*((.63+.32*leading)*core+.21*halo+.22*tip*core);
+        gl_FragColor=vec4(color,alpha);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }`,
   });
   const mesh = new T.Mesh(geometry, material);
   mesh.frustumCulled = false;
-  mesh.renderOrder = 6;
+  mesh.renderOrder = 8;
   return {
     mesh,
     update(sim) {
-      mesh.position.x = sim.x;
-      for (let i = 0; i < sim.radar.beams.length; i++) {
-        const b = sim.radar.beams[i];
-        rays.setXYZW(i, b.direction.x, b.direction.z, b.length, b.energy);
-        returns.setX(i, Number(!!b.vehicleHit));
+      for (let i = 0; i < sim.radar.segments.length; i++) {
+        const s = sim.radar.segments[i];
+        ends.setXYZW(i, s.startX, s.startZ, s.endX, s.endZ);
+        signal.setXY(i, s.energy, Number(s.vehicleHit));
       }
-      rays.needsUpdate = returns.needsUpdate = true;
+      ends.needsUpdate = signal.needsUpdate = true;
     },
   };
 }

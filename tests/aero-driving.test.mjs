@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import * as T from 'three';
 import { DriveSimulation, laneWidth, radarRange } from '../src/screens/aero-lab/driving.js';
-import { RoadRadar, beamCount } from '../src/screens/aero-lab/radar.js';
+import { RoadRadar, radarSegmentCount } from '../src/screens/aero-lab/radar.js';
 import { radarRays } from '../src/screens/aero-lab/radar-rays.js';
 import { curveValue } from '../src/screens/aero-lab/planner.js';
 import { rollingWheels } from '../src/screens/aero-lab/wheels.js';
@@ -73,64 +73,115 @@ test('360° sensing covers the rear and returns the first vehicle surface on eac
   assert.ok(sim.nearest < 8);
 });
 
-test('straight radar beams stop at the first surface, fade independently, and rescan cleared bearings', () => {
-  const radar = new RoadRadar();
-  const sim = {
-    x: 0,
-    time: 0,
-    heading: 0,
-    cars: [
-      { x: 0, z: 15 },
-      { x: 0, z: 35 },
-    ],
-  };
+test('a radar wave carries two detached dashes on each bearing, with a dark gap before the next wave', () => {
+  const radar = new RoadRadar(),
+    sim = { time: 0, x: 0, distance: 0, heading: 0, cars: [] };
   const tick = (frame) => {
     sim.time = frame / 60;
     radar.advance(sim);
   };
-  for (let i = 0; i <= 7; i++) tick(i);
-  const front = radar.beams[0],
-    side = radar.beams[beamCount / 4],
-    rear = radar.beams[beamCount / 2];
-  assert.deepEqual(front.direction, { x: 0, z: 1 });
-  assert.ok(Math.abs(front.length - 12.88) < 0.01 && front.vehicleHit);
-  assert.ok(Math.abs(side.length - 6.29) < 0.01 && !side.vehicleHit);
-  assert.ok(rear.length > front.length && rear.energy > 0.95);
-  assert.ok(radar.beams.some((b) => b.energy === 0)); // Interleaved transmissions, not a solid fan.
-  sim.cars.shift();
-  for (let i = 8; i <= 20; i++) tick(i);
-  assert.ok(Math.abs(front.length - 12.88) < 0.01 && front.energy === 0);
-  assert.ok(rear.energy > 0 && rear.length > 40);
-  sim.cars = [];
-  sim.x = 0.8;
-  for (let i = 21; i <= 60; i++) tick(i);
-  assert.ok(front.energy > 0.9 && front.length > 20 && !front.vehicleHit);
-  assert.ok(front.direction.x !== 0);
-  assert.ok(Math.abs(side.direction.x * side.length + sim.x - 6.29) < 0.02);
-  assert.ok(radar.beams.every((b) => b.length <= radarRange));
+  for (let i = 0; i <= 3; i++) tick(i);
+  const [lead, echo] = radar.waves[0].packets;
+  const a = lead.segments[0],
+    b = echo.segments[0];
+  assert.equal(a.energy, 0);
+  for (let i = 4; i <= 8; i++) tick(i);
+  for (const s of lead.segments) assert.ok(Math.abs(Math.hypot(s.endX, s.endZ) - a.endZ) < 1e-6);
+  for (let i = 9; i <= 14; i++) tick(i);
+  assert.ok(b.startZ > 0 && b.endZ < a.startZ - 1);
+  assert.ok(Math.abs(a.endZ - a.startZ - 1.0) < 1e-6);
+  assert.ok(Math.abs(b.endZ - b.startZ - 0.7) < 1e-6);
+  assert.ok(b.energy > 0 && b.energy < a.energy);
+  const oldTail = a.startZ,
+    oldHead = a.endZ;
+  tick(15);
+  assert.ok(a.startZ > oldTail && a.endZ > oldHead);
+  assert.ok(Math.abs(a.startZ - oldTail - (a.endZ - oldHead)) < 1e-6);
+  for (let i = 16; i <= 37; i++) tick(i);
+  const next = radar.waves[1].packets[0].segments[0];
+  assert.ok(next.energy > 0 && b.startZ - Math.hypot(next.endX, next.endZ) > 8);
 });
 
-test('rendered rays follow the moving transmitter and use the measured endpoints and echoes', () => {
-  const sim = new DriveSimulation();
-  sim.reset('pilot');
+test('each dash is absorbed at its first surface and a later transmission can pass a cleared bearing', () => {
+  const radar = new RoadRadar(),
+    sim = {
+      time: 0,
+      x: 0,
+      distance: 0,
+      heading: 0,
+      cars: [
+        { x: 0, z: 15 },
+        { x: 0, z: 35 },
+      ],
+    };
+  const tick = (frame) => {
+    sim.time = frame / 60;
+    radar.advance(sim);
+  };
+  for (let i = 0; i <= 19; i++) tick(i);
+  const [lead, echo] = radar.waves[0].packets;
+  const first = lead.segments[0],
+    second = echo.segments[0],
+    side = lead.segments[lead.segments.length / 4];
+  assert.ok(first.vehicleHit && first.energy > 0 && Math.abs(first.endZ - 12.88) < 0.01);
+  assert.ok(!second.vehicleHit && second.endZ < first.startZ);
+  assert.ok(!side.vehicleHit && side.energy === 0 && Math.abs(side.endX - 6.29) < 0.01);
+  sim.cars.shift();
+  tick(20);
+  assert.ok(first.energy > 0 && first.energy < 1);
+  for (let i = 21; i <= 40; i++) tick(i);
+  assert.equal(first.energy, 0);
+  assert.equal(first.startZ, first.endZ);
+  assert.ok(second.energy > 0 && second.startZ > 15 && !second.vehicleHit);
+  // A car crossing behind the detached packet must not mask the next obstacle ahead.
+  sim.cars.unshift({ x: 0, z: 4 });
+  for (let i = 41; i <= 57; i++) tick(i);
+  assert.ok(second.vehicleHit && Math.abs(second.endZ - 32.88) < 0.01);
+  assert.ok(Math.abs(first.endZ - 12.88) < 0.01);
+});
+
+test('world-space packet endpoints stay on their emitted bearings and feed the instanced road geometry', () => {
+  const radar = new RoadRadar(),
+    sim = { time: 0, x: 0, distance: 0, heading: 0, cars: [], radar };
   const field = radarRays(),
-    geometry = field.mesh.geometry;
-  for (const dt of [0.12, 0.27, 0.66]) {
-    sim.advance(dt);
-    field.update(sim);
-    assert.equal(field.mesh.position.x, sim.x);
-    assert.equal(geometry.instanceCount, beamCount);
-    sim.radar.beams.forEach((b, i) => {
-      const ray = geometry.attributes.ray;
-      assert.ok(Math.abs(ray.getX(i) - b.direction.x) < 1e-6);
-      assert.ok(Math.abs(ray.getY(i) - b.direction.z) < 1e-6);
-      assert.ok(Math.abs(ray.getZ(i) - b.length) < 0.0001);
-      assert.ok(Math.abs(ray.getW(i) - b.energy) < 1e-6);
-      assert.equal(geometry.attributes.vehicleEcho.getX(i), Number(!!b.vehicleHit));
-    });
+    g = field.mesh.geometry;
+  for (let i = 0; i <= 40; i++) {
+    sim.time = i / 60;
+    sim.x = sim.time * 0.8;
+    sim.distance = sim.time * 17;
+    sim.heading = sim.time * 0.13;
+    radar.advance(sim);
   }
-  assert.ok(Math.abs(sim.x) > 0.2);
-  geometry.dispose();
+  const first = radar.waves[0].packets[0].segments[0],
+    next = radar.waves[1];
+  assert.equal(first.startX, 0);
+  assert.equal(first.endX, 0);
+  assert.ok(Math.abs(first.endZ + sim.distance - (38 * sim.time + 9 * sim.time ** 2)) < 1e-6);
+  for (const packet of next.packets) {
+    const launchTime = next.born + packet.delay;
+    assert.ok(Math.abs(packet.x - launchTime * 0.8) < 1e-6);
+    assert.ok(Math.abs(packet.station - launchTime * 17) < 1e-6);
+  }
+  field.update(sim);
+  assert.equal(g.instanceCount, radarSegmentCount);
+  radar.segments.forEach((s, i) => {
+    const ends = g.attributes.segmentEnds,
+      signal = g.attributes.segmentSignal;
+    for (const [actual, value] of [
+      [ends.getX(i), s.startX],
+      [ends.getY(i), s.startZ],
+      [ends.getZ(i), s.endX],
+      [ends.getW(i), s.endZ],
+      [signal.getX(i), s.energy],
+    ])
+      assert.ok(Math.abs(actual - value) < 1e-5);
+    assert.equal(signal.getY(i), Number(s.vehicleHit));
+    assert.ok(Math.hypot(s.endX - s.startX, s.endZ - s.startZ) <= 1.00001);
+  });
+  radar.reset();
+  field.update(sim);
+  assert.ok(radar.segments.every((s) => s.energy === 0));
+  g.dispose();
   field.mesh.material.dispose();
 });
 
