@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 
-const publicCar = fileURLToPath(new URL('../../assets/models/aero-concept.glb', import.meta.url));
+const publicCar = fileURLToPath(new URL('../../assets/models/aero-aventador.glb', import.meta.url));
 async function open(page) {
   await page.setViewportSize({ width: 960, height: 700 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -116,12 +116,51 @@ test('wind settings, orbit presets and local GLB import stay synchronized', asyn
     buffer: Buffer.from('invalid'),
   });
   await expect(page.locator('#message')).toContainText('载入失败');
-  await expect(page.locator('#car-name')).toHaveText('CAR CONCEPT');
+  await expect(page.locator('#car-name')).toHaveText('AVENTADOR');
   await page.locator('#file').setInputFiles(publicCar);
   await expect(page.locator('#message')).toBeHidden();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await expect(page.locator('#vehicle')).toBeInViewport();
+});
+
+test('drive modes preserve studio settings and use the radar planner on the road', async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => {
+    if (m.type() === 'error') errors.push(m.text());
+  });
+  await open(page);
+  await page.getByRole('button', { name: '正侧' }).click();
+  await page.locator('#speed').fill('205');
+  await page.locator('#run').click();
+  await page.getByRole('button', { name: '时空隧道' }).click();
+  await expect(page.locator('#lab')).toHaveAttribute('data-mode', 'tunnel');
+  await expect(page.locator('#drive-status')).toHaveText('已暂停');
+  await page.locator('#warp-speed').fill('280');
+  await expect(page.locator('#warp-value')).toHaveText('280 km/h');
+  await page.locator('#drive-restart').click();
+  const distance = Number(await page.locator('#drive-primary').textContent());
+  await page.locator('#drive-step').click();
+  expect(Number(await page.locator('#drive-primary').textContent())).toBeGreaterThan(distance);
+  await page.locator('#drive-restart').click();
+  await expect(page.locator('#drive-primary')).toHaveText(String(distance));
+  await page.getByRole('button', { name: '自动驾驶' }).click();
+  await expect(page.locator('#drive-plan')).toHaveText('向右变道');
+  await expect(page.locator('#drive-secondary')).toContainText(/跟踪 [1-5] 个目标/);
+  await page.getByRole('button', { name: '密集车流' }).click();
+  await expect(page.locator('#drive-plan')).toHaveText('减速跟车');
+  await expect(page.locator('#drive-note')).toContainText('近端蓝渐变至远端紫');
+  await page.locator('#drive-pause').click();
+  await expect(page.locator('#drive-step')).toBeDisabled();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#vehicle')).toHaveAttribute('data-view', 'side');
+  await expect(page.locator('#speed')).toHaveValue('205');
+  await expect(page.locator('#lab')).toHaveAttribute('data-running', 'true');
+  expect(errors).toEqual([]);
 });
 
 test('a static studio keeps aerodynamic estimates available without WebGL', async ({ page }) => {
@@ -137,6 +176,8 @@ test('a static studio keeps aerodynamic estimates available without WebGL', asyn
     .poll(() => page.locator('#poster').evaluate((im) => im.naturalWidth))
     .toBeGreaterThan(0);
   await expect(page.locator('#run')).toBeDisabled();
+  await expect(page.getByRole('button', { name: '时空隧道' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '自动驾驶' })).toBeDisabled();
   await page.locator('#speed').fill('0');
   await expect(page.locator('#force')).toHaveText('0');
 });

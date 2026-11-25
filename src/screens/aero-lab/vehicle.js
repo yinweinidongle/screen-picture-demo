@@ -8,6 +8,10 @@ import { gsap } from 'gsap';
 import { applyFinish } from './finish.js';
 import { carProfile, flowField } from './airflow.js';
 import { makeStudio } from './studio.js';
+import { lightingRig, paintGrain } from './lighting.js';
+import { rollingWheels } from './wheels.js';
+import { DriveSimulation } from './driving.js';
+import { createRoadScene } from './road-scene.js';
 
 const directions = { hero: [0.76, 0.24, 0.64], side: [1, 0.15, 0.015], top: [0.015, 1, 0.018] };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -18,6 +22,7 @@ function release(root, extra = []) {
     materials = new Set(extra),
     textures = new Set();
   root.traverse((obj) => {
+    if (obj.isInstancedMesh) obj.dispose();
     if (obj.geometry) geometries.add(obj.geometry);
     if (obj.material) {
       const list = Array.isArray(obj.material) ? obj.material : [obj.material];
@@ -35,7 +40,7 @@ function release(root, extra = []) {
   }
 }
 
-function collectVehicle(gltf, filename, livery) {
+function collectVehicle(gltf, filename, livery, grain) {
   const group = new T.Group();
   group.add(gltf.scene);
   const sourceMaterials = new Set(),
@@ -93,6 +98,11 @@ function collectVehicle(gltf, filename, livery) {
       mat.metalness = 0.04;
       mat.roughness = 0.8;
     }
+    if (name === 'Aventador wheel atlas') {
+      mat.roughness = 0.7;
+      mat.metalness = 0.56;
+      mat.clearcoat = 0.09;
+    }
     if (/tiretread|_mm_tyre_/i.test(name)) {
       const tire = new T.Box3().setFromObject(m, true),
         p = tire.getCenter(new T.Vector3());
@@ -104,7 +114,7 @@ function collectVehicle(gltf, filename, livery) {
       mat.emissiveIntensity = 2.2;
     }
     if (
-      /^Paint 1\b|(?:HOOD|BODY|MIRROR_(?:LEFT|RIGHT)|WING_REAR|FRONTBUMPER|REARBUMPER|DOOR_(?:RIGHT|LEFT)|BOOT)_mm_ext_/i.test(
+      /^Aventador body paint atlas$|^Paint 1\b|(?:HOOD|BODY|MIRROR_(?:LEFT|RIGHT)|WING_REAR|FRONTBUMPER|REARBUMPER|DOOR_(?:RIGHT|LEFT)|BOOT)_mm_ext_/i.test(
         name,
       )
     ) {
@@ -118,21 +128,22 @@ function collectVehicle(gltf, filename, livery) {
   }
   const extras = gltf.parser.json.asset.extras || {};
   const known = /centenario/i.test((extras.title || '') + ' ' + filename);
-  const official =
-    !filename || /Darmstadt Graphics Group/.test(gltf.parser.json.asset.copyright || '');
+  const official = extras.source?.endsWith('888e37a3641d4f7b94bc1a39396e2441');
   const profile = carProfile(meshes, bounds.max.y - bounds.min.y, group.scale.x);
+  const roll = rollingWheels(group, meshes, wheels);
   return {
     group,
     sourceMaterials,
     wheels,
-    finish: applyFinish(painted, livery, bounds.max.y - bounds.min.y),
+    finish: applyFinish(painted, livery, bounds.max.y - bounds.min.y, grain),
+    roll,
     count: painted.length,
     field: flowField(profile.sample),
     section: profile.section,
     model: known
       ? { name: 'CENTENARIO', make: 'LAMBORGHINI / 2017', privateCar: true }
       : official
-        ? { name: 'CAR CONCEPT', make: 'KHRONOS DESIGN STUDY' }
+        ? { name: 'AVENTADOR', make: 'LAMBORGHINI' }
         : { name: filename.replace(/\.glb$/i, ''), make: 'LOCAL DESIGN STUDY', custom: true },
   };
 }
@@ -154,7 +165,7 @@ export class VehicleStudio {
     this.renderer.shadowMap.autoUpdate = false;
     this.renderer.info.autoReset = false;
     this.scene = new T.Scene();
-    this.camera = new T.PerspectiveCamera(29, 1, 0.08, 95);
+    this.camera = new T.PerspectiveCamera(29, 1, 0.08, 265);
     this.controls = new OrbitControls(this.camera, this.canvas);
     this.controls.enablePan = false;
     this.controls.enableDamping = true;
@@ -164,6 +175,14 @@ export class VehicleStudio {
     this.controls.target.set(0, 0.35, 0);
     this.studio = makeStudio(this.scene, this.renderer);
     this.studio.light(false);
+    this.drive = new DriveSimulation();
+    this.dark = false;
+    this.grain = paintGrain();
+    this.cameraStart = new T.Spherical();
+    this.chaseOrbit = new T.Spherical();
+    this.chaseEye = new T.Vector3();
+    this.chaseTarget = new T.Vector3();
+    this.startTarget = new T.Vector3();
     this.paint = [2, 0, 1];
     this.yaw = 0;
     this.speed = 160;
@@ -210,8 +229,9 @@ export class VehicleStudio {
     }
     env.mapping = T.EquirectangularReflectionMapping;
     this.env = env;
-    this.scene.environment = env;
-    this.scene.environmentRotation.y = 0.86;
+    this.lighting = lightingRig(this.renderer, env);
+    this.scene.environment = this.lighting.get('studio');
+    this.scene.environmentRotation.y = 0.32;
     const livery = await new T.TextureLoader().loadAsync(this.host.dataset.livery);
     if (this.disposed) {
       livery.dispose();
@@ -235,7 +255,7 @@ export class VehicleStudio {
     }
     let vehicle;
     try {
-      vehicle = collectVehicle(gltf, filename, this.livery);
+      vehicle = collectVehicle(gltf, filename, this.livery, this.grain);
     } catch (e) {
       release(gltf.scene);
       throw e;
@@ -246,10 +266,11 @@ export class VehicleStudio {
     this.scene.add(vehicle.group, vehicle.field.mesh);
     vehicle.finish(...this.paint);
     vehicle.field.setYaw(this.yaw);
-    vehicle.field.mesh.visible = this.hasRun && this.actual > 0;
+    vehicle.field.resize(this.host.clientWidth, this.host.clientHeight);
+    vehicle.field.mesh.visible = this.drive.mode === 'studio' && this.hasRun && this.actual > 0;
     this.renderer.shadowMap.needsUpdate = true;
     this.canvas.dataset.paintMeshes = vehicle.count;
-    this.preset('hero', true);
+    if (this.drive.mode === 'studio') this.preset('hero', true);
     this.events.model(vehicle.model, vehicle.count, vehicle.section);
     this.request();
   }
@@ -268,17 +289,25 @@ export class VehicleStudio {
     if (!w || !h) return;
     const ratio = this.fit ? this.camera.position.distanceTo(this.controls.target) / this.fit : 1;
     const span = Math.min(w * 0.65, h * 1.55);
-    this.fit = (((h * 0.5) / Math.tan(T.MathUtils.degToRad(this.camera.fov / 2))) * 4.72) / span;
+    const oldFit = this.fit;
+    this.fit = (((h * 0.5) / Math.tan(T.MathUtils.degToRad(29 / 2))) * 4.72) / span;
     this.controls.minDistance = this.fit * 0.67;
     this.controls.maxDistance = this.fit * 1.88;
     const eye = this.camera.position.clone().sub(this.controls.target).normalize();
-    this.camera.position
-      .copy(this.controls.target)
-      .addScaledVector(eye, this.fit * T.MathUtils.clamp(ratio, 0.67, 1.88));
+    if (this.drive.mode === 'studio')
+      this.camera.position
+        .copy(this.controls.target)
+        .addScaledVector(eye, this.fit * T.MathUtils.clamp(ratio, 0.67, 1.88));
+    else if (this.studioPose && oldFit)
+      this.studioPose.eye
+        .sub(this.studioPose.target)
+        .multiplyScalar(this.fit / oldFit)
+        .add(this.studioPose.target);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.45));
     this.renderer.setSize(w, h, false);
+    this.car?.field.resize(w, h);
     this.request();
   }
   preset(name, instant = false) {
@@ -308,6 +337,7 @@ export class VehicleStudio {
     this.events.camera(name);
   }
   keys(e) {
+    if (this.drive.mode !== 'studio') return;
     const orbit = new T.Spherical().setFromVector3(
       this.camera.position.clone().sub(this.controls.target),
     );
@@ -346,7 +376,8 @@ export class VehicleStudio {
     this.request();
   }
   light(dark) {
-    this.studio.light(dark);
+    this.dark = dark;
+    if (this.drive.mode === 'studio') this.studio.light(dark);
     this.request();
   }
   wind(speed, yaw, on) {
@@ -359,7 +390,8 @@ export class VehicleStudio {
     }
     this.running = on;
     if (on && reduced()) this.actual = speed;
-    if (this.car) this.car.field.mesh.visible = this.hasRun && this.actual > 0;
+    if (this.car)
+      this.car.field.mesh.visible = this.drive.mode === 'studio' && this.hasRun && this.actual > 0;
     this.request();
   }
   resetWind() {
@@ -368,14 +400,106 @@ export class VehicleStudio {
     if (this.car) this.car.field.mesh.visible = false;
     this.request();
   }
+  setMode(name, restart = false) {
+    if (!this.car || (this.drive.mode === name && !restart)) return;
+    this.cameraTween?.kill();
+    if (this.drive.mode === 'studio')
+      this.studioPose = {
+        eye: this.camera.position.clone(),
+        target: this.controls.target.clone(),
+        view: this.canvas.dataset.view,
+      };
+    this.startTarget.copy(this.controls.target);
+    this.cameraStart.setFromVector3(this.chaseEye.copy(this.camera.position).sub(this.startTarget));
+    this.startFov = this.camera.fov;
+    this.transition = reduced() ? 1 : 0;
+    this.drive.reset(name);
+    this.controls.enabled = name === 'studio';
+    this.scene.environment = this.lighting.get(name);
+    this.scene.environmentRotation.y = name === 'studio' ? 0.32 : 0;
+    this.scene.background.set(
+      name === 'studio' ? '#455052' : name === 'tunnel' ? '#030308' : '#a6b8c1',
+    );
+    this.scene.fog = name === 'pilot' ? new T.Fog('#99acb4', 45, 140) : null;
+    this.studio.mode(name);
+    if (name === 'studio') {
+      this.studio.light(this.dark);
+      this.road?.show(name);
+      this.car.roll(0);
+      this.camera.fov = 29;
+      this.camera.updateProjectionMatrix();
+      this.camera.position.copy(this.studioPose.eye);
+      this.controls.target.copy(this.studioPose.target);
+      this.controls.update();
+      this.events.camera(this.studioPose.view);
+      this.car.field.mesh.visible = this.hasRun && this.actual > 0.1;
+    } else {
+      if (!this.road) {
+        this.road = createRoadScene();
+        this.scene.add(this.road.root);
+      }
+      this.road.show(name);
+      this.car.field.mesh.visible = false;
+      if (reduced()) {
+        this.drive.advance(name === 'tunnel' ? 3.8 : 2.65);
+        this.drive.paused = true;
+      }
+      this.road.update(this.drive);
+      this.events.camera('chase');
+    }
+    this.last = 0;
+    this.events.driving(this.drive, true);
+    this.request();
+  }
+  reducedMotion() {
+    if (reduced() && this.drive.mode !== 'studio') {
+      this.drive.paused = true;
+      this.transition = 1;
+      this.events.driving(this.drive, true);
+      this.request();
+    }
+  }
+  updateDriveView(dt) {
+    const sim = this.drive,
+      tunnel = sim.mode === 'tunnel';
+    const boost = Math.min(1, sim.speed / 74);
+    const mobile = Math.max(1, (tunnel ? 1.75 : 1.29) / this.camera.aspect);
+    this.chaseTarget.set(tunnel ? 0.66 : 0, tunnel ? 0.87 : 1.2, tunnel ? -0.25 : 6.0);
+    this.chaseEye.set(tunnel ? 3.29 : 2.04, tunnel ? 1.14 : 4.75, tunnel ? 5.26 : -8.6);
+    this.chaseOrbit.setFromVector3(this.chaseEye.sub(this.chaseTarget).multiplyScalar(mobile));
+    this.transition = Math.min(1, this.transition + dt / 1.28);
+    const s = T.MathUtils.smootherstep(this.transition, 0, 1);
+    this.chaseOrbit.theta =
+      this.cameraStart.theta + wrap(this.chaseOrbit.theta - this.cameraStart.theta) * s;
+    this.chaseOrbit.phi = T.MathUtils.lerp(this.cameraStart.phi, this.chaseOrbit.phi, s);
+    this.chaseOrbit.radius = T.MathUtils.lerp(this.cameraStart.radius, this.chaseOrbit.radius, s);
+    this.controls.target.lerpVectors(this.startTarget, this.chaseTarget, s);
+    this.camera.position
+      .copy(this.controls.target)
+      .add(this.chaseEye.setFromSpherical(this.chaseOrbit));
+    this.camera.lookAt(this.controls.target);
+    const fov = T.MathUtils.lerp(this.startFov, tunnel ? 32 + boost * 8.5 : 47, s);
+    if (this.camera.fov !== fov) {
+      this.camera.fov = fov;
+      this.camera.updateProjectionMatrix();
+    }
+  }
   request() {
     if (this.disposed || this.frame || document.hidden) return;
     this.frame = requestAnimationFrame((time) => {
       this.frame = 0;
       const dt = this.last ? Math.min(0.09, (time - this.last) / 1000) : 0;
       this.last = time;
-      this.controls.update();
-      if (this.running && this.car) {
+      const driving = this.drive.mode !== 'studio';
+      if (driving) {
+        if (!this.drive.paused) this.drive.advance(dt);
+        this.updateDriveView(dt);
+        this.car.roll(this.drive.distance);
+        this.road.update(this.drive);
+        this.studio.road(this.drive);
+        this.events.driving(this.drive);
+      } else this.controls.update();
+      if (!driving && this.running && this.car) {
         const step = dt * 125;
         this.actual += T.MathUtils.clamp(this.speed - this.actual, -step, step);
         this.car.field.mesh.visible = this.actual > 0.1;
@@ -387,7 +511,11 @@ export class VehicleStudio {
       const stats = this.renderer.info.render;
       this.canvas.dataset.calls = stats.calls;
       this.canvas.dataset.triangles = stats.triangles;
-      if (this.running && ((!reduced() && this.actual > 0) || this.actual !== this.speed))
+      if (
+        driving
+          ? !this.drive.paused || this.transition < 1
+          : this.running && ((!reduced() && this.actual > 0) || this.actual !== this.speed)
+      )
         this.request();
     });
   }
@@ -404,6 +532,8 @@ export class VehicleStudio {
     this.studio.dispose();
     release(this.scene);
     this.env?.dispose();
+    this.lighting?.dispose();
+    this.grain.dispose();
     this.livery?.dispose();
     this.renderer.dispose();
   }

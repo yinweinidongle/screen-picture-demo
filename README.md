@@ -16,17 +16,17 @@
 
 ## 体验九个大屏
 
-| 场景             | 核心交互                                                 | 在线体验                                                                                  |
-| ---------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| 智慧风电         | 透明机舱、部件点选、启停、环绕、线框、爆炸拆解与发电流光 | [wind.html](https://yinweinidongle.github.io/screen-picture-demo/wind.html)               |
-| 智慧工厂         | 真实三维厂区、建筑点选、日夜扫光、极细发光网格与菲涅耳光 | [factory.html](https://yinweinidongle.github.io/screen-picture-demo/factory.html)         |
-| 全国人口         | 拖动地球、人口迁徙、分布模式、省级数据与图表交互         | [population.html](https://yinweinidongle.github.io/screen-picture-demo/population.html)   |
-| AI 智能巡检      | 地图厚度与辉光、省份悬停、车辆详情、轨迹回放与事件筛选   | [inspection.html](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)   |
-| 禾境 · 智慧农业  | 温室与农田、模拟灌溉、作物监测、区域指标与农事确认       | [agriculture.html](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html) |
-| NEXUS · 智慧工业 | 机械臂车间、班次计划、设备效率、工单与维护提醒           | [industry.html](https://yinweinidongle.github.io/screen-picture-demo/industry.html)       |
-| 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情         | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)               |
-| 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势         | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)   |
-| 超跑风洞实验室   | HDR 影棚、动漫痛车涂装与车漆裁剪过渡、可调侧风与阻力曲线 | [aero-lab.html](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)       |
+| 场景             | 核心交互                                                   | 在线体验                                                                                  |
+| ---------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 智慧风电         | 透明机舱、部件点选、启停、环绕、线框、爆炸拆解与发电流光   | [wind.html](https://yinweinidongle.github.io/screen-picture-demo/wind.html)               |
+| 智慧工厂         | 真实三维厂区、建筑点选、日夜扫光、极细发光网格与菲涅耳光   | [factory.html](https://yinweinidongle.github.io/screen-picture-demo/factory.html)         |
+| 全国人口         | 拖动地球、人口迁徙、分布模式、省级数据与图表交互           | [population.html](https://yinweinidongle.github.io/screen-picture-demo/population.html)   |
+| AI 智能巡检      | 地图厚度与辉光、省份悬停、车辆详情、轨迹回放与事件筛选     | [inspection.html](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)   |
+| 禾境 · 智慧农业  | 温室与农田、模拟灌溉、作物监测、区域指标与农事确认         | [agriculture.html](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html) |
+| NEXUS · 智慧工业 | 机械臂车间、班次计划、设备效率、工单与维护提醒             | [industry.html](https://yinweinidongle.github.io/screen-picture-demo/industry.html)       |
+| 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情           | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)               |
+| 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势           | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)   |
+| 超跑风洞实验室   | 分层车漆与动漫涂装、风洞绕流、时空隧道、雷达与渐变规划路线 | [aero-lab.html](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)       |
 
 ### 01 / 智慧风电
 
@@ -64,9 +64,9 @@
 
 ### 09 / 超跑风洞实验室
 
-从前 ¾ 镜头观察熔岩橙车漆，切换「夜驰 · 动漫痛车」可以看到冰蓝发光边扫过车门，露出银发赛车手贴花。启动风洞后，改变风速或侧风角，观察流线怎样绕过车顶、沿车侧进入尾流。[操作与渲染说明](docs/screens/aero-lab.md)
+在兰博基尼 Aventador 上切换金属车漆和动漫贴花，观察侧风怎样改变车顶、轮拱与车尾的绕流。进入「时空隧道」，看多色光迹随加速拉长。「自动驾驶」提供前方慢车和密集车流两种路况，路面上的蓝紫渐变色带会随雷达探测结果变道或缩短。[操作与渲染说明](docs/screens/aero-lab.md)
 
-[![超跑风洞实验室中的概念跑车](assets/previews/aero-lab.webp)](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)
+[![超跑风洞实验室实录，依次展示车漆、侧风绕流、时空隧道和自动驾驶的变道与跟车](docs/media/aero-lab-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)
 
 ## 本地开发
 
@@ -116,6 +116,6 @@ docs/                     架构、素材、性能记录、场景说明和实际
 
 PR 自动运行构建、格式、单元测试和 Chromium 交互检查；合并 `master` 后由 GitHub Actions 发布 `dist/` 到 Pages。`index.html` 和 `home.html` 均为展厅。开发者提交源码，生成目录不入库。
 
-原创代码、程序化几何和工厂网格采用 **[MIT](LICENSE)**。地图和地形来自 Natural Earth 公共领域数据。Solar System Scope 的地球贴图和超跑风洞的 Car Concept 模型采用 CC BY 4.0。风洞影棚 HDRI 采用 CC0，生成的美术素材及第三方软件各自保留许可。[素材声明](THIRD_PARTY_NOTICES.md) · [来源清单](assets/manifest.json) · [重建方法](docs/assets.md)
+原创代码、程序化几何和工厂网格采用 **[MIT](LICENSE)**。地图和地形来自 Natural Earth 公共领域数据。Solar System Scope 的地球贴图和 Arion Digital 的 Aventador 模型采用 CC BY 4.0。风洞影棚 HDRI 采用 CC0，生成的美术素材及第三方软件各自保留许可。[素材声明](THIRD_PARTY_NOTICES.md) · [来源清单](assets/manifest.json) · [重建方法](docs/assets.md)
 
 所有统计和设备控制均为演示。三维场景按单张参考图重建，未提供原始 CAD，不可见结构与尺寸为示意。大屏按固定设计比例适配窗口，横屏桌面效果最佳；Home 支持手机单列浏览。

@@ -1,24 +1,25 @@
 {
-  "capturedOn": "2026-11-24",
-  "assetInventorySha256": "3ed8ac13d10b4fb251716bc3a5f636f6940f64eed0f8ec93aa9c56871baa7221",
-  "notes": "Home, Orbital Relay and AERO / LAB were captured on 2026-11-24. The supercar recording shows an animated paint reveal and a wind test at +8 degrees. Only the licensed Khronos Car Concept appears in public captures. Orbital Relay's four-second flight recording uses a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
+  "capturedOn": "2026-11-25",
+  "assetInventorySha256": "36ba1bfa367375bf9ec47336766cd7c65c576edc26be4456e8e392663a112242",
+  "notes": "Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 16.83-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, crosswind, multicolour warp, radar-guided passing and following. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
   "files": {
-    "home-preview.png": "d039630282c547b64f3d2fcaf465b0e5eddabae63d0e0b59578065efc4de2a59",
-    "home-mobile-preview.png": "4c94b6e496f09bd3d6e01eed90446e0f6a75eb5750528194d48ec9f28b7f5176",
+    "home-preview.png": "ac231fb5c7a31b3e938d32a3617d2c4ec6ebc334fafc8b918bc08b1ab3f040ab",
+    "home-mobile-preview.png": "ea9c7377af5d1d2ee6f4d578bf04aec3b18dc314ee631ff06270f69a278cd801",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
     "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762",
     "earth-link-lighting.webp": "56b185b7e094d06d30ec06a79bea7eda4b19bd4a01ea0d0f5f4dd08aaee6564d",
     "earth-link-trails.webp": "8a894082807975e392c49e0d941d23d52db5cc015685c36bd5bfe270e23cbd4b",
     "aero-lab-demo.webp": "8e2f95b45406423eef135f05c81513ad4caa3076bd121abb7aa5d6a427640728",
-    "aero-lab-states.webp": "0b782910e2d8ba9d94814bb1792cb9f6d9ed29175633a25a8b6c3381a73698f0",
-    "aero-lab-livery.webp": "ec43de6ec910ed60659b1931b12834c693f9375df6a039deb00cdbf8a8aae907"
+    "aero-lab-states.webp": "2acedfdec34f62953fa623e355792d8176721b01955b48f6c4cdb3995c3c1c83",
+    "aero-lab-livery.webp": "f879fba86b7d8c52c9aeb5405959ed3fccd69b102cc3bc1feddcfbfb66054931",
+    "aero-lab-demo.gif": "2f86619fac9c2bc87a2dd95df5f79a2779211e7f9150c47d3bc28eb7580be8ed"
   },
   "previewFiles": {
     "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
     "assets/previews/industry.webp": "78e7375a407fb67bd1f77c7eeb8ee5b03485e4c761c40431d8add40ab102205c",
     "assets/previews/park.webp": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3",
     "assets/previews/earth-link.webp": "00d93da56e6f7547516bc2eac86065d8bcef05d8d02cb911f616890ca6c8ffa3",
-    "assets/previews/aero-lab.webp": "f7dde3e2a6ec080f5839b4af576f977173a846e5a9609dfaf72a1063206e54f6"
+    "assets/previews/aero-lab.webp": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3"
   }
 }

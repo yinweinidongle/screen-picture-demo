@@ -1,6 +1,6 @@
 # 超跑风洞实验室 · AERO / LAB
 
-中央的 Three.js 影棚展示 Khronos Car Concept。沿车身拖动可以检查反射、车漆过渡和绕流。桌面在同一屏排列涂层、风洞工况和气动力读数，手机竖屏把三个面板排在车辆下方。
+中央的 Three.js 影棚展示 Arion Digital 制作的 Lamborghini Aventador。拖动环绕可检查反射、车漆过渡和绕流。顶部可以切换风洞、时空隧道和自动驾驶，仪表随场景显示气动力、速度曲线或雷达图。手机竖屏把面板排在车辆下方。
 
 ![风洞影棚全景](../../assets/previews/aero-lab.webp)
 
@@ -12,7 +12,7 @@
 
 ![正侧镜头下的原创动漫痛车涂装](../media/aero-lab-livery.webp)
 
-影棚以摄影 HDRI、ACES 色调映射、清漆材质、软阴影和粗糙平面反射构成。玻璃、轮胎、内饰和车漆分别着色。过渡在世界坐标中计算一个带两层噪声的椭球距离场，先把裁剪区域写入模板缓冲，再在通过深度与模板测试的片元绘制新漆。两层漆都在裁剪边附近叠加冰白亮芯与青色光晕，旋转镜头时边界仍留在同一块车身钣金上。[车漆着色器](../../src/screens/aero-lab/finish.js) · [影棚照明](../../src/screens/aero-lab/studio.js)
+摄影 HDRI 与长条柔光箱共同决定车身倒影。带细小金属颗粒的底漆随观察角变色，外层清漆单独反射锐利高光。法线和粗糙度纹理按距离过滤，远景仍保留顺滑的腰线。换漆时，世界坐标中的双层噪声扰动椭球裁剪边界。通过模板与深度测试的车身片元显示新漆，两侧叠加冰白亮芯与青色光晕。[车漆着色器](../../src/screens/aero-lab/finish.js) · [反射环境](../../src/screens/aero-lab/lighting.js)
 
 ## 风洞试验
 
@@ -20,17 +20,25 @@
 
 在待机状态下拖动风速或偏角可预估读数。按「启动风洞」后气流逐步达到设定速度，暂停会保留当前流线和读数。「结束试验」返回待机。风速范围为 0–300 km/h，侧风偏角为 −15° 至 +15°。系统开启减少动态效果时，车辆即时换色，流线停在一个可检查的相位。
 
-场景从当前车辆的网格采样 43 个纵向截面，用平滑后的车顶和侧面轮廓引导 24 条流线。风速控制脉冲速度，入流偏角改变流线偏移。迎风面积取自正面和侧面各 48 条水平带的轮廓包络，并按模型自身的米制尺寸换算。更换车辆会重新采样。
+场景从当前车辆网格采样 43 个纵向截面，每个截面再分 19 条横向采样带。40 条细流线分别绕过车顶、翼子板和车侧，在车尾逐渐汇流。流动亮点沿线传播，速度由实际来流控制。迎风面积取自正面和侧面各 48 条水平带的轮廓包络，按模型自身尺寸换算。更换车辆会重新采样。
 
-动压 `q = ½ρv²`，阻力 `F = q × Cd × A`。空气密度取 1.225 kg/m³，风速换算为 m/s。以偏航角 β 估算 `Cd = 0.32 + 0.16 sin²β` 及 `A = A正 cosβ + A侧 |sinβ|`。系数为演示假设，适合比较风速、侧风和模型轮廓的相对影响。工程验证需要实测或 CFD。公共模型在 160 km/h、零偏角时的迎风面积约 2.65 m²，动压约 1.21 kPa，阻力约 1.03 kN。[阻力方程](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/) · [气流与读数实现](../../src/screens/aero-lab/airflow.js)
+动压 `q = ½ρv²`，阻力 `F = q × Cd × A`。空气密度取 1.225 kg/m³，风速换算为 m/s。以偏航角 β 估算 `Cd = 0.32 + 0.16 sin²β` 及 `A = A正 cosβ + A侧 |sinβ|`。系数为演示假设，适合比较风速、侧风和模型轮廓的相对影响。工程验证需要实测或 CFD。Aventador 在 160 km/h、零偏角时的模型迎风面积约 2.28 m²，动压约 1.21 kPa，估算阻力约 0.88 kN。[阻力方程](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/) · [气流与读数实现](../../src/screens/aero-lab/airflow.js)
 
-![固定机位实录，熔岩橙过渡为动漫痛车，随后在侧风中启动风洞](../media/aero-lab-demo.webp)
+## 驾驶场景
+
+- **时空隧道**采用低机位车头前三分之四视角。起步后，292 束光迹随车速拉长。每束光的亮芯、边缘和拖尾取自不同色相，洋红、电蓝、青绿和金黄掠过车身两侧并映在地面上。目标速度可调至 100–320 km/h，仪表显示实际速度、行驶距离和加速度。[光迹着色器](../../src/screens/aero-lab/warp.js)
+- **自动驾驶**模拟三车道路段与五辆交通车。10 Hz 雷达在 68 米前向扇区及近侧盲区采样。「前方慢车」中，规划器预测相邻车道的间距，再沿五次曲线变道。「密集车流」中，车辆减速跟随，路线终点停在前车车尾后方。[雷达与规划](../../src/screens/aero-lab/driving.js)
+- **路线颜色**由片元 Shader 从近端电蓝经靛蓝连续过渡到远端紫罗兰。色带沿实际规划曲线铺在路面，两侧柔化，终点渐隐。右下雷达图使用相同的路线、配色和终点。[路面着色器](../../src/screens/aero-lab/road-scene.js)
+
+两个驾驶场景均支持暂停、单步推进 0.75 秒和重置。启用系统“减少动态效果”时，场景先停在可检查的代表帧。按 `Esc` 或「返回影棚」恢复原机位与风洞工况。加速镜头参考了小米 SU7 网页体验的公开复现拆解。[SU7 效果复现作者的技术记录](https://alphardex.github.io/mygo/posts/17935/)
+
+![实际页面录制的换漆、风洞、加速穿梭和自动驾驶演示](../media/aero-lab-demo.gif)
 
 ## 资源与运行
 
-`npm run build` 生成站点入口 `dist/aero-lab.html`，并把模型、HDRI、字体、人物贴图及脚本嵌入可直接打开的 `dist/standalone/aero-lab.html`。WebGL 2 不可用时显示影棚实拍，风速、偏角与气动估算仍可操作。公共模型有 213,347 个三角形，GLB 为 3,758,668 字节。桌面 Chromium、1920 × 1080 视口的常规环绕帧记录到 253 次绘制、444,392 个三角形，统计包含地面反射。
+`npm run build` 生成站点入口 `dist/aero-lab.html`，并把模型、HDRI、字体、人物贴图及脚本嵌入可直接打开的 `dist/standalone/aero-lab.html`。WebGL 2 不可用时显示影棚实录，风速、偏角与气动估算仍可操作。Aventador 有 10,252 个三角形，GLB 为 2,602,712 字节。四个轮组各有独立轴心，按实际轮胎半径把行驶距离换算成转角。
 
-Car Concept 的模型与纹理由 Eric Chadwick 制作，© 2024 Darmstadt Graphics Group GmbH，基于 Unity Fan 的 CC0 原型，授权为 CC BY 4.0。保留模型上的原商标。本项目用 glTF Transform 4.5.1 的 `webp --quality 89` 和 `meshopt --level medium` 压缩资源。Studio Small 09 由 Sergej Majboroda 拍摄，Poly Haven 以 CC0 提供。Barlow Condensed 使用 SIL OFL 1.1。[模型固定版本](https://github.com/KhronosGroup/glTF-Sample-Assets/tree/7d4ba189827916452eeadc82d4b712dbc6280a6f/Models/CarConcept) · [摄影棚 HDRI](https://polyhaven.com/a/studio_small_09) · [署名与许可](../licensing/aero-lab-assets.txt)
+Arion Digital 以 CC BY 4.0 发布模型与贴图。将固定版本的 GLB 下载到本地后，运行 `python scripts/prepare_aero_aventador.py source.glb assets/models/aero-aventador.glb` 可复现单位换算、轮心校准与材质分配。Studio Small 09 由 Sergej Majboroda 拍摄，Poly Haven 以 CC0 提供。Barlow Condensed 使用 SIL OFL 1.1。[作者的模型](https://sketchfab.com/3d-models/lamborghini-aventador-888e37a3641d4f7b94bc1a39396e2441) · [固定版本的 GLB](https://github.com/immx2/showcase-01/blob/af546ef179a1b8c2b1d4d00b01454fe6214f0126/public/models/lamborghini.glb) · [摄影棚 HDRI](https://polyhaven.com/a/studio_small_09) · [署名与许可](../licensing/aero-lab-assets.txt)
 
 ### 动漫贴图
 

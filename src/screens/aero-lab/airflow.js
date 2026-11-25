@@ -6,6 +6,7 @@ import {
   Mesh,
   DoubleSide,
   AdditiveBlending,
+  Vector2,
   Vector3,
 } from 'three';
 
@@ -26,6 +27,9 @@ export function carProfile(meshes, modelHeight, displayScale) {
     height = new Float32Array(count),
     width = new Float32Array(count);
   const v = new Vector3();
+  const columns = 19,
+    halfSpan = 1.65;
+  const surface = Array.from({ length: columns }, () => new Float32Array(count));
   // Integrate horizontal strips of the front and side silhouettes. Remove the
   // viewer's fit-to-camera scaling to recover square metres from the GLB.
   const bands = Array.from({ length: 48 }, () => ({
@@ -42,6 +46,8 @@ export function carProfile(meshes, modelHeight, displayScale) {
       const k = Math.max(0, Math.min(count - 1, Math.round((v.z / length + 0.5) * (count - 1))));
       height[k] = Math.max(height[k], v.y);
       width[k] = Math.max(width[k], Math.abs(v.x));
+      const column = Math.min(columns - 1, Math.round((Math.abs(v.x) / halfSpan) * (columns - 1)));
+      surface[column][k] = Math.max(surface[column][k], v.y);
       const band = bands[Math.max(0, Math.min(bands.length - 1, Math.floor((v.y - 0.006) / step)))];
       band.left = Math.min(band.left, v.x);
       band.right = Math.max(band.right, v.x);
@@ -68,6 +74,17 @@ export function carProfile(meshes, modelHeight, displayScale) {
   }
   const roof = smooth(height),
     sides = smooth(width);
+  const sections = surface.map((row, j) =>
+    smooth(
+      row.map((h, i) =>
+        Math.max(
+          h,
+          surface[Math.max(0, j - 1)][i] * 0.98,
+          surface[Math.min(columns - 1, j + 1)][i] * 0.98,
+        ),
+      ),
+    ),
+  );
   function sample(values, z) {
     const f = Math.max(0, Math.min(count - 1, (z / length + 0.5) * (count - 1))),
       k = Math.floor(f);
@@ -92,13 +109,22 @@ export function carProfile(meshes, modelHeight, displayScale) {
   const area = (widths) => widths.reduce((sum, w) => sum + w * step, 0) / displayScale ** 2;
   return {
     section: { front: area(frontWidth), side: area(sideWidth) },
-    sample: (z) => ({ roof: sample(roof, z), halfWidth: sample(sides, z) }),
+    sample(z, x) {
+      const u = Math.min(columns - 1, (Math.abs(x) / halfSpan) * (columns - 1)),
+        j = Math.floor(u);
+      const a = sample(sections[j], z),
+        b = sample(sections[Math.min(columns - 1, j + 1)], z);
+      return {
+        roof: Math.max(sample(roof, z) * 0.49, a + (b - a) * (u - j)),
+        halfWidth: sample(sides, z),
+      };
+    },
   };
 }
 
 export function flowField(profile) {
-  const steps = 116,
-    lanes = 24,
+  const steps = 156,
+    lanes = 40,
     points = [],
     tangents = [],
     uvs = [],
@@ -121,7 +147,11 @@ export function flowField(profile) {
   geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
   geometry.setAttribute('lane', new Float32BufferAttribute(lanesAttr, 1));
   geometry.setIndex(indices);
-  const uniforms = { uPhase: { value: 0 }, uStrength: { value: 1 } };
+  const uniforms = {
+    uPhase: { value: 0 },
+    uStrength: { value: 1 },
+    uViewport: { value: new Vector2(1280, 540) },
+  };
   const material = new ShaderMaterial({
     uniforms,
     transparent: true,
@@ -129,19 +159,25 @@ export function flowField(profile) {
     side: DoubleSide,
     forceSinglePass: true,
     blending: AdditiveBlending,
-    vertexShader: `attribute vec3 along;attribute float lane;
-      varying vec2 ribbon;varying float strand;
-      void main(){vec4 c=modelViewMatrix*vec4(position,1.);
-        vec3 tangent=mat3(modelViewMatrix)*along;
-        vec3 side=cross(tangent,-c.xyz);c.xyz+=side/max(length(side),.001)*uv.y*.014;
-        gl_Position=projectionMatrix*c;ribbon=uv;strand=lane;}`,
+    vertexShader: `attribute vec3 along;attribute float lane;uniform vec2 uViewport;
+      varying vec2 ribbon;varying float strand;varying float station;
+      void main(){vec4 c=projectionMatrix*modelViewMatrix*vec4(position,1.);
+        vec4 d=projectionMatrix*modelViewMatrix*vec4(along,0.);
+        vec2 tangent=(d.xy*c.w-c.xy*d.w)*uViewport;
+        vec2 side=vec2(-tangent.y,tangent.x)/max(length(tangent),.0001);
+        c.xy+=side*uv.y*(3.4+1.5*fract(lane*.618))/uViewport*c.w;
+        gl_Position=c;ribbon=uv;strand=lane;station=position.z;}`,
     fragmentShader: `uniform float uPhase,uStrength;varying vec2 ribbon;varying float strand;
-      void main(){float pulse=fract(ribbon.x*2.4-uPhase+strand*.217);
-        float tail=pow(pulse,7.)*(1.-smoothstep(.98,1.,pulse));
-        float edge=exp(-ribbon.y*ribbon.y*3.8);
-        float ends=smoothstep(0.,.08,ribbon.x)*(1.-smoothstep(.89,1.,ribbon.x));
-        vec3 col=mix(vec3(.17,.64,.77),vec3(.8,1.,.80),tail);
-        gl_FragColor=vec4(col,edge*ends*uStrength*(.185+.68*tail));
+      varying float station;
+      void main(){float seed=fract(strand*.618034);
+        float p=fract(ribbon.x*.34-uPhase+seed*2.7);
+        float pulse=exp(-pow((p-.75)/mix(.19,.026,step(.75,p)),2.));
+        float d=ribbon.y*ribbon.y;
+        float core=exp(-d*13.), veil=exp(-d*3.8);
+        float ends=1.-smoothstep(4.45,7.,abs(station));
+        vec3 col=mix(vec3(.27,.62,.70),vec3(.76,1.,1.),pulse);
+        float opacity=(.18+.25*seed+.54*pulse)*core+.08*veil;
+        gl_FragColor=vec4(col,opacity*ends*uStrength);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }`,
@@ -150,54 +186,65 @@ export function flowField(profile) {
   mesh.renderOrder = 8;
   mesh.visible = false;
   mesh.frustumCulled = false;
-  const p = new Vector3(),
-    before = new Vector3(),
-    after = new Vector3();
+  const samples = Array.from({ length: steps + 1 }, () => new Vector3());
+  const tangent = new Vector3();
   function setYaw(degrees) {
     const drift = Math.tan((degrees * Math.PI) / 180);
     function point(lane, t, out) {
-      const z = 6.6 - t * 13.2,
-        above = lane < 12;
-      const side = lane % 2 === 0 ? -1 : 1;
-      const flat = above
-        ? (lane - 5.5) * 0.225
-        : side * (0.6 + (Math.floor((lane - 12) / 2) % 3) * 0.32);
-      const y0 = above ? 0.32 + (lane % 3) * 0.095 : 0.19 + Math.floor((lane - 12) / 6) * 0.36;
-      const wake = Math.max(0, -z - 2.2);
-      const decay = Math.exp(-(Math.max(0, Math.abs(z) - 2.36) ** 2) / (z < 0 ? 2.2 : 0.95));
-      const { roof, halfWidth } = profile(z);
+      const z = 7 - t * 14,
+        above = lane < 22,
+        side = lane % 2 === 0 ? -1 : 1;
+      const band = Math.floor((lane - 22) / 2),
+        seed = (lane * 0.618034) % 1;
+      const flat = above ? (lane - 10.5) * 0.115 : side * (0.75 + (band % 3) * 0.19);
+      const y0 = above ? 0.39 + 0.34 * seed : 0.15 + band * 0.098;
+      const wake = Math.max(0, -z - 2.25);
+      const influence = Math.exp(-(Math.max(0, Math.abs(z) - 2.32) ** 2) / (z < 0 ? 3.8 : 0.95));
       const x0 = flat - drift * z;
+      const { roof, halfWidth } = profile(z, x0);
+      const lift = roof + 0.075 + 0.12 * seed - y0;
       const y = above
-        ? y0 + Math.max(0, roof + 0.12 + 0.085 * (lane % 3) - y0) * decay
-        : y0 + 0.055 * decay;
-      const x = above ? x0 : x0 + side * Math.max(0, halfWidth + 0.13 - side * x0) * decay;
+        ? y0 + 0.5 * (lift + Math.hypot(lift, 0.09)) * influence
+        : y0 + 0.075 * influence;
+      const shift = halfWidth + 0.065 + 0.043 * band - side * x0;
+      const x = above
+        ? x0 + flat * 0.09 * influence
+        : x0 + side * 0.5 * (shift + Math.hypot(shift, 0.08)) * influence;
+      const vortex = (above ? 0.033 : 0.085) * wake * Math.exp(-wake * 0.67);
       out.set(
-        x + Math.sin(wake * 3.3 + lane) * 0.075 * Math.min(wake, 1) * Math.exp(-wake * 0.35),
-        y,
+        x + vortex * Math.sin(wake * 2.2 + lane * 0.7),
+        y + vortex * Math.cos(wake * 2.2 + lane * 0.7),
         z,
       );
     }
     const pos = geometry.attributes.position,
       dir = geometry.attributes.along;
-    for (let lane = 0; lane < lanes; lane++)
+    for (let lane = 0; lane < lanes; lane++) {
+      for (let j = 0; j <= steps; j++) point(lane, j / steps, samples[j]);
+      let arc = 0;
       for (let j = 0; j <= steps; j++) {
-        const t = j / steps;
-        point(lane, t, p);
-        point(lane, Math.max(0, t - 0.003), before);
-        point(lane, Math.min(1, t + 0.003), after);
-        after.sub(before).normalize();
+        const p = samples[j];
+        if (j) arc += p.distanceTo(samples[j - 1]);
+        tangent
+          .subVectors(samples[Math.min(j + 1, steps)], samples[Math.max(j - 1, 0)])
+          .normalize();
         const i = (lane * (steps + 1) + j) * 2;
         for (const k of [i, i + 1]) {
           pos.setXYZ(k, p.x, p.y, p.z);
-          dir.setXYZ(k, after.x, after.y, after.z);
+          dir.setXYZ(k, tangent.x, tangent.y, tangent.z);
+          geometry.attributes.uv.setX(k, arc);
         }
       }
-    pos.needsUpdate = dir.needsUpdate = true;
+    }
+    pos.needsUpdate = dir.needsUpdate = geometry.attributes.uv.needsUpdate = true;
   }
   setYaw(0);
   return {
     mesh,
     setYaw,
+    resize(w, h) {
+      uniforms.uViewport.value.set(w, h);
+    },
     advance(dt, speed) {
       uniforms.uPhase.value = (uniforms.uPhase.value + (dt * speed) / 200) % 1;
       uniforms.uStrength.value = Math.min(1, speed / 35);

@@ -1,12 +1,21 @@
 AERO / LAB — Supercar Wind Tunnel
 
-Car Concept, © 2024 Darmstadt Graphics Group GmbH. Model and textures by Eric
+Lamborghini Aventador by Arion Digital, licensed under CC BY 4.0.
+https://sketchfab.com/3d-models/lamborghini-aventador-888e37a3641d4f7b94bc1a39396e2441
+https://creativecommons.org/licenses/by/4.0/
+Pinned GLB distribution:
+https://github.com/immx2/showcase-01/blob/af546ef179a1b8c2b1d4d00b01454fe6214f0126/public/models/lamborghini.glb
+The derivative converts centimetres to metres, centres each wheel at its axle
+and separates paint and wheel materials. The app recolours the gold paint
+islands and adds an illustrated livery, lighting, flow and driving effects.
+
+Historical recording (aero-lab-demo.webp): Car Concept, © 2024 Darmstadt Graphics Group GmbH. Model and textures by Eric
 Chadwick, based on Unity Fan's CC0 Free Concept Car 004. Used under Creative
 Commons Attribution 4.0 International: https://creativecommons.org/licenses/by/4.0/
 Source and original credits:
 https://github.com/KhronosGroup/glTF-Sample-Assets/tree/7d4ba189827916452eeadc82d4b712dbc6280a6f/Models/CarConcept
-The included derivative compresses textures to WebP and meshes using meshoptimizer.
-The scene and its captures add custom finishes, lighting and simulated airflow.
+The earlier derivative used WebP textures and meshoptimizer compression.
+The recording adds custom finishes, lighting and simulated airflow.
 The Khronos and 3D Commerce marks on the vehicle retain their respective terms:
 https://github.com/KhronosGroup/glTF-Sample-Assets/blob/7d4ba189827916452eeadc82d4b712dbc6280a6f/LICENSES/LicenseRef-LegalMark-Khronos.txt
 
