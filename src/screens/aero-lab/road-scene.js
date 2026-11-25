@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 import * as T from 'three';
 import { trafficX } from './radar.js';
-import { radarWaves } from './radar-waves.js';
+import { radarRays } from './radar-rays.js';
 import { createWarpField } from './warp.js';
 
 const vert = `varying vec2 vUv;varying vec3 point;
@@ -361,14 +361,14 @@ export function createRoadScene() {
     trees = roadsideTrees(),
     traffic = trafficMeshes(),
     route = guidance(),
-    waves = radarWaves();
-  track.add(verge, trees, traffic.group, route.path, waves.mesh);
+    rays = radarRays();
+  track.add(verge, trees, traffic.group, route.path, rays.mesh);
   rotated.add(track);
   root.add(vault.mesh, sky, rotated);
   root.visible = false;
   return {
     root,
-    emitters: { tunnel: [vault.mesh], pilot: [waves.mesh, route.path] },
+    emitters: { tunnel: [vault.mesh], pilot: [rays.mesh, route.path] },
     show(mode) {
       root.visible = mode !== 'studio';
       vault.mesh.visible = mode === 'tunnel';
@@ -384,7 +384,7 @@ export function createRoadScene() {
         trees.position.z = -(sim.distance % grovePeriod);
         traffic.update(sim);
         route.update(sim);
-        waves.update(sim);
+        rays.update(sim);
       }
     },
   };

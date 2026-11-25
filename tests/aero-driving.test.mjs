@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import * as T from 'three';
 import { DriveSimulation, laneWidth, radarRange } from '../src/screens/aero-lab/driving.js';
-import { RoadRadar, radarBins } from '../src/screens/aero-lab/radar.js';
+import { RoadRadar, beamCount } from '../src/screens/aero-lab/radar.js';
+import { radarRays } from '../src/screens/aero-lab/radar-rays.js';
 import { curveValue } from '../src/screens/aero-lab/planner.js';
 import { rollingWheels } from '../src/screens/aero-lab/wheels.js';
 
@@ -72,38 +73,65 @@ test('360° sensing covers the rear and returns the first vehicle surface on eac
   assert.ok(sim.nearest < 8);
 });
 
-test('each wave stays at its emission point and only the sectors that hit a surface disappear', () => {
+test('straight radar beams stop at the first surface, fade independently, and rescan cleared bearings', () => {
   const radar = new RoadRadar();
-  const sim = { x: 0, distance: 0, time: 0, cars: [{ x: 0, z: 15, heading: 0 }] };
-  radar.advance(sim);
-  const first = radar.pulses[0],
-    side = radarBins / 4,
-    rear = radarBins / 2;
-  assert.ok(Math.abs(first.visibleTo[0] - 12.88) < 0.01);
-  for (let i = 1; i <= 24; i++) {
-    sim.time = i / 60;
-    sim.distance = i * 0.09;
-    sim.x = 0.3;
-    sim.cars[0].z = 15 - sim.distance;
+  const sim = {
+    x: 0,
+    time: 0,
+    heading: 0,
+    cars: [
+      { x: 0, z: 15 },
+      { x: 0, z: 35 },
+    ],
+  };
+  const tick = (frame) => {
+    sim.time = frame / 60;
     radar.advance(sim);
+  };
+  for (let i = 0; i <= 7; i++) tick(i);
+  const front = radar.beams[0],
+    side = radar.beams[beamCount / 4],
+    rear = radar.beams[beamCount / 2];
+  assert.deepEqual(front.direction, { x: 0, z: 1 });
+  assert.ok(Math.abs(front.length - 12.88) < 0.01 && front.vehicleHit);
+  assert.ok(Math.abs(side.length - 6.29) < 0.01 && !side.vehicleHit);
+  assert.ok(rear.length > front.length && rear.energy > 0.95);
+  assert.ok(radar.beams.some((b) => b.energy === 0)); // Interleaved transmissions, not a solid fan.
+  sim.cars.shift();
+  for (let i = 8; i <= 20; i++) tick(i);
+  assert.ok(Math.abs(front.length - 12.88) < 0.01 && front.energy === 0);
+  assert.ok(rear.energy > 0 && rear.length > 40);
+  sim.cars = [];
+  sim.x = 0.8;
+  for (let i = 21; i <= 60; i++) tick(i);
+  assert.ok(front.energy > 0.9 && front.length > 20 && !front.vehicleHit);
+  assert.ok(front.direction.x !== 0);
+  assert.ok(Math.abs(side.direction.x * side.length + sim.x - 6.29) < 0.02);
+  assert.ok(radar.beams.every((b) => b.length <= radarRange));
+});
+
+test('rendered rays follow the moving transmitter and use the measured endpoints and echoes', () => {
+  const sim = new DriveSimulation();
+  sim.reset('pilot');
+  const field = radarRays(),
+    geometry = field.mesh.geometry;
+  for (const dt of [0.12, 0.27, 0.66]) {
+    sim.advance(dt);
+    field.update(sim);
+    assert.equal(field.mesh.position.x, sim.x);
+    assert.equal(geometry.instanceCount, beamCount);
+    sim.radar.beams.forEach((b, i) => {
+      const ray = geometry.attributes.ray;
+      assert.ok(Math.abs(ray.getX(i) - b.direction.x) < 1e-6);
+      assert.ok(Math.abs(ray.getY(i) - b.direction.z) < 1e-6);
+      assert.ok(Math.abs(ray.getZ(i) - b.length) < 0.0001);
+      assert.ok(Math.abs(ray.getW(i) - b.energy) < 1e-6);
+      assert.equal(geometry.attributes.vehicleEcho.getX(i), Number(!!b.vehicleHit));
+    });
   }
-  assert.deepEqual([first.x, first.s], [0, 0]);
-  for (const angle of [0, radarBins - 1]) assert.ok(Math.abs(first.cut[angle] - 12.88) < 0.03);
-  assert.ok(Math.abs(first.cut[side] - 6.29) < 0.01);
-  assert.ok(Math.abs(first.cut[3 * side] - 6.29) < 0.01);
-  assert.equal(first.cut[rear], radarRange);
-  sim.cars = [{ x: 0, z: -5 - sim.distance }]; // Moves into the rear beam after this wave has passed.
-  for (let i = 25; i <= 55; i++) {
-    sim.time = i / 60;
-    radar.advance(sim);
-  }
-  assert.ok(first.visibleTo[0] < 13 && first.radius > 30);
-  assert.equal(first.visibleTo[rear], radarRange);
-  const next = radar.pulses[1];
-  assert.deepEqual([next.x, next.s], [sim.x, sim.distance]);
-  assert.equal(next.visibleTo[0], radarRange);
-  assert.ok(next.visibleTo[rear] < 7);
-  assert.ok(next.radius < 5);
+  assert.ok(Math.abs(sim.x) > 0.2);
+  geometry.dispose();
+  field.mesh.material.dispose();
 });
 
 test('an overtaking path joins the open lane smoothly and agrees with subsequent wheel positions', () => {

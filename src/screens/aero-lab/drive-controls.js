@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-import { laneWidth, radarRange, radarBins, trafficX } from './radar.js';
+import { laneWidth, radarRange, trafficX } from './radar.js';
 
 function scope(canvas, sim) {
   const ctx = canvas.getContext('2d'),
@@ -37,26 +37,18 @@ function scope(canvas, sim) {
       Y = (z) => h * 0.7 - (z * h * 0.67) / radarRange;
     for (let n = -1.5; n <= 1.5; n++) line(X(n * laneWidth), 0, X(n * laneWidth), h, '#40565b');
     for (const z of [20, 40, 60]) line(X(-5.4), Y(z), X(5.4), Y(z), '#2f4348');
-    for (const p of sim.radar.pulses) {
-      if (p.radius < 0.2 || p.radius >= radarRange) continue;
-      ctx.beginPath();
-      ctx.lineWidth = 1.4;
-      ctx.strokeStyle = '#6cbfc5';
-      let pen = false;
-      for (let i = 0; i <= radarBins; i++) {
-        const angle = (i * Math.PI * 2) / radarBins;
-        if (p.radius >= p.visibleTo[i % radarBins]) {
-          pen = false;
-          continue;
-        }
-        const x = X(p.x + Math.sin(angle) * p.radius),
-          y = Y(p.s - sim.distance + Math.cos(angle) * p.radius);
-        if (pen) ctx.lineTo(x, y);
-        else ctx.moveTo(x, y);
-        pen = true;
+    for (const beam of sim.radar.beams) {
+      if (beam.energy < 0.01) continue;
+      const x = X(sim.x + beam.direction.x * beam.length);
+      const y = Y(beam.direction.z * beam.length);
+      ctx.globalAlpha = beam.energy;
+      line(X(sim.x), Y(0), x, y, '#79ced8', 1.35);
+      if (beam.vehicleHit) {
+        ctx.fillStyle = '#ffcb87';
+        ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
       }
-      ctx.stroke();
     }
+    ctx.globalAlpha = 1;
     const horizon = sim.pathLength;
     const gradient = ctx.createLinearGradient(0, Y(0), 0, Y(horizon));
     gradient.addColorStop(0, '#4288ff');
