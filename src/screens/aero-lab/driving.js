@@ -1,8 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-export const laneWidth = 3.55;
-export const radarRange = 68;
-const cruise = 88 / 3.6;
-const laneChangeTime = 2.35;
+import { RoadRadar, laneWidth, trafficX } from './radar.js';
+import { solvePath, curveValue } from './planner.js';
+export { laneWidth, radarRange } from './radar.js';
 const clamp = (x, low, high) => Math.max(low, Math.min(high, x));
 const smoother = (t) => t * t * t * (10 + t * (-15 + 6 * t));
 
@@ -28,6 +27,8 @@ export class DriveSimulation {
   constructor() {
     this.targetKmh = 260;
     this.scenario = 'pass';
+    this.radar = new RoadRadar();
+    this.seed = 0x94a027;
     this.reset('studio');
   }
   reset(mode) {
@@ -35,7 +36,10 @@ export class DriveSimulation {
     this.time = this.distance = this.x = this.heading = this.acceleration = 0;
     this.speed = mode === 'pilot' ? 68 / 3.6 : 0;
     this.lane = 0;
-    this.change = null;
+    this.trajectory = null;
+    this.curvature = 0;
+    this.untilPlan = 0;
+    this.radar.reset();
     this.paused = false;
     this.untilScan = 0;
     this.targetCount = 0;
@@ -45,94 +49,137 @@ export class DriveSimulation {
     this.nextSample = 0.16;
     this.nearest = Infinity;
     this.decision = mode === 'pilot' ? '车道保持' : '起步加速';
-    this.cars =
-      mode === 'pilot'
-        ? traffic[this.scenario].map(([lane, z, kmh], id) => ({
-            id,
-            lane,
-            z,
-            speed: kmh / 3.6,
-            detected: false,
-            range: 0,
-          }))
-        : [];
+    this.cars = [];
     if (mode === 'pilot') {
+      let layout = traffic[this.scenario];
+      if (this.scenario === 'mixed') {
+        const random = () => {
+          this.seed = (Math.imul(this.seed, 1664525) + 1013904223) >>> 0;
+          return this.seed / 4294967296;
+        };
+        const side = random() < 0.5 ? -1 : 1;
+        layout = [
+          [0, 45 + random() * 17, 36 + random() * 17],
+          [side, 13 + random() * 8, 73 + random() * 13],
+          [-side, 47 + random() * 14, 68 + random() * 14],
+          [-side, -19 - random() * 9, 76 + random() * 12],
+          [side, 90 + random() * 14, 52 + random() * 12],
+        ];
+      }
+      this.cars = layout.map(([lane, z, kmh], id) => ({
+        id,
+        lane,
+        x: lane * laneWidth,
+        z,
+        speed: kmh / 3.6,
+        initialSpeed: kmh / 3.6,
+        detected: false,
+        heading: 0,
+      }));
       this.scan();
       this.plan();
+      this.untilScan = 0.1;
+      this.untilPlan = 0.2;
+      this.radar.advance(this);
     }
   }
   scan() {
-    this.targetCount = 0;
-    this.nearest = Infinity;
-    for (const car of this.cars) {
-      const dx = car.lane * laneWidth - this.x;
-      const bearing = Math.atan2(dx, car.z) - this.heading;
-      car.range = Math.hypot(dx, car.z);
-      const forward = car.range <= radarRange && Math.abs(bearing) <= 0.96;
-      const flank = Math.abs(dx) < 6.8 && car.z > -18 && car.z < 9;
-      car.detected = forward || flank;
-      if (car.detected) {
-        this.targetCount++;
-        if (car.z > 0) this.nearest = Math.min(this.nearest, car.range);
-      }
-    }
+    this.radar.observe(this);
   }
   lead(lane) {
     let closest = null;
     for (const car of this.cars)
-      if (car.detected && car.lane === lane && car.z >= 0 && (!closest || car.z < closest.z))
+      if (
+        car.detected &&
+        Math.abs(trafficX(car) - lane * laneWidth) < 1.8 &&
+        car.z >= 0 &&
+        (!closest || car.z < closest.z)
+      )
         closest = car;
     return closest;
   }
-  clearLane(lane) {
-    return this.cars.every((car) => {
-      if (!car.detected || car.lane !== lane) return true;
-      const predicted = car.z + (car.speed - this.speed) * laneChangeTime;
-      return (
-        Math.min(car.z, predicted) > 14 + this.speed * 0.42 || Math.max(car.z, predicted) < -10
-      );
-    });
-  }
   plan() {
-    const lead = this.lead(this.lane);
-    if (
-      !this.change &&
-      lead &&
-      lead.z < Math.max(37, this.speed * 2.25) &&
-      lead.speed < this.speed - 1.2
-    ) {
-      for (const dest of [this.lane - 1, this.lane + 1]) {
-        if (Math.abs(dest) > 1 || !this.clearLane(dest)) continue;
-        this.change = {
-          from: this.x,
-          dest,
-          start: this.distance,
-          length: Math.max(29, this.speed * laneChangeTime),
-        };
-        break;
-      }
-    }
-    if (this.change) {
-      // The car faces +Z, so its right-hand side is negative world X.
-      this.decision = this.change.dest < this.lane ? '向右变道' : '向左变道';
-    } else this.decision = lead && lead.z < 47 && lead.speed < cruise ? '减速跟车' : '车道保持';
+    this.trajectory = solvePath(this);
+    const target = this.trajectory.dest;
+    this.decision = this.trajectory.emergency
+      ? this.trajectory.acceleration < 0
+        ? '紧急减速'
+        : this.trajectory.acceleration > 0
+          ? '加速避让'
+          : '保持车速'
+      : target !== this.lane
+        ? target < this.lane
+          ? '向右变道'
+          : '向左变道'
+        : this.trajectory.limited
+          ? '减速跟车'
+          : '车道保持';
   }
   pathX(ahead) {
-    if (!this.change) return this.lane * laneWidth;
-    const { from, dest, start, length } = this.change;
-    return (
-      from +
-      (dest * laneWidth - from) * smoother(clamp((this.distance + ahead - start) / length, 0, 1))
-    );
+    return this.trajectory ? curveValue(this.trajectory.curve, this.distance + ahead) : this.x;
   }
   get pathLength() {
-    let horizon = 63;
+    let limit = Math.min(63, this.trajectory?.travel ?? 63);
     for (const car of this.cars) {
-      if (!car.detected || car.z < 1.5 || car.z > horizon + 6) continue;
-      if (Math.abs(this.pathX(car.z) - car.lane * laneWidth) < 1.9)
-        horizon = Math.min(horizon, Math.max(1.6, car.z - 6));
+      const tr = car.track;
+      if (!tr || this.time - tr.time > 1) continue;
+      const age = this.time - tr.time,
+        z = tr.s + tr.vz * age - this.distance;
+      if (z >= 1.5 && z < limit + 6 && Math.abs(this.pathX(z) - tr.x - tr.vx * age) < 2.06)
+        limit = Math.min(limit, z - 6);
     }
-    return horizon;
+    return Math.max(1.6, limit);
+  }
+  moveTraffic(dt, delta) {
+    // Traffic drivers also follow the vehicle ahead, including the ego after a
+    // merge. Compute every speed from the same snapshot before moving anyone.
+    for (const car of this.cars) {
+      let target =
+        car.initialSpeed +
+        (this.scenario === 'mixed' ? 2.1 * Math.sin(this.time * 0.31 + car.id * 1.7) : 0);
+      const follow = (x, z, speed) => {
+        const gap = z - car.z;
+        if (gap > 0 && Math.abs(trafficX(car) - x) < 2.02)
+          target = Math.min(target, Math.max(0, speed + (gap - 7.1 - car.speed * 0.8) * 0.64));
+      };
+      follow(this.x, 0, this.speed);
+      for (const other of this.cars)
+        if (other !== car) follow(trafficX(other), other.z, other.speed);
+      car.nextSpeed = Math.max(0, car.speed + clamp((target - car.speed) * 1.45, -6.8, 1.65) * dt);
+    }
+    for (const car of this.cars) {
+      car.speed = car.nextSpeed;
+      if (this.scenario === 'mixed') {
+        if (car.id === 2 && !car.merge && this.time > 2.4 && car.lane !== 0 && car.z > 10) {
+          const clear = (x, z, speed) =>
+            Math.abs(x) > 2.1 ||
+            [0, 1.8, 3.6].every((t) => Math.abs(z - car.z + (speed - car.speed) * t) > 13);
+          const free =
+            clear(this.x, 0, this.speed) &&
+            this.cars.every(
+              (other) => other === car || clear(trafficX(other), other.z, other.speed),
+            );
+          if (free) car.merge = { from: car.x, start: this.time };
+        }
+        if (car.merge) {
+          const t = clamp((this.time - car.merge.start) / 3.6, 0, 1),
+            prev = car.x;
+          car.x = car.merge.from * (1 - smoother(t));
+          car.heading = Math.atan2(car.x - prev, Math.max(0.0001, car.speed * dt));
+          if (t === 1) {
+            car.lane = 0;
+            car.merge = null;
+            car.heading = 0;
+          }
+        }
+      }
+      car.z += car.speed * dt - delta;
+      if (car.z < -36) {
+        car.z += 160 + car.id * 7;
+        car.track = null;
+        car.detected = false;
+      }
+    }
   }
   step(dt) {
     this.time += dt;
@@ -142,24 +189,7 @@ export class DriveSimulation {
       this.decision =
         this.distance < 28 ? '起步加速' : Math.abs(acceleration) > 0.65 ? '隧道穿梭' : '高速巡航';
     } else if (this.mode === 'pilot') {
-      this.untilScan -= dt;
-      if (this.untilScan <= 0) {
-        this.scan();
-        this.plan();
-        this.untilScan += 0.1;
-      }
-      let target = cruise;
-      // During a manoeuvre, protect the occupied lane until the body clears it.
-      for (let lane = -1; lane <= 1; lane++) {
-        if (Math.abs(this.x - lane * laneWidth) > 2.35 && this.change?.dest !== lane) continue;
-        const lead = this.lead(lane);
-        if (lead)
-          target = Math.min(
-            target,
-            Math.max(0, lead.speed + (lead.z - 7 - this.speed * 0.82) * 0.54),
-          );
-      }
-      acceleration = clamp((target - this.speed) * 1.65, -5.6, 2.5);
+      acceleration = this.trajectory.acceleration;
     } else return;
     const oldSpeed = this.speed;
     this.speed = Math.max(0, this.speed + acceleration * dt);
@@ -173,20 +203,23 @@ export class DriveSimulation {
       this.historyCount = Math.min(this.history.length, this.historyCount + 1);
     }
     if (this.mode !== 'pilot') return;
-    for (const car of this.cars) {
-      car.z += car.speed * dt - delta;
-      if (car.z < -28) {
-        car.z += 140 + car.id * 6;
-        car.detected = false;
-      }
+    this.moveTraffic(dt, delta);
+    const curve = this.trajectory.curve;
+    this.x = curveValue(curve, this.distance);
+    this.heading = Math.atan(curveValue(curve, this.distance, 1));
+    this.curvature = curveValue(curve, this.distance, 2);
+    if (this.distance >= curve.start + curve.length) this.lane = curve.dest;
+    this.untilScan -= dt;
+    this.untilPlan -= dt;
+    if (this.untilScan <= 1e-8) {
+      this.scan();
+      this.untilScan += 0.1;
     }
-    this.x = this.pathX(0);
-    this.heading = Math.atan2(this.pathX(0.35) - this.x, 0.35);
-    if (this.change && this.distance >= this.change.start + this.change.length) {
-      this.lane = this.change.dest;
-      this.change = null;
-      this.heading = 0;
+    if (this.untilPlan <= 1e-8) {
+      this.plan();
+      this.untilPlan += 0.2;
     }
+    this.radar.advance(this);
   }
   advance(seconds) {
     // The same integration is used by playback and manually stepped frames.

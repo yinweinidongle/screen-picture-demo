@@ -9,6 +9,7 @@ import {
   ShaderMaterial,
   Vector2,
 } from 'three';
+import { reflectLines } from './line-reflections.js';
 
 export const finishes = [
   { name: '熔岩橙', color: '#df521b', metal: 0.7, rough: 0.32, coat: 1 },
@@ -42,7 +43,7 @@ const field = `
 `;
 
 // The mask, the old finish and the revealed finish all sample the same world-space field.
-function litCoat(original, uniforms, revealed, livery, printable) {
+function litCoat(original, uniforms, revealed, livery, printable, reflections) {
   const atlas = original.name === 'Aventador body paint atlas';
   const material = new MeshPhysicalMaterial({
     map: atlas ? original.map : null,
@@ -171,13 +172,14 @@ function litCoat(original, uniforms, revealed, livery, printable) {
         #endif
         #include <opaque_fragment>`,
         );
+    reflectLines(shader, reflections);
   };
   material.customProgramCacheKey = () =>
     (revealed ? 'aero-revealed' : 'aero-base') + (atlas ? '-atlas' : '');
   return material;
 }
 
-export function applyFinish(meshes, livery, height, grain) {
+export function applyFinish(meshes, livery, height, grain, reflections) {
   const uniforms = {
     uRadius: { value: 5.4 },
     uEdgeOn: { value: 0 },
@@ -193,8 +195,8 @@ export function applyFinish(meshes, livery, height, grain) {
     const key = original.uuid + (printable ? '/body' : '/trim');
     if (!coats.has(key))
       coats.set(key, [
-        litCoat(original, uniforms, false, livery, printable),
-        litCoat(original, uniforms, true, livery, printable),
+        litCoat(original, uniforms, false, livery, printable, reflections),
+        litCoat(original, uniforms, true, livery, printable, reflections),
       ]);
     if (!masks.has(original.side))
       masks.set(

@@ -562,6 +562,7 @@ footer a:hover {
 .modes button,
 .scenario-options button,
 .drive-actions button,
+#reset-view,
 .back-studio {
   padding: 7px 14px;
   font-size: 12px;
@@ -577,6 +578,7 @@ footer a:hover {
 .modes button:hover,
 .scenario-options button:hover,
 .drive-actions button:hover,
+#reset-view:hover,
 .back-studio:hover {
   color: var(--signal);
 }
@@ -621,6 +623,15 @@ footer a:hover {
   margin-top: 3px;
   color: var(--signal);
 }
+.drive-view-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#lab[data-mode='studio'] .drive-view-tools {
+  display: none;
+}
+#reset-view,
 .back-studio {
   border: 1px solid #80908e8a;
   background: #101c23c9;
@@ -647,6 +658,9 @@ footer a:hover {
 .drive-actions button {
   border: 1px solid #465254;
   background: #172023;
+}
+.scenario-options button {
+  padding-inline: clamp(7px, 0.8vw, 14px);
 }
 .scenario-options button[aria-pressed='true'] {
   border-color: #81b3a5;

@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import * as T from 'three';
 import { DriveSimulation, laneWidth, radarRange } from '../src/screens/aero-lab/driving.js';
+import { RoadRadar, radarBins } from '../src/screens/aero-lab/radar.js';
+import { curveValue } from '../src/screens/aero-lab/planner.js';
 import { rollingWheels } from '../src/screens/aero-lab/wheels.js';
 
 test('all four Aventador tyres spin on a lateral axle and stay in contact with the ground', () => {
@@ -50,21 +52,58 @@ test('all four Aventador tyres spin on a lateral axle and stay in contact with t
   }
 });
 
-test('radar detects vehicles in the forward sector and the adjacent blind spot', () => {
+test('360° sensing covers the rear and returns the first vehicle surface on each bearing', () => {
   const sim = new DriveSimulation();
   sim.reset('pilot');
   sim.cars = [
-    [0, radarRange],
-    [0, radarRange + 0.1],
+    [0, 24],
+    [0, 45],
     [1, -8],
     [-1, -20],
+    [0, -radarRange - 3],
   ].map(([lane, z]) => ({ lane, z }));
   sim.scan();
   assert.deepEqual(
     sim.cars.map((car) => car.detected),
-    [true, false, true, false],
+    [true, false, true, true, false],
   );
-  assert.equal(sim.nearest, radarRange);
+  assert.ok(Math.abs(sim.cars[0].range - 21.88) < 0.01);
+  assert.equal(sim.nearest, sim.cars[2].range);
+  assert.ok(sim.nearest < 8);
+});
+
+test('each wave stays at its emission point and only the sectors that hit a surface disappear', () => {
+  const radar = new RoadRadar();
+  const sim = { x: 0, distance: 0, time: 0, cars: [{ x: 0, z: 15, heading: 0 }] };
+  radar.advance(sim);
+  const first = radar.pulses[0],
+    side = radarBins / 4,
+    rear = radarBins / 2;
+  assert.ok(Math.abs(first.visibleTo[0] - 12.88) < 0.01);
+  for (let i = 1; i <= 24; i++) {
+    sim.time = i / 60;
+    sim.distance = i * 0.09;
+    sim.x = 0.3;
+    sim.cars[0].z = 15 - sim.distance;
+    radar.advance(sim);
+  }
+  assert.deepEqual([first.x, first.s], [0, 0]);
+  for (const angle of [0, radarBins - 1]) assert.ok(Math.abs(first.cut[angle] - 12.88) < 0.03);
+  assert.ok(Math.abs(first.cut[side] - 6.29) < 0.01);
+  assert.ok(Math.abs(first.cut[3 * side] - 6.29) < 0.01);
+  assert.equal(first.cut[rear], radarRange);
+  sim.cars = [{ x: 0, z: -5 - sim.distance }]; // Moves into the rear beam after this wave has passed.
+  for (let i = 25; i <= 55; i++) {
+    sim.time = i / 60;
+    radar.advance(sim);
+  }
+  assert.ok(first.visibleTo[0] < 13 && first.radius > 30);
+  assert.equal(first.visibleTo[rear], radarRange);
+  const next = radar.pulses[1];
+  assert.deepEqual([next.x, next.s], [sim.x, sim.distance]);
+  assert.equal(next.visibleTo[0], radarRange);
+  assert.ok(next.visibleTo[rear] < 7);
+  assert.ok(next.radius < 5);
 });
 
 test('an overtaking path joins the open lane smoothly and agrees with subsequent wheel positions', () => {
@@ -72,7 +111,7 @@ test('an overtaking path joins the open lane smoothly and agrees with subsequent
   sim.reset('pilot');
   sim.advance(1.2);
   assert.equal(sim.decision, '向右变道');
-  assert.equal(sim.change.dest, -1);
+  assert.equal(sim.trajectory.dest, -1);
   assert.equal(sim.pathX(sim.pathLength), -laneWidth);
   const startDistance = sim.distance;
   const offsets = Array.from({ length: 4 }, (_, i) => sim.pathX(i * 5));
@@ -83,6 +122,68 @@ test('an overtaking path joins the open lane smoothly and agrees with subsequent
   sim.advance(4);
   assert.equal(sim.lane, -1);
   assert.equal(sim.heading, 0);
+});
+
+test('mirroring the traffic mirrors the route and newly observed traffic changes the active solution', () => {
+  const a = new DriveSimulation(),
+    b = new DriveSimulation();
+  a.reset('pilot');
+  b.reset('pilot');
+  for (const c of b.cars) {
+    c.x = -c.x;
+    c.lane = -c.lane;
+    c.track = null;
+  }
+  b.trajectory = null;
+  b.scan();
+  b.plan();
+  assert.equal(b.trajectory.dest, -a.trajectory.dest);
+  for (const z of [0, 5, 15, 30, 60]) assert.ok(Math.abs(a.pathX(z) + b.pathX(z)) < 1e-6);
+  a.advance(0.45);
+  const old = a.trajectory.curve;
+  a.cars.push({ lane: -1, x: -laneWidth, z: 17, speed: 7 });
+  a.scan();
+  a.plan();
+  assert.notEqual(a.trajectory.dest, old.dest);
+  assert.ok(a.trajectory.feasible > 0 && a.trajectory.feasible < a.trajectory.tried);
+  for (const derivative of [0, 1, 2])
+    assert.ok(
+      Math.abs(
+        curveValue(old, a.distance, derivative) -
+          curveValue(a.trajectory.curve, a.distance, derivative),
+      ) < 1e-8,
+    );
+});
+
+test('mixed traffic layouts yield both directions and preserve vehicle clearance during execution', () => {
+  const sim = new DriveSimulation(),
+    choices = new Set();
+  sim.scenario = 'mixed';
+  let merge = false;
+  for (let run = 0; run < 12; run++) {
+    sim.reset('pilot');
+    choices.add(sim.trajectory.dest);
+    for (let i = 0; i < 3600; i++) {
+      sim.step(1 / 60);
+      for (const car of sim.cars) {
+        if (car.merge) merge = true;
+        if (Math.abs(car.x - sim.x) < 2.04)
+          assert.ok(Math.abs(car.z) > 4.65, 'overlapping vehicles');
+      }
+    }
+  }
+  assert.ok(merge && choices.has(-1) && choices.has(1));
+});
+
+test('the planner brakes and shortens the displayed path if all nominal trajectories conflict', () => {
+  const sim = new DriveSimulation();
+  sim.reset('pilot');
+  sim.cars = [-1, 0, 1].map((lane) => ({ lane, z: 8, speed: 0 }));
+  sim.scan();
+  sim.plan();
+  assert.equal(sim.trajectory.feasible, 0);
+  assert.equal(sim.decision, '紧急减速');
+  assert.ok(sim.trajectory.acceleration < 0 && sim.pathLength < 3);
 });
 
 test('a blocked adjacent lane keeps the route behind the lead vehicle while speed settles', () => {
