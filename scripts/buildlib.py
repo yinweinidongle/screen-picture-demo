@@ -363,6 +363,8 @@ class Builder:
         for file, markers in {
             "styles.css": ["CSS"],
             "instruments.css": ["INSTRUMENTS_CSS"],
+            "title.css": ["PANEL_TITLE_CSS"],
+            "composition.css": ["COMPOSITION_CSS"],
             "finish.css": ["FINISH_CSS"],
             "app.js": ["JS"],
             "model.js": ["MODEL_JS", "MODEL"],

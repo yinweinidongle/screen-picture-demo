@@ -1,0 +1,64 @@
+/* SPDX-License-Identifier: MIT */
+/* The lower three fibres sit on a folded strip. Both decorations scale with the title,
+   so the same profile fits a two-column wall and a narrow mobile card. */
+.vi-rail-title {
+  --rail-marker: 1.02em;
+  --rail-pad: 1.68em;
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0.03em 0 0.19em var(--rail-pad);
+  color: #f2f8f6;
+  line-height: 1.18;
+  font-weight: 670;
+  letter-spacing: 0.055em;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 2px #03111e,
+    0 0 6px #cef8ff20;
+}
+.vi-rail-title::before,
+.vi-rail-title::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+.vi-rail-title::before {
+  left: 0.38em;
+  width: var(--rail-marker);
+  height: 0.73em;
+  bottom: 0.34em;
+  transform: skewX(-16deg);
+  background:
+    linear-gradient(158deg, #a8fffc, #17e7ed 32%, #009bc7) left / 42% 100% no-repeat,
+    linear-gradient(158deg, #e3ffff, #69f6f5 20%, #09d0e2 74%, #0088ad) right / 41% 100% no-repeat;
+  filter: drop-shadow(0 0 2px #34e4fb52);
+}
+.vi-rail-title::after {
+  z-index: -1;
+  left: 0;
+  right: -0.12em;
+  bottom: -1px;
+  height: 0.66em;
+  border-left: 2px solid #2494ab;
+  transform-origin: left bottom;
+  transform: skewX(-16deg);
+  background:
+    linear-gradient(90deg, #186175bf, #11435991 56%, transparent 90%) top left / 100% 1px no-repeat,
+    linear-gradient(90deg, #0d5167, #287284a3 39%, transparent 94%) bottom 3px left / 95% 1px
+      no-repeat,
+    linear-gradient(90deg, #5bd4e6dc, #2999af85 47%, transparent 97%) bottom left / 100% 1px
+      no-repeat,
+    linear-gradient(90deg, #0b465dba, #09334a9e 32%, #09293833 72%, transparent);
+}
+.vi-heading > :last-child:not(.vi-rail-title) {
+  flex-shrink: 0;
+}
+.vi-body h3.vi-rail-title {
+  --rail-marker: 0.99em;
+  --rail-pad: 1.64em;
+  font-size: clamp(12px, 0.84vw, 16px);
+  font-weight: 630;
+}

@@ -1,7 +1,87 @@
 import { expect, test } from '@playwright/test';
-import { getPlotReading } from '../../src/screens/verdant-lab/instruments.js';
+import {
+  getPlotReading,
+  getWarehouseComposition,
+  plots,
+} from '../../src/screens/verdant-lab/instruments.js';
 
 test.use({ reducedMotion: 'reduce' });
+
+test('instrument heading rails preserve the four named regions on desktop and mobile', async ({
+  page,
+}) => {
+  await page.goto('/verdant-lab.html');
+  for (const size of [
+    { width: 1440, height: 810 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(size);
+    for (const name of ['水肥调控', '产销流转', '环境感知', '温室巡检']) {
+      const region = page.getByRole('region', { name, exact: true });
+      const title = region.getByRole('heading', { name, level: 2, exact: true });
+      await expect(region.getByRole('heading', { level: 2 })).toHaveCount(1);
+      await expect(title).toBeVisible();
+      const result = await title.evaluate((h) => {
+        const ornaments = ['::before', '::after'].map((p) => getComputedStyle(h, p));
+        const accessory = h.nextElementSibling.getBoundingClientRect();
+        return {
+          decorations: ornaments.every(
+            (s) => s.content === '""' && s.pointerEvents === 'none' && parseFloat(s.width) > 0,
+          ),
+          clear: h.getBoundingClientRect().right <= accessory.left + 1,
+        };
+      });
+      expect(result).toEqual({ decorations: true, clear: true });
+    }
+  }
+});
+
+test('warehouse counts, shares and liquid heights follow the selected greenhouse', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 810 });
+  await page.goto('/verdant-lab.html');
+  const composition = page.getByRole('region', { name: '仓库类型对比', exact: true });
+  await expect(composition.getByRole('heading', { level: 3 })).toHaveText('仓库类型对比');
+  await expect(composition.locator('.vi-vessel')).toHaveCount(3);
+  await expect(composition.locator('figcaption')).toHaveText(['恒温库', '普通库', '冷藏库']);
+  const groups = [];
+  for (const [i, name] of plots.entries()) {
+    await page.getByLabel('观测温室').selectOption({ label: name });
+    const { total, classes } = getWarehouseComposition(i);
+    await expect(composition.locator('[data-network-total]')).toHaveText(String(total));
+    expect(total).toBe(classes.reduce((n, c) => n + c.count, 0));
+    expect(classes.reduce((n, c) => n + Math.round(c.percent * 10), 0)).toBe(1000);
+    groups.push(classes.map((c) => c.count).join(','));
+    for (const [j, type] of ['constant', 'ambient', 'cold'].entries()) {
+      const item = composition.locator('[data-type="' + type + '"]'),
+        entry = classes[j];
+      await expect(item).toContainText(entry.name);
+      await expect(item.locator('[data-count]')).toHaveText(String(entry.count));
+      await expect(item.locator('[data-percent]')).toHaveText(String(entry.percent));
+      expect(Math.abs(entry.percent - (100 * entry.count) / total)).toBeLessThan(0.11);
+      const level = await item.evaluate((el) => {
+        const bowl = el.querySelector('clipPath circle'),
+          water = el.querySelector('.vi-liquid');
+        const top = bowl.cy.baseVal.value - bowl.r.baseVal.value;
+        const diameter = 2 * bowl.r.baseVal.value;
+        return 100 * (1 - (water.transform.baseVal.getItem(0).matrix.f - top) / diameter);
+      });
+      expect(level).toBeCloseTo(entry.percent, 1);
+    }
+  }
+  expect(new Set(groups).size).toBe(plots.length);
+  const waves = composition.locator('.vi-wave');
+  const state = () =>
+    waves.evaluateAll((els) => [
+      ...new Set(els.flatMap((w) => w.getAnimations().map((a) => a.playState))),
+    ]);
+  await expect.poll(state).toEqual(['paused']);
+  await page.getByRole('button', { name: '播放动效' }).click();
+  await expect.poll(state).toEqual(['running']);
+  await page.getByRole('button', { name: '暂停动效' }).click();
+  await expect.poll(state).toEqual(['paused']);
+});
 
 test('greenhouse controls, plant imaging and instruments share a crop record', async ({ page }) => {
   const faults = [];

@@ -59,6 +59,7 @@ const specimen = mountSpecimen(host, {
   },
   onPlay(playing) {
     finish.play(playing);
+    panels.play(playing);
     const pause = by('pause'),
       label = playing ? '暂停动效' : '播放动效';
     pause.setAttribute('aria-label', label);

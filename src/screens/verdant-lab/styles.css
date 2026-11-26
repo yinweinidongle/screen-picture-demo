@@ -225,8 +225,8 @@ a:hover {
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2.08fr) minmax(0, 1fr);
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  grid-template-areas: 'water plant climate' 'trade plant camera';
+  grid-template-rows: minmax(0, 0.82fr) minmax(0, 0.18fr) minmax(0, 1fr);
+  grid-template-areas: 'water plant climate' 'trade plant climate' 'trade plant camera';
   gap: clamp(8px, 1vw, 20px);
 }
 .instrument,
@@ -550,7 +550,7 @@ a:hover {
   }
   .deck {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: clamp(425px, 66vw, 630px) repeat(2, minmax(275px, auto));
+    grid-template-rows: clamp(425px, 66vw, 630px) minmax(275px, auto) minmax(315px, auto);
     grid-template-areas: 'plant plant' 'water climate' 'trade camera';
   }
   .specimen {
@@ -654,6 +654,9 @@ a:hover {
   }
   .instrument {
     height: clamp(260px, 73vw, 330px);
+  }
+  .instrument.trade {
+    height: clamp(345px, 85vw, 420px);
   }
   .specimen-head {
     left: 15px;

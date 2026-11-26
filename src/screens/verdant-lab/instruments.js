@@ -100,31 +100,72 @@ const probes = [
     [35, 16, 22, 6, 13, -8, 0],
   ],
 ];
-const stores = [
-  [
-    { name: '冷链仓', capacity: 14, used: 8.8 },
-    { name: '周转仓', capacity: 8, used: 3.1 },
-  ],
-  [
-    { name: '冷链仓', capacity: 18, used: 12.6 },
-    { name: '周转仓', capacity: 10, used: 5.2 },
-  ],
-  [
-    { name: '冷链仓', capacity: 10, used: 6.3 },
-    { name: '周转仓', capacity: 6, used: 2.7 },
-  ],
+const storeTypes = [
+  { key: 'constant', name: '恒温库' },
+  { key: 'ambient', name: '普通库' },
+  { key: 'cold', name: '冷藏库' },
 ];
-const shapes = {
-  water:
-    '<path d="M12 3C9 7.3 5.5 10.7 5.5 14a6.5 6.5 0 1 0 13 0C18.5 10.7 15 7.3 12 3Z"/><path d="M9 14.5c.3 1.8 1.3 2.9 3.1 3.2"/>',
-  trade: '<path d="M3 20h18M5 16v-5h3v5m3 0V6h3v10m3 0V9h3v7"/>',
-  climate: '<path d="M9 4a2.5 2.5 0 0 1 5 0v9a5 5 0 1 1-5 0Z"/><path d="M11.5 8v8m5-10h3m-3 4h2"/>',
-  inspection: '<rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/>',
-};
-const symbol = (name) =>
-  `<svg class="vi-icon" viewBox="0 0 24 24" aria-hidden="true">${shapes[name]}</svg>`;
+// Counts of facilities in the distribution network serving each greenhouse.
+const storeNetworks = [
+  [17, 27, 19],
+  [30, 24, 17],
+  [12, 19, 26],
+];
+
+export function getWarehouseComposition(plot) {
+  const counts = storeNetworks[plot];
+  const total = counts.reduce((sum, n) => sum + n, 0);
+  // Allocate whole tenths of a percent by largest remainder. Ties follow the legend order.
+  const tenths = counts.map((n) => Math.floor((1000 * n) / total));
+  const unassigned = 1000 - tenths.reduce((sum, n) => sum + n, 0);
+  const priority = counts
+    .map((n, i) => ({ i, remainder: (1000 * n) % total }))
+    .sort((a, b) => b.remainder - a.remainder || a.i - b.i);
+  for (const { i } of priority.slice(0, unassigned)) tenths[i]++;
+  return {
+    total,
+    classes: storeTypes.map((type, i) => ({ ...type, count: counts[i], percent: tenths[i] / 10 })),
+  };
+}
+
+function vessel({ key, name }) {
+  const id = 'vi-bowl-' + key;
+  // Two crests span the 92-unit bowl. All three contours remain continuous across a 44-unit cycle.
+  const wave = (y, a, phase = 0) =>
+    `M${-88 + phase} ${y} q11 ${-a} 22 0${' t22 0'.repeat(11)} V106 H${-88 + phase}Z`;
+  return `<figure class="vi-vessel" data-type="${key}">
+    <div class="vi-vessel-count"><b data-count></b><small>座</small></div>
+    <div class="vi-bowl">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <clipPath id="${id}-clip"><circle cx="50" cy="50" r="46"/></clipPath>
+          <radialGradient id="${id}-glass" cx="36%" cy="22%" r="84%">
+            <stop stop-color="var(--bowl-hue)" stop-opacity=".21"/><stop offset=".53" stop-color="#0a1a25" stop-opacity=".9"/>
+            <stop offset=".88" stop-color="#0c202c"/><stop offset="1" stop-color="var(--bowl-hue)" stop-opacity=".32"/>
+          </radialGradient>
+          <linearGradient id="${id}-liquid" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="8" y2="42">
+            <stop stop-color="var(--bowl-lit)"/><stop offset=".37" stop-color="var(--bowl-hue)"/><stop offset="1" stop-color="var(--bowl-shadow)"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#${id}-glass)"/>
+        <g clip-path="url(#${id}-clip)">
+          <g class="vi-liquid">
+            <path class="vi-wave vi-wave-far" fill="var(--bowl-rear)" d="${wave(-2.4, 17, 11)}"/>
+            <path class="vi-wave vi-wave-mid" fill="var(--bowl-shadow)" d="${wave(0.8, 12, -5.5)}"/>
+            <path class="vi-wave vi-wave-near" fill="url(#${id}-liquid)" d="${wave(1.7, 13)}"/>
+          </g>
+        </g>
+        <circle class="vi-glass-rim" cx="50" cy="50" r="46"/>
+        <path class="vi-glass-edge" d="M18 25a41 41 0 0 1 28-16m38 68a41 41 0 0 1-18 13"/>
+      </svg>
+      <span class="vi-liquid-label"><b data-percent></b><small>%</small></span>
+    </div>
+    <figcaption>${name}</figcaption>
+  </figure>`;
+}
+
 function heading(key, name, accessory) {
-  return `<header class="vi-heading"><h2 id="vi-${key}-heading">${symbol(key)}${name}</h2>${accessory}</header>`;
+  return `<header class="vi-heading"><h2 id="vi-${key}-heading" class="vi-rail-title">${name}</h2>${accessory}</header>`;
 }
 function dateLabel(index) {
   const d = new Date(Date.UTC(2026, 9, 28 + index));
@@ -205,8 +246,9 @@ export function mountInstruments(
     <div class="vi-totals"><div><span class="vi-label"><i></i>入库</span><strong data-in></strong><small>t</small></div><div><span class="vi-label"><i></i>出库</span><strong data-out></strong><small>t</small></div></div>
     <div class="vi-chart" tabindex="0" role="group" aria-label="入库出库量，使用左右方向键查看分时读数">
     <svg viewBox="0 0 320 106" preserveAspectRatio="none" aria-hidden="true"></svg><output hidden></output></div>
-    <div class="vi-storage"><div class="vi-storage-head"><b>库容占用</b><small>已占 / 总容量</small></div>
-    <div class="vi-storage-sites"></div></div>`,
+    <section class="vi-composition" data-motion="paused" aria-labelledby="vi-warehouse-heading">
+      <header class="vi-composition-head"><h3 id="vi-warehouse-heading" class="vi-rail-title">仓库类型对比</h3><span>共享仓网 · <b data-network-total></b> 座</span></header>
+      <div class="vi-vessels">${storeTypes.map(vessel).join('')}</div></section>`,
   );
   const env = panel(
     'climate',
@@ -419,6 +461,31 @@ export function mountInstruments(
     },
     listen,
   );
+  const composition = trading.querySelector('.vi-composition');
+  const vessels = [...composition.querySelectorAll('.vi-vessel')];
+  let playing = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let inView = false;
+  function syncWaveMotion() {
+    composition.dataset.motion = playing && inView && !document.hidden ? 'running' : 'paused';
+  }
+  const visibility = new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting;
+    syncWaveMotion();
+  });
+  visibility.observe(composition);
+  document.addEventListener('visibilitychange', syncWaveMotion, listen);
+  function updateComposition() {
+    const { total, classes } = getWarehouseComposition(plot);
+    composition.querySelector('[data-network-total]').textContent = total;
+    vessels.forEach((bowl, i) => {
+      const { count, percent } = classes[i];
+      bowl.querySelector('[data-count]').textContent = count;
+      bowl.querySelector('[data-percent]').textContent = String(percent);
+      bowl
+        .querySelector('.vi-liquid')
+        .setAttribute('transform', 'translate(0 ' + (96 - 0.92 * percent).toFixed(3) + ')');
+    });
+  }
   function select(nextPlot, nextStage) {
     const changed = plot !== nextPlot;
     plot = nextPlot;
@@ -426,20 +493,20 @@ export function mountInstruments(
     updateWater();
     updateEnvironment();
     updateTrade();
-    trading.querySelector('.vi-storage-sites').innerHTML = stores[plot]
-      .map(({ name, used, capacity }) => {
-        const pct = Math.round((used / capacity) * 100);
-        return `<div><span>${name}<b>${pct}%</b></span><div class="vi-stock-track" aria-hidden="true"><i style="width:${pct}%"></i></div><small>${used.toFixed(1)} / ${capacity} t</small></div>`;
-      })
-      .join('');
+    updateComposition();
     if (changed) setCamera(plot);
   }
   select(plot, stage);
   setCamera(0);
   return {
     select,
+    play(value) {
+      playing = value;
+      syncWaveMotion();
+    },
     dispose() {
       abort.abort();
+      visibility.disconnect();
       Object.values(parts).forEach((n) => n.remove());
     },
   };

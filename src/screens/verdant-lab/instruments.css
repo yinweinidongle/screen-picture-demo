@@ -484,62 +484,6 @@
 .vi-spark circle {
   fill: currentColor;
 }
-.vi-storage {
-  border-top: 1px solid var(--vi-edge);
-  padding-top: clamp(5px, 0.82vh, 10px);
-}
-.vi-storage-head,
-.vi-storage-sites > div > span {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 4px;
-}
-.vi-storage-head b {
-  font-weight: 550;
-  font-size: clamp(11px, 0.8vw, 15px);
-  line-height: 1.2;
-}
-.vi-storage-head small,
-.vi-storage-sites small {
-  font-size: clamp(9px, 0.68vw, 12px);
-  color: var(--vi-muted);
-}
-.vi-storage-sites {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 5px;
-}
-.vi-storage-sites > div {
-  min-width: 0;
-}
-.vi-storage-sites > div > span {
-  font-size: clamp(10px, 0.76vw, 14px);
-  color: #c2d4df;
-}
-.vi-storage-sites b {
-  font-family: var(--vi-font);
-  font-weight: 580;
-  color: var(--vi-paper);
-}
-.vi-stock-track {
-  height: 3px;
-  margin: 3px 0 1px;
-  background: #7097af38;
-}
-.vi-stock-track i {
-  height: 100%;
-  display: block;
-  background: var(--vi-cyan);
-}
-.vi-storage-sites > div:last-child .vi-stock-track i {
-  background: var(--vi-blue);
-}
-.vi-storage-sites small {
-  font-family: var(--vi-font);
-  line-height: 1.05;
-}
 @container (max-height:236px) {
   .vi-heading {
     min-height: 21px;
@@ -552,12 +496,6 @@
     width: auto;
     margin-right: 3px;
     font-size: 10px;
-  }
-  .vi-storage-head {
-    line-height: 1;
-  }
-  .vi-storage-sites {
-    margin-top: 3px;
   }
   .vi-sensors dd {
     row-gap: 3px;

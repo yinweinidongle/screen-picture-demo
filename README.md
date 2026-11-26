@@ -78,7 +78,7 @@
 
 ### 11 / 衡水 · 蔬菜产业大数据平台
 
-旋转三维番茄，从冰青色叶脉与果实经纬网切到温室自然光。选择生育阶段或温室，查看环境读数、灌溉与出入库记录。演示数据和巡检快照均随页面提供。[操作与素材说明](docs/screens/verdant-lab.md)
+旋转三维番茄，从冰青色叶脉与果实经纬网切到温室自然光。选择生育阶段或温室，查看环境读数、灌溉与出入库记录。三枚液面球显示恒温库、普通库和冷藏库在当前仓储网络中的占比。演示数据和巡检快照均随页面提供。[操作与素材说明](docs/screens/verdant-lab.md)
 
 [![番茄植株显影、温室筛选与水肥控制实录](docs/media/verdant-lab-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html)
 
