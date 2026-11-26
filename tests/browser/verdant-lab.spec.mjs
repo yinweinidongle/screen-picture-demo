@@ -108,3 +108,75 @@ test('mobile greenhouse projects the specimen and supports camera selection with
   await expect.poll(() => snapshot.evaluate((im) => im.complete && im.naturalWidth > 0)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
 });
+
+test('paused WebGL plant remains painted on mobile load, resize and full-page capture', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const host = page.locator('#specimen-host'),
+    mobile = { width: 390, height: 844 };
+  async function assertPainted() {
+    await expect(host).toHaveAttribute('data-playing', 'false');
+    await expect(host).toHaveAttribute('data-renderer', 'webgl2');
+    await expect(host).toHaveAttribute('data-scan-texture', 'ready');
+    // A few surviving ring or cursor pixels cannot satisfy all three plant regions.
+    const bands = () =>
+      host.locator('canvas:visible').evaluate((c) => {
+        const gl = c.getContext('webgl2'),
+          pixels = new Uint8Array(c.width * c.height * 4);
+        gl.readPixels(0, 0, c.width, c.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        const counts = [0, 0, 0];
+        for (let y = 0; y < c.height; y += 2) {
+          for (let x = 0; x < c.width; x += 2) {
+            const k = 4 * (y * c.width + x);
+            if (pixels[k + 1] > 72 && pixels[k + 3] > 150) counts[Math.floor((y * 3) / c.height)]++;
+          }
+        }
+        return Math.min(...counts);
+      });
+    await expect.poll(bands).toBeGreaterThan(100);
+    const box = await host.boundingBox();
+    const png = (await page.screenshot({ fullPage: true, scale: 'css' })).toString('base64');
+    const minimum = await page.evaluate(
+      async ({ png, box }) => {
+        const image = new Image();
+        image.src = 'data:image/png;base64,' + png;
+        await image.decode();
+        const c = document.createElement('canvas');
+        c.width = Math.floor(box.width * 0.48);
+        c.height = Math.floor(box.height * 0.76);
+        const ctx = c.getContext('2d');
+        ctx.drawImage(
+          image,
+          box.x + box.width * 0.26,
+          box.y + box.height * 0.13,
+          c.width,
+          c.height,
+          0,
+          0,
+          c.width,
+          c.height,
+        );
+        const d = ctx.getImageData(0, 0, c.width, c.height).data,
+          counts = [0, 0, 0];
+        for (let k = 0; k < d.length; k += 4) {
+          if (d[k + 2] - d[k] > 30 && d[k + 1] > 85 && d[k + 2] > 115)
+            counts[Math.floor(((k / 4 / c.width) * 3) / c.height)]++;
+        }
+        return Math.min(...counts);
+      },
+      { box, png },
+    );
+    expect(minimum).toBeGreaterThan(120);
+    expect(await bands()).toBeGreaterThan(100);
+  }
+  await page.setViewportSize(mobile);
+  await page.goto('/verdant-lab.html');
+  await assertPainted();
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.getByRole('button', { name: '自然光', exact: true }).click();
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.getByRole('button', { name: '叶脉显影', exact: true }).click();
+  await page.setViewportSize(mobile);
+  await assertPainted();
+});

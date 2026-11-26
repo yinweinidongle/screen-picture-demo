@@ -22,6 +22,8 @@ Three.js 根据分枝曲线生成主茎、果柄和复叶。GLSL 材质为叶脉
 
 本屏使用 OpenAI ImageGen 生成六张素材。显影模式为深裂顶叶和卵形侧叶分别制作半透明图层。沿各自轮廓构建叶面，贴图中的主脉、侧脉和网脉随曲面转向。叶片取材于黑底、叶尖朝上的单片番茄叶，纹理保留中央叶脉、侧脉与叶肉明暗。温室空间采用傍晚玻璃顶种植棚，深色空置的中央过道为植株留出轮廓。巡检图由三个等宽视角组成。[叶面纹理](../../assets/art/verdant-leaf.webp) · [显影叶片图集](../../assets/art/verdant-veins.webp) · [温室空间](../../assets/art/verdant-glasshouse.webp) · [巡检图集](../../assets/art/verdant-cameras.webp)
 
-页头按温室光谱仪额板设计，面板采用暗玉色拉丝金属和黄铜切角。每张图集分别保存底材和从同一条光槽提取的发光像素。移动遮罩沿嵌条显露亮芯与衰减的拖尾。面板分片缩放，保留角件的比例。页面和面板隐藏时暂停对应动画。[页头材质](../../assets/art/verdant-fascia.webp) · [面板材质](../../assets/art/verdant-bezel.webp) · [飞线](../../src/screens/verdant-lab/finish.js)
+仪表以深海蓝作为底色，青色指示供水、入库和当前选项，蓝色区分营养液支路与部分环境曲线，琥珀色标记出库。巡检照片与自然光成像保留作物本身的颜色。
+
+页头按温室光谱仪额板设计，面板采用深蓝拉丝钛、冷银切角和冰青色嵌条。每张图集分别保存底材和从同一条光槽提取的发光像素。移动遮罩沿嵌条显露亮芯与衰减的拖尾。面板分片缩放，保留角件的比例。页面和面板隐藏时暂停对应动画。[页头材质](../../assets/art/verdant-fascia.webp) · [面板材质](../../assets/art/verdant-bezel.webp) · [飞线](../../src/screens/verdant-lab/finish.js)
 
 三个温室与相应数据均为演示设定。近 7 天和近 30 天的出入库共用同一组逐日样本，巡检图是静态快照，水肥开关仅更新页面状态。[数据与仪表](../../src/screens/verdant-lab/instruments.js) · [素材清单](../../assets/manifest.json)

@@ -432,19 +432,19 @@
     },
     {
       "path": "assets/art/verdant-fascia.webp",
-      "source": "Precision greenhouse optical-instrument fascia with an extracted emissive atlas row. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "source": "Deep-blue titanium greenhouse optical-instrument fascia with an extracted emissive atlas row. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
       "author": "VIZ / LAB contributors",
       "license": "Project-generated art, separate from the code-only MIT grant",
       "status": "generated",
-      "sha256": "45e064ecfe17288871148b29280869fa7c311955fae206de3ca0d2ec2fea93bf"
+      "sha256": "4db39cbec1e10bc5156cf8bb7fd0fa3736975a6098893ee302c225fedf8f9046"
     },
     {
       "path": "assets/art/verdant-bezel.webp",
-      "source": "Nine-slice verdant metal instrument bezel with a matching emissive atlas row. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "source": "Nine-slice cool-steel instrument bezel with cyan light channels with a matching emissive atlas row. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
       "author": "VIZ / LAB contributors",
       "license": "Project-generated art, separate from the code-only MIT grant",
       "status": "generated",
-      "sha256": "7707693439cd9064fba57efca22a6a4fce3984d4acd12c4f236cc5ca560e76e4"
+      "sha256": "4ebc19c21cafc6a19266e542093cc9417229adc1d36052e30d9c95d7242d58cb"
     },
     {
       "path": "assets/previews/verdant-lab.webp",
@@ -452,7 +452,7 @@
       "author": "VIZ / LAB contributors",
       "license": "Composite of MIT scene code and project-generated artwork",
       "status": "composite",
-      "sha256": "dec5d960d473aded251a8ed0b8e67fbb8a03ca8f6ab4ca795e8bcc9debace570"
+      "sha256": "19af96cb5d7a7e5fb54dbbb4fe5a3e386a14a73ecfa0f8ccd50f5c72787f3c4f"
     }
   ]
 }

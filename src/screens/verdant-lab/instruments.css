@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: MIT */
 .vi-body {
-  --vi-paper: #eef1d9;
-  --vi-muted: #a4b7a7;
-  --vi-edge: #617d704d;
-  --vi-lime: #b9efa1;
-  --vi-mint: #82dcad;
-  --vi-orange: #f3a27f;
+  --vi-paper: #dbe9ee;
+  --vi-muted: #9db8c3;
+  --vi-edge: #46677973;
+  --vi-blue: #609bdb;
+  --vi-cyan: #69dcdf;
+  --vi-amber: #e5ad6e;
   --vi-font: 'Bahnschrift', 'DIN Alternate', 'Roboto', Arial, sans-serif;
   position: relative;
   z-index: 1;
@@ -36,7 +36,7 @@
 }
 .vi-body button:focus-visible,
 .vi-chart:focus-visible {
-  outline: 2px solid var(--vi-lime);
+  outline: 2px solid var(--vi-cyan);
   outline-offset: 2px;
 }
 .vi-heading,
@@ -66,7 +66,7 @@
   width: 18px;
   height: 18px;
   flex: none;
-  color: var(--vi-mint);
+  color: var(--vi-cyan);
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -82,15 +82,15 @@
 }
 .vi-badge {
   gap: 5px;
-  color: #b5d5aa;
+  color: var(--vi-muted);
 }
 .vi-badge i,
 .vi-camera-caption i {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--vi-lime);
-  box-shadow: 0 0 6px #b1f9b455;
+  background: var(--vi-cyan);
+  box-shadow: 0 0 6px #69dcdf55;
 }
 .vi-label,
 .vi-sensors dt,
@@ -118,7 +118,7 @@
   gap: 6px;
 }
 .vi-reading b {
-  color: var(--vi-lime);
+  color: var(--vi-cyan);
   font: 540 clamp(29px, 2.35vw, 48px)/1.03 var(--vi-font);
   letter-spacing: -0.035em;
 }
@@ -146,14 +146,14 @@
   border: 1px solid var(--vi-edge);
   border-radius: 3px;
   background:
-    radial-gradient(circle, #7a9d6729 0.65px, transparent 0.85px) 0 0 / 8px 8px,
-    linear-gradient(120deg, #152f24a6, #071c168f);
+    radial-gradient(circle, #528ba332 0.65px, transparent 0.85px) 0 0 / 8px 8px,
+    linear-gradient(120deg, #0b2432d9, #091a27ca);
 }
 .vi-pipe {
   display: block;
   width: 100%;
   height: 100%;
-  stroke: #577366;
+  stroke: #426070;
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -166,23 +166,23 @@
     sans-serif;
 }
 .vi-pipe g {
-  color: #8c9b8a;
+  color: #8aa2ae;
 }
 .vi-pipe .vi-arrow {
   fill: currentColor;
   stroke: none;
 }
 .vi-pipe .vi-mixer {
-  fill: #233e2f;
+  fill: #19394a;
 }
 .vi-pipe.open-A .vi-pipe-a,
 .vi-pipe.open-B .vi-pipe-b {
-  stroke: #a2d395;
-  color: #c3eba6;
+  stroke: var(--vi-blue);
+  color: #acd2f6;
 }
 .vi-pipe.open-main .vi-pipe-main {
-  stroke: #8fc7ac;
-  color: #d1e7cb;
+  stroke: var(--vi-cyan);
+  color: #b4e6ec;
 }
 .vi-main-toggle > span:first-child {
   grid-column: span 2;
@@ -194,25 +194,25 @@
   display: block;
   width: 32px;
   height: 16px;
-  border: 1px solid #73877b;
+  border: 1px solid #4e6b7a;
   border-radius: 12px;
-  background: #324237;
+  background: #203341;
 }
 .vi-switch i {
   display: block;
   height: 8px;
   width: 8px;
   border-radius: 50%;
-  background: #afbeaa;
+  background: #a2b5c2;
 }
 .vi-main-toggle[aria-checked='true'] .vi-switch {
-  border-color: #a1c798;
-  background: #608463;
+  border-color: #75bcc8;
+  background: #286477;
 }
 .vi-main-toggle[aria-checked='true'] .vi-switch i {
   transform: translateX(16px);
-  background: #ebf9d7;
-  box-shadow: 0 0 5px #c6efb89c;
+  background: #e4f8fc;
+  box-shadow: 0 0 5px #6ae1ed75;
 }
 .vi-main-toggle strong,
 .vi-pumps strong {
@@ -222,7 +222,7 @@
 }
 .vi-main-toggle[aria-checked='true'] strong,
 .vi-pumps button[aria-checked='true'] strong {
-  color: var(--vi-lime);
+  color: var(--vi-cyan);
 }
 .vi-pumps {
   display: grid;
@@ -239,14 +239,14 @@
   padding: 4px 7px;
   border: 1px solid var(--vi-edge);
   border-radius: 3px;
-  background: linear-gradient(110deg, #7d9c7b0d, #07130e21);
+  background: linear-gradient(110deg, #6f9db90f, #06131b36);
 }
 .vi-pumps button[aria-checked='true'] {
-  border-color: #749d705c;
-  background: linear-gradient(110deg, #86b27c20, #4b765d12);
+  border-color: #5aa6ba77;
+  background: linear-gradient(110deg, #42b8cc26, #205c7d1c);
 }
 .vi-pumps button:disabled .vi-pump-name {
-  color: #80958a;
+  color: #8ca3b0;
 }
 .vi-pump-name {
   font-size: clamp(10px, 0.74vw, 13px);
@@ -257,10 +257,10 @@
   width: 4px;
   height: 8px;
   border-radius: 1px;
-  background: #718174;
+  background: #516c7b;
 }
 .vi-pumps [aria-checked='true'] .vi-pump-name i {
-  background: var(--vi-lime);
+  background: var(--vi-cyan);
 }
 .vi-dose {
   flex: none;
@@ -280,13 +280,13 @@
 .vi-growth-track {
   height: 4px;
   overflow: hidden;
-  background: #8eab8d2e;
+  background: #769aaa36;
 }
 .vi-track i,
 .vi-growth-track i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #429c82, #c6e9a4);
+  background: linear-gradient(90deg, #387d9e, var(--vi-cyan));
 }
 .vi-segments,
 .vi-camera-tabs {
@@ -297,7 +297,7 @@
 .vi-segments {
   border: 1px solid var(--vi-edge);
   border-radius: 4px;
-  background: #07140e80;
+  background: #071724b3;
   padding: 2px;
 }
 .vi-segments button {
@@ -310,8 +310,8 @@
 }
 .vi-segments [aria-pressed='true'],
 .vi-camera-tabs [aria-pressed='true'] {
-  color: #dbf1c8;
-  background: #5a815d4a;
+  color: #ddf4f8;
+  background: #39718f66;
 }
 .vi-totals {
   display: grid;
@@ -332,10 +332,10 @@
   display: inline-block;
   width: 7px;
   height: 3px;
-  background: var(--vi-mint);
+  background: var(--vi-cyan);
 }
 .vi-totals > div:nth-child(2) .vi-label i {
-  background: var(--vi-orange);
+  background: var(--vi-amber);
 }
 .vi-totals strong,
 .vi-sensors b {
@@ -359,30 +359,30 @@
   fill: var(--vi-muted);
 }
 .vi-gridline {
-  stroke: #82998450;
+  stroke: #6084986b;
   stroke-width: 0.7;
   stroke-dasharray: 2 4;
   vector-effect: non-scaling-stroke;
 }
 .vi-bar-halo {
-  fill: #b7e1a5;
+  fill: var(--vi-cyan);
   opacity: 0;
 }
 .vi-highlight .vi-bar-halo {
   opacity: 0.09;
 }
 .vi-highlight text {
-  fill: #eefad2;
+  fill: var(--vi-paper);
 }
 .vi-chart output {
   position: absolute;
   right: 0;
   top: 0;
-  border: 1px solid #6a8b73;
+  border: 1px solid #57778d;
   border-radius: 3px;
   padding: 4px 7px;
-  background: #0a1813f5;
-  color: #e6f3dc;
+  background: #081a28f5;
+  color: var(--vi-paper);
   font: 11px/1.3 var(--vi-font);
   pointer-events: none;
 }
@@ -395,7 +395,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  background: linear-gradient(135deg, #8fac8220, #192e2615);
+  background: linear-gradient(135deg, #4777962c, #182b3b1f);
   border: 1px solid var(--vi-edge);
   border-radius: 3px;
   overflow: hidden;
@@ -441,7 +441,7 @@
   mask: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 7px);
 }
 .vi-growth strong {
-  color: var(--vi-lime);
+  color: var(--vi-cyan);
 }
 .vi-sensors dt {
   display: flex;
@@ -452,7 +452,7 @@
   width: 15px;
   height: 15px;
   flex: none;
-  stroke: var(--vi-mint);
+  stroke: var(--vi-cyan);
   stroke-width: 1.4;
   fill: none;
   stroke-linecap: round;
@@ -465,11 +465,11 @@
 .vi-spark {
   width: 100%;
   height: clamp(12px, 2.45vh, 30px);
-  color: #9bcbb2;
+  color: #72bccb;
   overflow: visible;
 }
 .vi-sensors > div:nth-child(3n) .vi-spark {
-  color: #c9bb87;
+  color: var(--vi-blue);
 }
 .vi-spark-area {
   fill: currentColor;
@@ -516,25 +516,25 @@
 }
 .vi-storage-sites > div > span {
   font-size: clamp(10px, 0.76vw, 14px);
-  color: #c7d6c5;
+  color: #c2d4df;
 }
 .vi-storage-sites b {
   font-family: var(--vi-font);
   font-weight: 580;
-  color: #c3e6c9;
+  color: var(--vi-paper);
 }
 .vi-stock-track {
   height: 3px;
   margin: 3px 0 1px;
-  background: #829c7e33;
+  background: #7097af38;
 }
 .vi-stock-track i {
   height: 100%;
   display: block;
-  background: #93cfac;
+  background: var(--vi-cyan);
 }
 .vi-storage-sites > div:last-child .vi-stock-track i {
-  background: #c0b184;
+  background: var(--vi-blue);
 }
 .vi-storage-sites small {
   font-family: var(--vi-font);
@@ -580,12 +580,13 @@
   flex: 1;
   min-height: 70px;
   overflow: hidden;
-  border: 1px solid #67826a85;
+  border: 1px solid #62849c85;
   border-radius: 3px;
-  background: #14251e;
+  background: #102535;
 }
 .vi-strip {
   --vi-ratio: 1;
+  filter: saturate(0.87) brightness(0.9);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -601,8 +602,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 8px 6px;
-  color: #f6faeb;
-  background: linear-gradient(transparent, #091810e8);
+  color: #f2f8fa;
+  background: linear-gradient(transparent, #071620eb);
 }
 .vi-camera-caption > span:first-child {
   display: flex;
@@ -616,7 +617,7 @@
 .vi-channel {
   font: 550 clamp(9px, 0.68vw, 13px) var(--vi-font);
   letter-spacing: 0.09em;
-  color: #bfd1c2;
+  color: #bdd3de;
 }
 .vi-camera-tabs {
   flex: none;
@@ -633,14 +634,14 @@
   font-size: clamp(10px, 0.72vw, 13px);
 }
 .vi-camera-tabs [aria-pressed='true'] {
-  border-color: #92ad7e;
+  border-color: #65a7ba;
 }
 .vi-body button:not(:disabled):hover {
-  color: #e7f3d4;
+  color: #e4f4f8;
 }
 .vi-pumps button:not(:disabled):hover,
 .vi-camera-tabs button:hover {
-  border-color: #8baa8a;
+  border-color: #6ba9bc;
 }
 @container (max-height:205px) {
   .vi-flow {

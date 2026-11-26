@@ -352,7 +352,7 @@ export function mountInstruments(
       <text x="${x}" y="103" text-anchor="middle">${g.label}</text></g>`;
       })
       .join('');
-    svg.innerHTML = `<defs><linearGradient id="vi-in-grad" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#a9f5bd"/><stop offset=".12" stop-color="#6cd8a7"/><stop offset="1" stop-color="#2c735f"/></linearGradient><linearGradient id="vi-out-grad" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#ffd0a7"/><stop offset=".12" stop-color="#f5a07b"/><stop offset="1" stop-color="#935c4c"/></linearGradient></defs>${axis}${marks}`;
+    svg.innerHTML = `<defs><linearGradient id="vi-in-grad" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#b4edf0"/><stop offset=".12" stop-color="var(--vi-cyan)"/><stop offset="1" stop-color="#265872"/></linearGradient><linearGradient id="vi-out-grad" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#f2cfaa"/><stop offset=".12" stop-color="var(--vi-amber)"/><stop offset="1" stop-color="#865e3d"/></linearGradient></defs>${axis}${marks}`;
     showCursor(-1);
   }
   irrig.addEventListener(

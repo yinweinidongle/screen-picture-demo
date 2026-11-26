@@ -103,6 +103,8 @@ export function mountSpecimen(
       canvas: meshCanvas,
       alpha: true,
       antialias: true,
+      // A paused specimen must survive viewport recomposition without another animation frame.
+      preserveDrawingBuffer: true,
       powerPreference: 'high-performance',
     });
     renderer.setClearColor(0, 0);
@@ -208,20 +210,32 @@ export function mountSpecimen(
       last = 0;
     } else queue();
   }
+  function repaint() {
+    if (!playing && visible && !document.hidden && !disposed && width && height) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      draw();
+    } else queue();
+  }
   function size() {
     width = host.clientWidth;
     height = host.clientHeight;
     if (!width || !height) return;
     const dpr = Math.min(devicePixelRatio || 1, 1.8, Math.sqrt(1500000 / (width * height)));
     if (isGPU()) {
-      renderer.setPixelRatio(dpr);
-      renderer.setSize(width, height, false);
+      if (
+        meshCanvas.width !== Math.floor(width * dpr) ||
+        meshCanvas.height !== Math.floor(height * dpr) ||
+        renderer.getPixelRatio() !== dpr
+      ) {
+        renderer.setDrawingBufferSize(width, height, dpr);
+      }
       bloom.resize(meshCanvas.width, meshCanvas.height);
     }
     if (flat.width !== Math.round(width * dpr)) flat.width = Math.round(width * dpr);
     if (flat.height !== Math.round(height * dpr)) flat.height = Math.round(height * dpr);
     pose();
-    queue();
+    repaint();
   }
   function play(v) {
     playing = v;
@@ -402,7 +416,7 @@ export function mountSpecimen(
         U.opticalMap.value = texture;
         U.opticalReady.value = 1;
         host.dataset.scanTexture = 'ready';
-        queue();
+        repaint();
       },
       listen,
     );
@@ -419,7 +433,7 @@ export function mountSpecimen(
         U.leafMap.value = texture;
         U.mapped.value = 1;
         host.dataset.texture = 'ready';
-        queue();
+        repaint();
       },
       listen,
     );

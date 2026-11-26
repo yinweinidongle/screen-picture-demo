@@ -1,21 +1,21 @@
 :root {
   color-scheme: dark;
-  --paper: #e9f0df;
-  --mint: #a5e7bd;
-  --amber: #e8ba7a;
-  --muted: #a4b8ad;
-  --line: #334c40;
+  --paper: #e1eff5;
+  --cyan: #7ce1eb;
+  --amber: #e5ad6e;
+  --muted: #9db8c3;
+  --line: #2b4c60;
   --num: 'Bahnschrift', 'DIN Alternate', 'Roboto', sans-serif;
   font-family: Inter, 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
   color: var(--paper);
-  background: #071511;
+  background: #06111c;
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
-  background: radial-gradient(ellipse at 45% 0%, #1d342b, transparent 66%), #081510;
+  background: radial-gradient(ellipse at 45% 0%, #173447, transparent 66%), #061320;
 }
 h1,
 h2,
@@ -44,12 +44,12 @@ button:focus-visible,
 a:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #cbffc9;
+  outline: 2px solid #a5f6ff;
   outline-offset: 2px;
 }
 button:hover,
 a:hover {
-  color: #ebffdf;
+  color: #ebfbff;
 }
 [hidden],
 .symbols {
@@ -79,7 +79,7 @@ a:hover {
 }
 .brand {
   justify-self: start;
-  color: #ebf5df;
+  color: #e3f2f6;
 }
 .brand b,
 .brand small {
@@ -92,13 +92,13 @@ a:hover {
 .brand small {
   font: 600 clamp(8px, 0.65vw, 12px)/1.4 var(--num);
   letter-spacing: 0.16em;
-  color: #adcfbf;
+  color: #9bbdce;
 }
 .logo {
   width: clamp(28px, 2.4vw, 48px);
   aspect-ratio: 1;
   fill: none;
-  stroke: #a5ebba;
+  stroke: #80e7f2;
   stroke-width: 1.6;
 }
 .mast-title {
@@ -108,7 +108,7 @@ a:hover {
 .micro {
   font: 600 clamp(9px, 0.62vw, 12px)/1.25 var(--num);
   letter-spacing: 0.22em;
-  color: #a1c6a5;
+  color: #89bacb;
 }
 .mast-title h1 {
   font-weight: 640;
@@ -116,16 +116,19 @@ a:hover {
   letter-spacing: 0.15em;
   text-indent: 0.15em;
   line-height: 1.25;
-  text-shadow: 0 2px 5px #000;
+  color: #eefbff;
+  text-shadow:
+    0 2px 5px #020a12,
+    0 0 19px #65cee934;
 }
 .mast-title p {
   letter-spacing: 0.32em;
-  color: #c7d8aa;
+  color: #9bdded;
 }
 .home {
   justify-self: end;
-  border: 1px solid #6c8a6977;
-  background: #0b1914a8;
+  border: 1px solid #5a829b85;
+  background: #081924c5;
   border-radius: 3px;
   padding: 6px 11px;
   font-size: 12px;
@@ -146,9 +149,9 @@ a:hover {
   grid-template-columns: 1.38fr 1fr 1fr 1fr auto;
   gap: clamp(8px, 1.5vw, 36px);
   padding: 0 clamp(16px, 2.25vw, 47px);
-  border-block: 1px solid #415848;
-  background: linear-gradient(100deg, #203a2c, #14291e 48%, #14271f);
-  box-shadow: inset 3px 0 #9ebf83;
+  border-block: 1px solid #315468;
+  background: linear-gradient(100deg, #16394b, #10283b 40%, #0d2232 80%);
+  box-shadow: inset 3px 0 #65d8e4;
 }
 .archive-stat,
 .plot-field {
@@ -157,14 +160,14 @@ a:hover {
   gap: clamp(8px, 0.9vw, 20px);
 }
 .archive-stat {
-  border-left: 1px solid #46624c80;
+  border-left: 1px solid #46708980;
   padding-left: clamp(12px, 1.55vw, 40px);
 }
 .archive-stat > span,
 .plot-field label,
 .record-date {
   font-size: clamp(10px, 0.76vw, 14px);
-  color: #bfd0bb;
+  color: #b2c9d4;
 }
 .archive-stat strong {
   font-size: clamp(15px, 1.06vw, 23px);
@@ -178,10 +181,10 @@ a:hover {
 .archive-stat small {
   font-weight: 400;
   font-size: 12px;
-  color: #b6c7b6;
+  color: #a7c0cc;
 }
 .plot-field .ui-icon {
-  color: var(--mint);
+  color: var(--cyan);
   width: 24px;
   height: 24px;
 }
@@ -191,7 +194,7 @@ a:hover {
   letter-spacing: 0.09em;
 }
 .plot-field select {
-  background: #172d20;
+  background: #122c3c;
   border: 0;
   font-size: clamp(15px, 1.05vw, 22px);
   font-weight: 650;
@@ -209,13 +212,13 @@ a:hover {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #c8de90;
-  box-shadow: 0 0 9px #bce39f60;
+  background: #6cdae7;
+  box-shadow: 0 0 9px #79dbe860;
 }
 .record-date time {
   grid-column: 1/-1;
   font: 11px var(--num);
-  color: #c6d0c2;
+  color: #b4cbd6;
   letter-spacing: 0.05em;
 }
 .deck {
@@ -232,7 +235,7 @@ a:hover {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  background: radial-gradient(ellipse at 12% 1%, #213a2d, transparent 76%), #0e2018;
+  background: radial-gradient(ellipse at 12% 1%, #19394c, transparent 76%), #0c1d2b;
   clip-path: polygon(
     11px 0,
     calc(100% - 11px) 0,
@@ -299,7 +302,7 @@ a:hover {
   pointer-events: none;
 }
 .specimen-head .micro {
-  color: #9cc8bd;
+  color: #9bcedb;
 }
 .specimen-head h2 {
   font-size: clamp(23px, 1.75vw, 38px);
@@ -313,12 +316,12 @@ a:hover {
     italic clamp(10px, 0.78vw, 15px)/1.35 Georgia,
     serif;
   letter-spacing: 0.015em;
-  color: #bbd3cf;
+  color: #b4cfd8;
 }
 .imaging {
   display: flex;
-  background: #061817e8;
-  border: 1px solid #456552;
+  background: #071a28e8;
+  border: 1px solid #355f73;
   padding: 2px;
   border-radius: 4px;
   pointer-events: auto;
@@ -327,13 +330,13 @@ a:hover {
   font-size: clamp(10px, 0.72vw, 14px);
   padding: 4px 8px;
   white-space: nowrap;
-  color: #c3cfc4;
+  color: #b8cbd5;
   border-radius: 2px;
 }
 .imaging button[aria-pressed='true'] {
-  background: #31503c;
-  color: #e6f9ce;
-  box-shadow: inset 0 0 0 1px #619475;
+  background: #164658;
+  color: #e2faff;
+  box-shadow: inset 0 0 0 1px #4a96a6;
 }
 #specimen-host {
   position: absolute;
@@ -375,8 +378,8 @@ a:hover {
   max-width: min(21vw, 230px);
 }
 .square[aria-pressed='true'] {
-  border-color: #89a899;
-  color: #bee0ca;
+  border-color: #6298a9;
+  color: #c0e4ee;
 }
 #specimen-host canvas {
   width: 100%;
@@ -394,7 +397,7 @@ a:hover {
 }
 .viewport-tools > span {
   font-size: clamp(9px, 0.68vw, 12px);
-  color: #b1c8c0;
+  color: #a3c1d0;
   text-shadow: 0 1px 3px #000;
   margin-right: 3px;
 }
@@ -403,9 +406,9 @@ a:hover {
   height: 27px;
   display: grid;
   place-items: center;
-  border: 1px solid #496558;
+  border: 1px solid #3d6072;
   border-radius: 3px;
-  background: #0c201bc9;
+  background: #0a1f30d9;
 }
 .square .ui-icon {
   width: 15px;
@@ -422,8 +425,8 @@ a:hover {
   display: flex;
   align-items: center;
   gap: clamp(14px, 1.8vw, 40px);
-  border-top: 1px solid #3b5349;
-  background: linear-gradient(105deg, #1d3427, #10231d 78%);
+  border-top: 1px solid #2f5265;
+  background: linear-gradient(105deg, #173248, #0b1f30 78%);
 }
 .growth-label h3 {
   font-weight: 600;
@@ -448,22 +451,22 @@ a:hover {
   left: 0;
   right: 0;
   top: 50%;
-  border-top: 1px solid #62816a;
+  border-top: 1px solid #446c83;
 }
 #stages button {
   position: relative;
-  border: 1px solid #46654f;
+  border: 1px solid #34596e;
   border-radius: 16px;
   padding: 4px clamp(7px, 0.83vw, 17px);
-  background: #142b21;
-  color: #bfd0be;
+  background: #112a3b;
+  color: #b4cbd5;
   font-size: clamp(11px, 0.8vw, 15px);
   white-space: nowrap;
 }
 #stages button[aria-pressed='true'] {
-  color: #f1e2a6;
-  background: #343727;
-  border-color: #ab9c65;
+  color: #d2f6ff;
+  background: #164557;
+  border-color: #56a7b4;
 }
 #stages button i {
   display: inline-block;
@@ -475,9 +478,9 @@ a:hover {
 }
 .annotation,
 .fruit-detail {
-  border-left: 2px solid #82cfc7;
-  background: linear-gradient(95deg, #04151feb, #071821c7);
-  color: #cee0df;
+  border-left: 2px solid #67d7e3;
+  background: linear-gradient(95deg, #041723eb, #081d2bcf);
+  color: #c9dce5;
   font-size: clamp(10px, 0.82vw, 16px);
   line-height: 1.52;
   padding: 7px 10px;
@@ -491,7 +494,7 @@ a:hover {
 .annotation b,
 .fruit-detail b {
   display: block;
-  color: #a5e8dd;
+  color: #9be5eb;
   font-weight: 600;
   letter-spacing: 0.07em;
   margin-bottom: 2px;
@@ -501,7 +504,7 @@ a:hover {
   top: 21%;
 }
 .annotation.leaf-note b {
-  color: #f4c98a;
+  color: #e5ba89;
 }
 .annotation.stage-note {
   left: 3%;
@@ -512,10 +515,10 @@ a:hover {
   z-index: 2;
   left: 4%;
   bottom: calc(var(--growth) + 12px);
-  border-color: #e6a378;
+  border-color: #cb9470;
 }
 .fruit-detail b {
-  color: #f3b995;
+  color: #ecbc99;
 }
 .specimen[data-annotate='off'] .annotation {
   display: none;
@@ -632,7 +635,7 @@ a:hover {
     justify-content: end;
     grid-column: 1/-1;
     gap: 6px;
-    border-top: 1px solid #40554585;
+    border-top: 1px solid #35566a85;
     padding-top: 4px;
     font-size: 9px;
   }
