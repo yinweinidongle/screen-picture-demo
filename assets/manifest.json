@@ -375,12 +375,28 @@
       "sha256": "93a3412a07aa86082cb78e6d550d65491f749faf371d536cbabf87c6f54dea16"
     },
     {
+      "path": "assets/art/civic-fascia.webp",
+      "source": "Original titanium header fascia generated with OpenAI ImageGen for Civic Pulse. Cropped to 2172 x 194, with a registered emissive layer in the second atlas row. Prompt in docs/screens/civic-pulse.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "49a94978572cb32d99fbb44e76a7913acc16938fdf9cc7f417f003901607afcf"
+    },
+    {
+      "path": "assets/art/civic-bezel.webp",
+      "source": "Original chamfered municipal instrument bezel generated with OpenAI ImageGen for Civic Pulse. Two 724 x 543 atlas rows contain the nine-slice frame and its extracted luminous gasket. Prompt in docs/screens/civic-pulse.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "2bf11510944c6edd6c2f2a718bba5c8a73d6139071037a2c97de791d65585a9d"
+    },
+    {
       "path": "assets/previews/civic-pulse.webp",
-      "source": "Actual 1920 x 1080 capture of the Civic Pulse dashboard with the original procedural canopy and ImageGen river backdrop.",
+      "source": "Actual 1920 x 1080 capture of the Civic Pulse dashboard with the procedural canopy and generated river, fascia and panel bezels.",
       "author": "VIZ / LAB contributors",
       "license": "Composite of MIT scene code and project-generated artwork",
       "status": "composite",
-      "sha256": "49ad9482908097c3f5bd48c77e44aabd3873ce5474425ba6dc75240aff049f78"
+      "sha256": "bf023fd6b0cafea052b22e6ff3b04d68bd327d8a827196bb693415dcd2934d22"
     }
   ]
 }

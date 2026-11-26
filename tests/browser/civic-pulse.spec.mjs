@@ -73,3 +73,65 @@ test('mobile projected canopy and work orders also work without WebGL', async ({
   await expect(page.locator('#feed button').first()).toBeFocused();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
 });
+
+test('a light follows the generated artwork around the bezel at desktop and mobile sizes', async ({
+  page,
+}) => {
+  await page.goto('/civic-pulse.html');
+  await page.evaluate(() => document.fonts.ready);
+  const chart = page.locator('.chart-panel');
+  const circuit = chart.locator('[data-circuit="chart"]');
+  const paused = () => circuit.evaluate((s) => s.animationsPaused());
+  await expect.poll(paused).toBe(true);
+  await page.getByRole('button', { name: '播放信号' }).click();
+  await expect.poll(paused).toBe(false);
+  await page.getByRole('button', { name: '暂停信号' }).click();
+  await expect.poll(paused).toBe(true);
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    await chart.scrollIntoViewIfNeeded();
+    const frame = async (time) => {
+      await circuit.evaluate(async (s, t) => {
+        s.setCurrentTime(t);
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      }, time);
+      return (await chart.screenshot()).toString('base64');
+    };
+    const idle = await frame(6);
+    for (const phase of [0.85, 1.68]) {
+      const lit = await frame(phase);
+      const changes = await page.evaluate(
+        async ([a, b]) => {
+          async function pixels(data) {
+            const im = new Image();
+            im.src = 'data:image/png;base64,' + data;
+            await im.decode();
+            const c = document.createElement('canvas');
+            c.width = im.width;
+            c.height = im.height;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(im, 0, 0);
+            return ctx.getImageData(0, 0, c.width, c.height);
+          }
+          const [a1, b1] = await Promise.all([pixels(a), pixels(b)]);
+          let border = 0,
+            interior = 0;
+          for (let y = 0; y < a1.height; y++) {
+            for (let x = 0; x < a1.width; x++) {
+              const k = (y * a1.width + x) * 4;
+              if (b1.data[k + 2] - a1.data[k + 2] < 26) continue;
+              // The photographed bevel and its diffuse halo extend furthest in the cut corners.
+              if (Math.min(x, y, a1.width - 1 - x, a1.height - 1 - y) < 27) border++;
+              else interior++;
+            }
+          }
+          return { border, interior };
+        },
+        [idle, lit],
+      );
+      expect(changes.border).toBeGreaterThan(55);
+      // Chromium can antialias isolated chart pixels differently when the SVG mask repaints.
+      expect(changes.interior).toBeLessThan(changes.border * 0.01);
+    }
+  }
+});
