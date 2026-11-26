@@ -1,10 +1,10 @@
 {
-  "capturedOn": "2026-11-25",
-  "assetInventorySha256": "36ba1bfa367375bf9ec47336766cd7c65c576edc26be4456e8e392663a112242",
-  "notes": "Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
+  "capturedOn": "2026-11-26",
+  "assetInventorySha256": "e014ca0c95d76c642426505f57a34afdb509cbcd8e5c5d8d6fd5872281617b7d",
+  "notes": "Civic Pulse and the ten-scene Home galleries were recorded on 2026-11-26. The 11-second civic GIF shows a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
   "files": {
-    "home-preview.png": "ac231fb5c7a31b3e938d32a3617d2c4ec6ebc334fafc8b918bc08b1ab3f040ab",
-    "home-mobile-preview.png": "ea9c7377af5d1d2ee6f4d578bf04aec3b18dc314ee631ff06270f69a278cd801",
+    "home-preview.png": "0f5e44d460a977513defce32d98bceea720f616ed436adfe08819a7e23cbf9d6",
+    "home-mobile-preview.png": "0ec69d64963f19203e0613cb37757f6073d11c2626747a347eeb5fb720492ae1",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
     "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762",
@@ -13,13 +13,15 @@
     "aero-lab-demo.webp": "8e2f95b45406423eef135f05c81513ad4caa3076bd121abb7aa5d6a427640728",
     "aero-lab-states.webp": "bf367c0af5b9aae99ecc93bdc7403837c57ad2a90e0f9f1e97aba727672e2047",
     "aero-lab-livery.webp": "f879fba86b7d8c52c9aeb5405959ed3fccd69b102cc3bc1feddcfbfb66054931",
-    "aero-lab-demo.gif": "e11ce35e306d2cfc3ef636ae345ecb32f5c4e708ba9f4f81acfb8cd261a86233"
+    "aero-lab-demo.gif": "e11ce35e306d2cfc3ef636ae345ecb32f5c4e708ba9f4f81acfb8cd261a86233",
+    "civic-pulse-demo.gif": "c7a9450bf1f6bc1dc4440111be30c18b1737fb01fb9a3a94febb597a8796cad9"
   },
   "previewFiles": {
     "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
     "assets/previews/industry.webp": "78e7375a407fb67bd1f77c7eeb8ee5b03485e4c761c40431d8add40ab102205c",
     "assets/previews/park.webp": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3",
     "assets/previews/earth-link.webp": "00d93da56e6f7547516bc2eac86065d8bcef05d8d02cb911f616890ca6c8ffa3",
-    "assets/previews/aero-lab.webp": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3"
+    "assets/previews/aero-lab.webp": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3",
+    "assets/previews/civic-pulse.webp": "49ad9482908097c3f5bd48c77e44aabd3873ce5474425ba6dc75240aff049f78"
   }
 }

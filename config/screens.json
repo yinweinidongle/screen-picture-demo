@@ -106,5 +106,17 @@
     "preview": "assets/previews/aero-lab.webp",
     "tags": ["物理车漆", "风洞试验", "时空隧道", "自动驾驶"],
     "renderer": "generic"
+  },
+  {
+    "id": "civic-pulse",
+    "title": "榕城 · 智慧市政运行中枢",
+    "description": "沿三维感知树追踪市政信号，联动六城区的设施、工单与处置记录。",
+    "category": "operations",
+    "label": "CIVIC PULSE",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/civic-pulse.webp",
+    "tags": ["市政感知树", "辖区联动", "工单调度"],
+    "renderer": "generic"
   }
 ]

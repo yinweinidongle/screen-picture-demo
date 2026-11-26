@@ -2,9 +2,11 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Nine interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network and a supercar wind tunnel. The gallery shows actual page captures and runs one live preview at a time.
+Ten interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel and municipal operations. The gallery shows actual page captures and runs one live preview at a time.
 
 ![Gallery](media/home-preview.png)
+
+Civic Pulse follows drainage, roads, lighting and sanitation across six Fuzhou districts. Select a branch on the three-dimensional tree to inspect its service, or open a work order to follow its response history. The data comes from a reproducible municipal simulation. [Open Civic Pulse](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html) · [Watch the recording](media/civic-pulse-demo.gif)
 
 AERO / LAB puts Arion Digital’s Lamborghini Aventador in a photographic HDR studio. Try the illustrated livery, follow the silver wind ribbons over the roof, or orbit the car as coloured tunnel lights sweep across the lacquer. On the three-lane test road, pairs of short cyan dashes travel outwards in waves. Each dash disappears against the first vehicle or guardrail it reaches. The car evaluates five seconds of predicted traffic to choose a route, drawn in blue and violet. Reset mixed traffic to run a different encounter. Self-contained GLBs can also be opened locally. [Open AERO / LAB](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html) · [Watch the demo](media/aero-lab-demo.gif) · [Controls and credits](screens/aero-lab.md)
 

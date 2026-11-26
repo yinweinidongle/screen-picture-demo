@@ -347,6 +347,7 @@ class Builder:
             ("EARTH_FALLBACK", "art/earth-link-globe.webp", None),
             ("AERO_POSTER", "art/aero-studio.webp", None),
             ("AERO_LIVERY", "art/aero-racer.webp", None),
+            ("CIVIC_RIVER", "art/civic-river.webp", None),
         ]:
             token = f"/*__{marker}__*/"
             if token in content:
