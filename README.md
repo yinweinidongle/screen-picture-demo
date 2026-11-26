@@ -4,9 +4,9 @@
 
 **[打开 Home 展厅](https://yinweinidongle.github.io/screen-picture-demo/home.html)** · [English](docs/README.en.md) · [参与贡献](CONTRIBUTING.md) · [路线图](ROADMAP.md)
 
-九个可交互大屏，用 Three.js、TSL、GLSL 和 D3 展示超跑风洞、精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
+十个可交互大屏，用 Three.js、TSL、GLSL 和 D3 展示市政感知树、超跑风洞、精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
 
-[![Home 首页的九个大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
+[![Home 首页的十个大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
 
 <details>
 <summary>手机首页预览</summary>
@@ -14,7 +14,7 @@
 <img src="docs/media/home-mobile-preview.png" alt="手机端单列卡片" width="320">
 </details>
 
-## 体验九个大屏
+## 体验十个大屏
 
 | 场景             | 核心交互                                                   | 在线体验                                                                                  |
 | ---------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -27,6 +27,7 @@
 | 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情           | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)               |
 | 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势           | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)   |
 | 超跑风洞实验室   | 分层车漆与动漫涂装、风洞绕流、时空隧道、雷达与渐变规划路线 | [aero-lab.html](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)       |
+| 榕城 · 智慧市政  | 三维感知树、六城区联动、逐时工单流量与现场处置记录         | [civic-pulse.html](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html) |
 
 ### 01 / 智慧风电
 
@@ -67,6 +68,12 @@
 在兰博基尼 Aventador 上切换金属车漆和动漫贴花。启动风洞，银白细线沿风挡爬上车顶，倒影掠过车漆。进入时空隧道后可拖动绕车观察彩色光束。自动驾驶提供前方慢车、密集车流和混合车流三种路况。青色雷达短线一波波向四周飞出，每波前亮后淡，遇到车辆或护栏就缩短、消失。路面上的蓝紫色带显示车辆即将执行的路线。[操作与渲染说明](docs/screens/aero-lab.md)
 
 [![超跑风洞实验室实录，展示换漆、贴体风线、隧道环绕，以及成波飞出的雷达短线和车辆的变道、跟车](docs/media/aero-lab-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)
+
+### 10 / 榕城 · 智慧市政运行中枢
+
+在滨江夜景中旋转三维感知树，观察信号从根部沿枝干抵达四类市政服务的枝尖。选择辖区或点击现场工单，查看对应的流量、处置进度与承办记录。数据使用六城区模拟快照。[操作与数据口径](docs/screens/civic-pulse.md)
+
+[![实录展示榕城感知树的流光、辖区切换、照明分支与工单记录](docs/media/civic-pulse-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html)
 
 ## 本地开发
 

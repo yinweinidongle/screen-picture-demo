@@ -365,6 +365,22 @@
       "license": "Composite with CC BY 4.0 model, CC0 lighting, OFL font and project-generated art",
       "status": "composite",
       "sha256": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3"
+    },
+    {
+      "path": "assets/art/civic-river.webp",
+      "source": "Original blue-hour river panorama generated with OpenAI ImageGen for Civic Pulse, exported as 1536 x 1024 WebP. Prompt in docs/screens/civic-pulse.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "93a3412a07aa86082cb78e6d550d65491f749faf371d536cbabf87c6f54dea16"
+    },
+    {
+      "path": "assets/previews/civic-pulse.webp",
+      "source": "Actual 1920 x 1080 capture of the Civic Pulse dashboard with the original procedural canopy and ImageGen river backdrop.",
+      "author": "VIZ / LAB contributors",
+      "license": "Composite of MIT scene code and project-generated artwork",
+      "status": "composite",
+      "sha256": "49ad9482908097c3f5bd48c77e44aabd3873ce5474425ba6dc75240aff049f78"
     }
   ]
 }
