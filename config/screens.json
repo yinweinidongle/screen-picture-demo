@@ -118,5 +118,17 @@
     "preview": "assets/previews/civic-pulse.webp",
     "tags": ["市政感知树", "辖区联动", "工单调度"],
     "renderer": "generic"
+  },
+  {
+    "id": "verdant-lab",
+    "title": "衡水 · 蔬菜产业大数据平台",
+    "description": "观察三维番茄的生长与果序，联动三座温室的环境、水肥、产销与巡检。",
+    "category": "operations",
+    "label": "VERDANT OBSERVATORY",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/verdant-lab.webp",
+    "tags": ["植株显影", "水肥调度", "温室巡检"],
+    "renderer": "generic"
   }
 ]

@@ -2,9 +2,11 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Ten interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel and municipal operations. The gallery shows actual page captures and runs one live preview at a time.
+Eleven interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel, municipal operations and greenhouse vegetable production. The gallery shows actual page captures and runs one live preview at a time.
 
 ![Gallery](media/home-preview.png)
+
+Verdant Observatory pairs a rotatable tomato specimen with simulated greenhouse telemetry, irrigation and warehouse records. Switch between vein imaging and daylight to inspect the same plant. [Open Verdant Observatory](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html) · [Watch the recording](media/verdant-lab-demo.gif)
 
 Civic Pulse follows drainage, roads, lighting and sanitation across six Fuzhou districts. Select a branch on the three-dimensional tree to inspect its service, or open a work order to follow its response history. The data comes from a reproducible municipal simulation. [Open Civic Pulse](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html) · [Watch the recording](media/civic-pulse-demo.gif)
 

@@ -1,10 +1,10 @@
 {
   "capturedOn": "2026-11-26",
-  "assetInventorySha256": "f945c4224913628286ce5bac1ad9d901a64d7879bbdb48a3f629c684a1557ba7",
-  "notes": "Civic Pulse and the ten-scene Home galleries were recorded on 2026-11-26. The 11-second civic GIF shows the generated metal fascia and panel artwork with source-aligned glows, a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
+  "assetInventorySha256": "d7e233f3d9f07510fceacc05bd2944260f3b59f73920b38b738be7d80ad6eebb",
+  "notes": "Verdant Observatory and the eleven-screen Home gallery were recorded on 2026-11-26. The vegetable-production recording shows the working 3D specimen in vein imaging and daylight modes. Civic Pulse was recorded on 2026-11-26. The 11-second civic GIF shows the generated metal fascia and panel artwork with source-aligned glows, a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
   "files": {
-    "home-preview.png": "390f7ab8c38a8523348a87209412ed57f88225b643c14823c33059c6c34a57b8",
-    "home-mobile-preview.png": "25dc143e584b750c63273674aa0778faa989b0129190fcd50567f092a3b777c4",
+    "home-preview.png": "3f0994b350306a6c382cc845961f10394623fdf2743b6ff053be196a9ef4004d",
+    "home-mobile-preview.png": "873dc5a587717ce49dff338d06ba0e138f3dcc70614aa7140ce9dc7cc49a6af1",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
     "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762",
@@ -14,7 +14,9 @@
     "aero-lab-states.webp": "bf367c0af5b9aae99ecc93bdc7403837c57ad2a90e0f9f1e97aba727672e2047",
     "aero-lab-livery.webp": "f879fba86b7d8c52c9aeb5405959ed3fccd69b102cc3bc1feddcfbfb66054931",
     "aero-lab-demo.gif": "e11ce35e306d2cfc3ef636ae345ecb32f5c4e708ba9f4f81acfb8cd261a86233",
-    "civic-pulse-demo.gif": "e882de03b20d9fb2f2b0d4535fef692fab608520a2909e7ea1ed9cdd7620f488"
+    "civic-pulse-demo.gif": "e882de03b20d9fb2f2b0d4535fef692fab608520a2909e7ea1ed9cdd7620f488",
+    "verdant-lab-demo.gif": "079e70457d9c34a1031551a7a1fb3f7e9c38dec3e399b633c9a6b9c6d18d3cca",
+    "verdant-leaf-study.webp": "7d794e72155dad2eb4fc8ba717e8d11c73098027e36fbb44272578204fddd5fb"
   },
   "previewFiles": {
     "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
@@ -22,6 +24,7 @@
     "assets/previews/park.webp": "5753939c1793d121d53fabd0c71fa73a293443b9240edefc6e3237ae853b92a3",
     "assets/previews/earth-link.webp": "00d93da56e6f7547516bc2eac86065d8bcef05d8d02cb911f616890ca6c8ffa3",
     "assets/previews/aero-lab.webp": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3",
-    "assets/previews/civic-pulse.webp": "bf023fd6b0cafea052b22e6ff3b04d68bd327d8a827196bb693415dcd2934d22"
+    "assets/previews/civic-pulse.webp": "bf023fd6b0cafea052b22e6ff3b04d68bd327d8a827196bb693415dcd2934d22",
+    "assets/previews/verdant-lab.webp": "dec5d960d473aded251a8ed0b8e67fbb8a03ca8f6ab4ca795e8bcc9debace570"
   }
 }
