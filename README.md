@@ -71,7 +71,7 @@
 
 ### 10 / 榕城 · 智慧市政运行中枢
 
-在滨江夜景中旋转三维感知树，观察信号从根部沿枝干抵达四类市政服务的枝尖。选择辖区或点击现场工单，查看对应的流量、处置进度与承办记录。数据使用六城区模拟快照。[操作与数据口径](docs/screens/civic-pulse.md)
+在滨江夜景中旋转三维感知树，观察信号从根部抵达四类市政服务的枝尖。选择辖区、领域或趋势时段时，对应面板的金属边框会亮起一道青色飞线。现场工单可查看承办班组与处置记录。数据使用六城区模拟快照。[操作、素材与数据口径](docs/screens/civic-pulse.md)
 
 [![实录展示榕城感知树的流光、辖区切换、照明分支与工单记录](docs/media/civic-pulse-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html)
 

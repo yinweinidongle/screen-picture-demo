@@ -348,6 +348,8 @@ class Builder:
             ("AERO_POSTER", "art/aero-studio.webp", None),
             ("AERO_LIVERY", "art/aero-racer.webp", None),
             ("CIVIC_RIVER", "art/civic-river.webp", None),
+            ("CIVIC_FASCIA", "art/civic-fascia.webp", None),
+            ("CIVIC_BEZEL", "art/civic-bezel.webp", None),
         ]:
             token = f"/*__{marker}__*/"
             if token in content:

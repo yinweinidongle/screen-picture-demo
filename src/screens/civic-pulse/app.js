@@ -2,6 +2,7 @@
 import { services, districts, snapshot, reports, states, clock, hourAt } from './data.js';
 import { renderFlow, renderDonut, spark, statusColors } from './charts.js';
 import { mountCanopy } from './scene.js';
+import { mountChrome } from './chrome.js';
 
 const by = (id) => document.getElementById(id);
 const icon = (name) => `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
@@ -39,7 +40,9 @@ by('district-list').innerHTML = ['全市', ...districts.map((d) => d.name)]
 const pins = [...by('pins').children],
   serviceRows = [...by('services').children],
   districtButtons = [...by('district-list').children];
+const chrome = mountChrome(document.querySelector('.console-shell'));
 const tree = mountCanopy(by('canopy'), pins, (playing, gpu) => {
+  chrome.play(playing);
   const button = by('play'),
     label = playing ? '暂停信号' : '播放信号';
   button.setAttribute('aria-label', label);
@@ -160,6 +163,7 @@ function dispatchList() {
 function detail(report) {
   service = report.s;
   render(true);
+  chrome.pulse('feed');
   by('dialog-title').textContent = report.title;
   const props = [
     ['工单编号', report.id],
@@ -182,17 +186,20 @@ document.addEventListener(
     if (b.dataset.district !== undefined) {
       district = Number(b.dataset.district);
       render();
+      chrome.pulse('canopy');
       return;
     }
     if (b.dataset.service !== undefined) {
       const next = Number(b.dataset.service);
       service = service === next ? -1 : next;
       render();
+      chrome.pulse('services');
       return;
     }
     if (b.dataset.period) {
       period = Number(b.dataset.period);
       updateChart();
+      chrome.pulse('chart');
       return;
     }
     if (b.dataset.event) {
@@ -212,6 +219,7 @@ document.addEventListener(
       case 'clear-service':
         service = -1;
         render();
+        chrome.pulse('services');
         serviceRows[0].focus();
         break;
       case 'all-events':
@@ -256,5 +264,6 @@ dialog.addEventListener(
 render(false);
 window.VizLabRuntime.onDispose(() => {
   abort.abort();
+  chrome.dispose();
   tree.dispose();
 });

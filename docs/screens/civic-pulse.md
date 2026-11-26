@@ -9,6 +9,7 @@
 - 点击底部的辖区，查看该区的工单、设备和逐时流量。点击树上的领域标签或左侧领域条可以聚焦一组树枝，再次点击可回到全部领域。
 - 点击现场动态可查看工单所属片区、承办班组和处置记录，同时向对应树枝发出一次脉冲。“查看工单”打开当前范围内的演示工单列表。
 - 在树上拖动旋转，滚轮缩放。键盘聚焦三维视图后，可用方向键转动、加减键缩放、空格暂停、Home 复位。逐时图支持指针悬停和左右方向键读数。
+- 页头两翼的光流向中央汇聚。切换辖区、服务领域或图表时段，会从对应面板的切角发出一道青色拖尾。“暂停信号”同时控制树上的脉冲和边框飞线。
 - 手机将三维视图放在指标下方，图表随页面纵向排列。减少动态效果偏好会暂停流光。WebGL 不可用时，Canvas 2D 从同一份三维骨架投影树枝、粒子和标签，支持同样的领域选择。
 
 ## 数据口径
@@ -27,5 +28,25 @@
 <summary>滨江夜景生成提示词</summary>
 
 Create a cinematic 3:2 landscape matte painting to sit BEHIND a luminous 3D sculpture in a sophisticated municipal operations dashboard. A fictional panorama inspired by Fuzhou's Min River, seen from a low riverbank in the last indigo light of blue hour. Quiet dark ink-blue sky fills the upper two thirds, very subtle layers of far mountain ridges, damp atmosphere. A fine band of believable mid-rise Chinese city silhouettes and sparsely illuminated warm windows near the lower third, a delicate arched bridge to the far right, reflections and low volumetric mist across black-blue river in the foreground. The middle is the darkest and most open, with the architectural details clustered at the sides. Fine cinematic detail, restrained deep petrol and navy, faint pale cyan haze at the horizon, occasional tiny amber lights; romantic and tangible, crisp architectural silhouettes. Landscape only, edge to edge. No foreground object, no tree, no hologram, no graphical elements, no text, no symbols, no border, no watermark.
+
+</details>
+
+## 页头、面板与描边动画
+
+页头的造型取自闽地建筑的挑檐。两翼使用深蓝金属，中央玻璃牌承载可选择的文字。面板的黄铜切角、拉丝表面和青色嵌条来自第二张独立生成图。两张图均由 OpenAI ImageGen 根据文字描述生成，网页中的标题、数据和按钮由 HTML 渲染。[页头材质](../../assets/art/civic-fascia.webp) · [面板材质](../../assets/art/civic-bezel.webp)
+
+每张 WebP 的上半幅保存底材，下半幅保存从同一条嵌件提取的发光像素和柔光。页头从 2172 × 724 原图中截取第 251 至 444 行。面板原图为 1448 × 1086，保留边缘后缩小一半。面板按九宫格保留四角比例。SVG 径向遮罩沿嵌条移动，依次显露亮芯和衰减的拖尾。路径和两层图像共用同一套坐标，改变窗口尺寸时同步重算。面板离开视口或页面进入后台时，动画暂停。[材质映射与飞线](../../src/screens/civic-pulse/chrome.js)
+
+<details>
+<summary>页头生成提示词</summary>
+
+Production asset for a premium Chinese municipal operations display. Create ONE isolated ultra-wide physical console header fascia, orthographic straight-on product photograph, edge-to-edge left to right. The physical object is very long and shallow, roughly 12:1 silhouette. On the supplied wide landscape canvas center this very thin horizontal banner vertically with generous plain, almost-black #06121a space above and below, so it can be cropped to the fascia. The entire part including both endcaps must be visible. Architecture inspired by the lifted ridgeline of a Fujian pavilion, abstracted into elegant, precise folded midnight-titanium and sapphire-blue enamel wings. At 18-36% and 64-82% of the width, two sculptural stepped metal wings descend toward a wide central inset plaque. Reflective brushed blue steel, edge-polished silver, tiny warm champagne inserts, fine milling grooves. A clear hairline luminous cyan optical filament runs continuously along the INNER LOWER BEVEL of either wing, turning through a shallow diagonal and running horizontally inward. The very central 36% is spacious quiet nearly-black petrol glass for a live title. Both far ends have relatively quiet recesses for live identity and telemetry. Confident structural highlights, convincing material depth, cinematic grazing illumination, exceptionally fine craft. Restrict intricate detail to the sloping shoulders and ends. No letters, digits, symbols, HUD, dashboard screenshot, charts, ticks with numbers, buttons, logo, watermark or fake labels. Only the single header part, no environment, no perspective, no drop shadow extending far outside the part.
+
+</details>
+
+<details>
+<summary>面板生成提示词</summary>
+
+Generate one high-end physical monitor bezel as an original 4:3 orthographic front-elevation material asset for a Fuzhou municipal operations dashboard. Full rectangular plate fills the canvas edge-to-edge, axes exactly horizontal and vertical; every corner visible. An elegant narrow dark petrol titanium frame encloses a very large, perfectly empty, near-black midnight-blue glass interior. Clear silhouette with modest 45-degree cut corners; frame width only 3-5% of image. Fine mint-cyan luminous optical gasket just inside the machined lip, continuously visible on ALL FOUR edges including the chamfered transitions. Keep its long straight runs uninterrupted: this glowing inlay will carry a traveling light. Brushed sapphire and gunmetal surfaces, restrained silver edge bevels, exactly a few champagne brass hardware accents and tiny restrained milling striations concentrated at the corners. Slight stepped crown in top corners and a small cluster of 3 thin diagonal metal cuts at the lower-right. Front-lit premium industrial design, high fidelity, physical depth through narrow specular highlights, symmetrical enough for a municipal instrument but not military or garish. No interior imagery, gradients of scenery, no content, no letters/numbers, no labels, no interface, no controls, no graphs, no logos or watermark. Center is dark clear safe space for real data. No surrounding scene or outer margin.
 
 </details>
