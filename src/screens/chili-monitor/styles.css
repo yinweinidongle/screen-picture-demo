@@ -1,0 +1,353 @@
+/* SPDX-License-Identifier: MIT */
+:root {
+  color-scheme: dark;
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+  background: #000;
+  color: #edf8fc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+select,
+a {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #a6f4ff;
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+#chili-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1651px;
+  height: 953px;
+  isolation: isolate;
+  overflow: hidden;
+  background: #000 var(--chili-background) center / 100% 100% no-repeat;
+  transform: translate(-50%, -50%);
+}
+
+.chili-header {
+  position: absolute;
+  z-index: 5;
+  inset: 0 0 auto;
+  height: 136px;
+  pointer-events: none;
+}
+
+.chili-header h1 {
+  position: absolute;
+  top: 41px;
+  left: 490px;
+  width: 664px;
+  margin: 0;
+  color: #f0fbfc;
+  font-size: 31px;
+  font-weight: 900;
+  line-height: 43px;
+  letter-spacing: 6.3px;
+  text-align: center;
+  white-space: nowrap;
+  transform: skewX(-9deg) scaleX(1.035);
+  text-shadow:
+    0 1px #b5eaf5,
+    0 2px #438da4,
+    0 4px 5px #031a28,
+    0 0 12px #90f5ff64;
+}
+
+.chili-nav {
+  position: absolute;
+  top: 39px;
+  width: 114px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #becbd4;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 32px;
+  text-shadow: 0 2px 4px #000;
+  pointer-events: auto;
+}
+
+.chili-nav:hover {
+  color: #f4fdff;
+}
+
+.chili-nav[aria-pressed='true'] {
+  color: #fff7e7;
+  background: var(--chili-nav-active) center / 100% 100% no-repeat;
+}
+
+.chili-nav-overview {
+  left: 43px;
+}
+
+.chili-nav-industry {
+  left: 166px;
+}
+
+.chili-nav-trade {
+  left: 289px;
+}
+
+.chili-nav-iot {
+  left: 1244px;
+}
+
+.chili-nav-trace {
+  left: 1368px;
+}
+
+.chili-nav-research {
+  left: 1488px;
+}
+
+.chili-return {
+  position: absolute;
+  top: 98px;
+  left: 82px;
+  width: 133px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-left: 19px;
+  clip-path: polygon(9% 0, 100% 0, 100% 100%, 8% 100%, 0 52%);
+  border-block: 1px solid transparent;
+  background:
+    linear-gradient(105deg, #143e70, #0a2242 38%, #0c263c7a 65%, transparent 94%) padding-box,
+    linear-gradient(90deg, #318bd0, #4bc9ef82 36%, transparent 88%) border-box;
+  color: #eef9ff;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  text-shadow: 0 0 6px #aadcff;
+  pointer-events: auto;
+}
+
+.chili-return:hover,
+.chili-return:focus-visible {
+  filter: brightness(1.28);
+}
+
+.chili-return svg {
+  width: 20px;
+  height: 15px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px #6cc4ff);
+}
+
+.chili-demo-note {
+  position: absolute;
+  top: 108px;
+  right: 66px;
+  margin: 0;
+  color: #9bbdcc;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.chili-filters {
+  position: absolute;
+  z-index: 5;
+  top: 137px;
+  left: 612px;
+  display: flex;
+  gap: 17px;
+  margin: 0;
+}
+
+.chili-filters label {
+  position: relative;
+  display: block;
+  width: 206px;
+  height: 34px;
+}
+
+.chili-filters label::after {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 7px;
+  height: 7px;
+  border: solid #59b0c4;
+  border-width: 0 1px 1px 0;
+  transform: rotate(45deg);
+  content: '';
+  pointer-events: none;
+}
+
+.chili-filters select {
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  border: 1px solid #2d8298;
+  border-radius: 3px;
+  padding: 0 34px 0 10px;
+  box-shadow: inset 0 0 6px #2e8bb326;
+  background: #031723d4;
+  color: #e0edf0;
+  font-size: 14px;
+  line-height: 32px;
+}
+
+.chili-filters select:hover {
+  border-color: #60ccde;
+}
+
+.chili-filters option {
+  background: #092330;
+  color: #ebf8fd;
+}
+
+.chili-specimen {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+#chili-plant {
+  position: absolute;
+  top: 172px;
+  left: 416px;
+  width: 766px;
+  height: 670px;
+  touch-action: none;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+#chili-plant:active {
+  cursor: grabbing;
+}
+
+#chili-plant canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chili-plant-unavailable {
+  display: none;
+  position: absolute;
+  top: 390px;
+  left: 640px;
+  width: 330px;
+  margin: 0;
+  padding: 14px;
+  background: #071b27;
+  color: #c8eaf1;
+  text-align: center;
+}
+
+#chili-plant[data-renderer='unavailable'] + .chili-plant-unavailable {
+  display: block;
+}
+
+.chili-annotation {
+  position: absolute;
+  margin: 0;
+  padding: 10px 15px;
+  color: #eef3f5;
+  font-size: 13px;
+  line-height: 20px;
+  text-shadow: 0 1px 2px #000;
+}
+
+.chili-annotation h2 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 21px;
+  text-align: center;
+}
+
+.chili-annotation p {
+  margin: 0;
+}
+
+.chili-cultivation {
+  top: 222px;
+  left: 894px;
+  width: 248px;
+  min-height: 106px;
+  padding-top: 12px;
+  background: #01060bd9;
+}
+
+.chili-cultivation h2 {
+  color: #efad48;
+}
+
+.chili-phenology {
+  top: 494px;
+  left: 470px;
+  width: 251px;
+  min-height: 138px;
+  background: #02080cc7;
+  border: 1px solid #2a48534d;
+}
+
+.chili-phenology h2 {
+  color: #79d3d3;
+}
+
+.chili-stage {
+  position: absolute;
+  top: 843px;
+  left: 681px;
+  width: 253px;
+  height: 32px;
+  margin: 0;
+  border-block: 1px solid transparent;
+  background:
+    radial-gradient(ellipse at center, #10283b 24%, #061b2c55 63%, transparent 79%) padding-box,
+    linear-gradient(90deg, transparent 5%, #1e5973d9 47%, transparent 96%) border-box;
+  color: #eefaff;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 30px;
+  text-shadow: 0 1px 3px #000;
+}
+
+.chili-nav-target {
+  outline: 1px solid #55cde375;
+  outline-offset: 6px;
+}

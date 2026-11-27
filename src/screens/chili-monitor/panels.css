@@ -1,0 +1,665 @@
+.chili-left,
+.chili-right {
+  --chili-metric-font: 'Arial Narrow', 'Aptos Narrow', Bahnschrift, Arial, sans-serif;
+  position: absolute;
+  top: 0;
+  z-index: 4;
+  height: 953px;
+  color: #e8f0f6;
+  pointer-events: none;
+}
+
+.chili-left {
+  left: 71px;
+  width: 356px;
+}
+
+.chili-right {
+  left: 1130px;
+  width: 470px;
+}
+
+.chili-left > section,
+.chili-right > section {
+  position: absolute;
+  width: 100%;
+}
+
+.chili-panel-title {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  width: 322px;
+  height: 26px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 21px;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px #02060a;
+}
+
+.chili-panel-title::before {
+  position: absolute;
+  z-index: -1;
+  inset: 9px 0 2px 2px;
+  border-bottom: 1px solid transparent;
+  border-left: 1px solid #0883a0aa;
+  background:
+    linear-gradient(90deg, #07b3da6b, #0366816b 33%, #08789d00 91%) bottom / 100% 1px no-repeat,
+    linear-gradient(90deg, #03638177, #07506c46 61%, #06425d00) 0 62% / 100% 4px no-repeat,
+    linear-gradient(90deg, #02657f83, #0d47604d 37%, #032b3e00 90%);
+  box-shadow: -2px 2px 6px #007ea12b;
+  content: '';
+  transform: skewX(-19deg);
+}
+
+.chili-panel-title::after {
+  flex: 0 0 19px;
+  order: -1;
+  height: 13px;
+  margin: 4px 0 0 8px;
+  background: linear-gradient(90deg, #1dbef2 0 39%, transparent 39% 53%, #08ecfb 53%);
+  box-shadow: 0 2px 4px #05b9ff55;
+  content: '';
+  transform: skewX(-19deg);
+}
+
+.chili-left button,
+.chili-right button {
+  cursor: pointer;
+  font: inherit;
+  pointer-events: auto;
+}
+
+.chili-left button:focus-visible,
+.chili-right button:focus-visible {
+  z-index: 2;
+  outline: 1px solid #97f6ff;
+  outline-offset: 3px;
+}
+
+.chili-irrigation {
+  top: 158px;
+}
+
+.chili-irrigation-controls {
+  width: 343px;
+  margin: 17px 0 0 13px;
+}
+
+.chili-water-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 59px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid #178496;
+  border-bottom: 1px solid #066c82;
+  background: linear-gradient(180deg, #002737 0%, #023748 47%, #065061 100%);
+  color: #ebf7ff;
+  text-align: left;
+}
+
+.chili-water-tile::before {
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 5px;
+  border-right: 1px solid #1c96a3;
+  border-left: 1px solid #1c96a3;
+  content: '';
+  pointer-events: none;
+}
+
+.chili-water-tile:hover {
+  filter: brightness(1.13);
+}
+
+.chili-water-master {
+  height: 50px;
+  border-top-color: #1c9aad;
+  background: linear-gradient(180deg, #042b3b 0%, #054552 59%, #075563 100%);
+}
+
+.chili-water-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 19px;
+  margin-top: 12px;
+}
+
+.chili-water-name,
+.chili-water-status,
+.chili-water-switch,
+.chili-water-icon {
+  position: absolute;
+}
+
+.chili-water-name {
+  top: 3px;
+  left: 21px;
+  font-size: 16px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.chili-water-icon {
+  top: 13px;
+  left: 28px;
+  width: 25px;
+  height: 25px;
+  color: #e6f8ff;
+  filter: drop-shadow(0 0 4px #b5fcff52);
+}
+
+.chili-water-switch {
+  top: 30px;
+  left: 19px;
+  width: 37px;
+  height: 16px;
+  border-radius: 20px;
+  background: #a2acad;
+  box-shadow: inset 0 1px 2px #00344566;
+}
+
+.chili-water-switch::after {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f2f5f3;
+  box-shadow:
+    inset 0 -2px 3px #adbab5,
+    0 0 3px #e9ffff55;
+  content: '';
+  transition: transform 160ms ease;
+}
+
+.chili-water-status {
+  top: 28px;
+  left: 67px;
+  font-size: 13px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.chili-water-status strong {
+  padding-left: 3px;
+  color: #fac34c;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.chili-water-tile[aria-checked='true'] .chili-water-switch {
+  background: #47c997;
+}
+
+.chili-water-tile[aria-checked='true'] .chili-water-switch::after {
+  transform: translateX(19px);
+}
+
+.chili-water-tile[aria-checked='true'] .chili-water-status strong {
+  color: #41ffcf;
+}
+
+.chili-water-master .chili-water-name {
+  top: 15px;
+  left: 98px;
+}
+
+.chili-water-master .chili-water-switch {
+  top: 18px;
+  left: 168px;
+}
+
+.chili-water-master .chili-water-status {
+  top: 16px;
+  left: 227px;
+}
+
+.chili-shipments {
+  top: 419px;
+}
+
+.chili-shipments-key {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 344px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.chili-shipments-legend {
+  display: flex;
+  gap: 38px;
+  padding-top: 4px;
+}
+
+.chili-shipments-legend button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  line-height: 16px;
+}
+
+.chili-shipments-legend button::before {
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(180deg, #fbaf22, #8c530b 57%, transparent);
+  content: '';
+}
+
+.chili-shipments-legend button[data-chili-series='inbound']::before {
+  background: linear-gradient(180deg, #0cecff, #056a73 57%, transparent);
+}
+
+.chili-shipments-legend button[aria-pressed='false'] {
+  opacity: 0.42;
+}
+
+.chili-shipments-chart {
+  position: absolute;
+  top: 59px;
+  left: 0;
+  width: 344px;
+  height: 164px;
+  overflow: visible;
+}
+
+.chili-chart-axis,
+.chili-chart-guide {
+  fill: none;
+  stroke: #8fa0b45e;
+}
+
+.chili-chart-guide {
+  stroke: #7c90a44d;
+  stroke-dasharray: 2.5 1.5;
+}
+
+.chili-chart-numbers {
+  fill: #e8eef6;
+  font: 12.5px var(--chili-metric-font);
+}
+
+.chili-shipments-chart [data-chili-bars] {
+  transition: opacity 160ms ease;
+}
+
+.chili-shipments-chart [data-chili-bars] rect {
+  pointer-events: auto;
+}
+
+.chili-shipments-chart [data-chili-bars] rect:hover {
+  filter: brightness(1.28);
+}
+
+.chili-shipments-chart [data-chili-bars].is-muted {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.chili-warehouses {
+  top: 665px;
+}
+
+.chili-warehouse-list {
+  display: grid;
+  grid-template-columns: repeat(3, 76px);
+  column-gap: 41px;
+  margin: 25px 0 0 17px;
+}
+
+.chili-warehouse {
+  --chili-globe-base: #06252c;
+  --chili-globe-edge: #63eff84f;
+  --chili-globe-side: #06222b;
+  --chili-fluid-back: #056580;
+  --chili-fluid-front: #08aecf;
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  line-height: 1;
+  text-align: center;
+}
+
+.chili-warehouse-amber {
+  --chili-globe-base: #343016;
+  --chili-globe-edge: #d8c55b63;
+  --chili-globe-side: #1b1d09;
+  --chili-fluid-back: #8b742b;
+  --chili-fluid-front: #c8ab41;
+}
+
+.chili-warehouse-green {
+  --chili-globe-base: #093327;
+  --chili-globe-edge: #41aa785e;
+  --chili-globe-side: #06281e;
+  --chili-fluid-back: #147756;
+  --chili-fluid-front: #26b784;
+}
+
+.chili-warehouse-count {
+  margin-bottom: 7px;
+  color: #58f0f2;
+  font: 19px/19px var(--chili-metric-font);
+  text-shadow: 0 0 7px #14eff13d;
+}
+
+.chili-warehouse-count small {
+  font-size: 11px;
+}
+
+.chili-warehouse-globe {
+  position: relative;
+  display: grid;
+  width: 73px;
+  height: 73px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 73% 13%, var(--chili-globe-edge), transparent 36%),
+    radial-gradient(ellipse at 53% 57%, #020c13a3 2%, transparent 53%),
+    linear-gradient(142deg, var(--chili-globe-side), var(--chili-globe-base));
+  box-shadow:
+    inset 0 0 4px var(--chili-globe-edge),
+    0 0 8px var(--chili-globe-side);
+}
+
+.chili-warehouse-globe svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chili-fluid-back {
+  fill: var(--chili-fluid-back);
+}
+
+.chili-fluid-front {
+  fill: var(--chili-fluid-front);
+}
+
+.chili-warehouse-globe::after {
+  position: absolute;
+  inset: 56% 3px 0;
+  background: radial-gradient(ellipse at 54% 105%, #ffffb541, transparent 67%);
+  content: '';
+}
+
+.chili-warehouse-globe strong {
+  z-index: 1;
+  align-self: start;
+  margin-top: 20px;
+  color: #fff;
+  font: 700 20px/22px var(--chili-metric-font);
+  text-shadow: 0 1px 3px #021018;
+}
+
+.chili-warehouse-globe small {
+  font-size: 14px;
+}
+
+.chili-warehouse figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 17px;
+  white-space: nowrap;
+}
+
+.chili-right .chili-weather {
+  top: 178px;
+  left: 50px;
+  width: 406px;
+}
+
+.chili-readings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px 9px;
+  width: 398px;
+  margin: 31px 0 0 7px;
+}
+
+.chili-reading {
+  height: 65px;
+  padding: 3px 4px 0;
+  border: 1px solid #08545194;
+  background: #022322a3;
+  box-shadow: inset 0 0 0 1px #00151990;
+  text-align: center;
+}
+
+.chili-reading dt {
+  height: 25px;
+  margin: 0;
+  background: linear-gradient(180deg, #08555e 0%, #03626c 50%, #005660 100%);
+  color: #e5eff8;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 25px;
+}
+
+.chili-reading dd {
+  margin: 2px 0 0;
+  color: #a0eee6;
+  font: 500 24px/29px var(--chili-metric-font);
+  text-shadow: 0 0 6px #0eb5b245;
+  white-space: nowrap;
+  -webkit-text-stroke: 0.12px currentColor;
+}
+
+.chili-reading dd small {
+  font-size: 14px;
+  letter-spacing: -0.3px;
+}
+
+.chili-growth {
+  position: absolute;
+  top: 244px;
+  left: 8px;
+  width: 172px;
+  height: 119px;
+}
+
+.chili-growth-dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chili-growth-progress {
+  transition: stroke-dasharray 300ms ease;
+}
+
+.chili-growth-number {
+  position: absolute;
+  inset: 58px 0 auto;
+  text-align: center;
+}
+
+.chili-growth-number > span {
+  color: #e7eef4;
+  font-size: 18px;
+  line-height: 23px;
+}
+
+.chili-growth-number strong {
+  display: block;
+  margin-top: 8px;
+  color: #91eed9;
+  font: 500 28px/28px var(--chili-metric-font);
+  text-shadow: 0 0 7px #1dd8b145;
+  -webkit-text-stroke: 0.18px currentColor;
+}
+
+.chili-growth-number small {
+  margin-left: 1px;
+  font-size: 17px;
+}
+
+.chili-growth-status {
+  position: absolute;
+  top: 257px;
+  left: 211px;
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.chili-growth-status > div {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  white-space: nowrap;
+}
+
+.chili-growth-status svg {
+  width: 61px;
+  height: 45px;
+  margin-right: 18px;
+  color: #e9fbff;
+  filter: drop-shadow(0 0 6px #66dcff7f);
+}
+
+.chili-status-plinth {
+  fill: #032c40b8;
+  stroke: #06536c;
+  stroke-width: 0.75px;
+}
+
+.chili-status-base {
+  fill: #0d5879;
+  stroke: #3fc3ed6b;
+  stroke-width: 0.8px;
+}
+
+.chili-growth-status dt {
+  color: #edeff3;
+  font-size: 16px;
+}
+
+.chili-growth-status dd {
+  margin: 0;
+  color: #32f7f8;
+  font-size: 19px;
+}
+
+.chili-growth-status dd[data-chili-status] {
+  color: #84eadf;
+}
+
+.chili-camera {
+  top: 574px;
+}
+
+.chili-camera .chili-panel-title {
+  margin-left: 56px;
+}
+
+.chili-camera-view {
+  position: relative;
+  width: 470px;
+  height: 208px;
+  margin: 22px 0 0;
+}
+
+.chili-camera-picture {
+  position: absolute;
+  inset: 0;
+  background: var(--chili-camera-strip) 0 0 / 470px 208px no-repeat;
+}
+
+.chili-camera-alternate {
+  position: absolute;
+  inset: 9px 81px 7px 81px;
+  visibility: hidden;
+  background: var(--chili-camera-strip) -158px -13px / 683px 302px no-repeat;
+  opacity: 0;
+}
+
+.chili-camera-view[data-chili-camera='1'] .chili-camera-alternate,
+.chili-camera-view[data-chili-camera='2'] .chili-camera-alternate {
+  visibility: visible;
+  opacity: 1;
+}
+
+.chili-camera-view[data-chili-camera='2'] .chili-camera-alternate {
+  background-position: -242px -77px;
+}
+
+.chili-camera-step {
+  position: absolute;
+  top: 8px;
+  bottom: 7px;
+  display: grid;
+  width: 67px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #b8faff;
+  transition: background 160ms ease;
+}
+
+.chili-camera-prev {
+  left: 0;
+}
+
+.chili-camera-next {
+  right: 0;
+}
+
+.chili-camera-step span {
+  opacity: 0;
+  font: 30px/1 var(--chili-metric-font);
+  text-shadow: 0 0 5px #006b9f;
+}
+
+.chili-camera-step:hover,
+.chili-camera-step:focus-visible {
+  background: #0577a337;
+}
+
+.chili-camera-step:hover span,
+.chili-camera-step:focus-visible span {
+  opacity: 1;
+}
+
+.chili-camera-view figcaption {
+  position: absolute;
+  right: 83px;
+  bottom: 8px;
+  left: 81px;
+  height: 28px;
+  background: #00100f2b;
+  color: #f3f7f6;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 0 1px 2px #000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chili-water-switch::after,
+  .chili-shipments-chart [data-chili-bars],
+  .chili-growth-progress,
+  .chili-camera-step {
+    transition: none;
+  }
+}

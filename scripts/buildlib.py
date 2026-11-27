@@ -356,6 +356,10 @@ class Builder:
             ("VERDANT_HOUSE", "art/verdant-glasshouse.webp", None),
             ("VERDANT_FASCIA", "art/verdant-fascia.webp", None),
             ("VERDANT_BEZEL", "art/verdant-bezel.webp", None),
+            ("CHILI_BACKGROUND", "art/chili-substrate.webp", None),
+            ("CHILI_NAV_ACTIVE", "art/chili-nav-active.webp", None),
+            ("CHILI_CAMERA", "art/chili-camera.webp", None),
+            ("CHILI_LEAF", "art/chili-leaf-veins.webp", None),
         ]:
             token = f"/*__{marker}__*/"
             if token in content:
@@ -363,6 +367,7 @@ class Builder:
         for file, markers in {
             "styles.css": ["CSS"],
             "instruments.css": ["INSTRUMENTS_CSS"],
+            "panels.css": ["PANELS_CSS"],
             "title.css": ["PANEL_TITLE_CSS"],
             "composition.css": ["COMPOSITION_CSS"],
             "finish.css": ["FINISH_CSS"],
@@ -378,6 +383,10 @@ class Builder:
                     for prefix in ["SCREEN", kind.upper()]:
                         replacements[f"/*__{prefix}_{marker}__*/"] = text
                     replacements[f"/*__{marker}__*/"] = text
+        if "<!--__SCREEN_PANELS__-->" in content:
+            replacements["<!--__SCREEN_PANELS__-->"] = (
+                source / "panels.html"
+            ).read_text()
         if kind == "factory":
             replacements["/*__FACTORY_MODEL__*/"] = self.image(
                 "assets/art/factory-fallback.png", 95, True

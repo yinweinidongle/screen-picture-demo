@@ -130,5 +130,17 @@
     "preview": "assets/previews/verdant-lab.webp",
     "tags": ["植株显影", "水肥调度", "温室巡检"],
     "renderer": "generic"
+  },
+  {
+    "id": "chili-monitor",
+    "title": "衡水市辣椒产业大数据分析平台",
+    "description": "旋转线框辣椒植株，切换地块查看水肥与气象数据，浏览产销统计。",
+    "category": "operations",
+    "label": "CHILI MONITOR",
+    "width": 1651,
+    "height": 953,
+    "preview": "assets/previews/chili-monitor.webp",
+    "tags": ["Three.js", "线框 Shader", "地块监测"],
+    "renderer": "generic"
   }
 ]

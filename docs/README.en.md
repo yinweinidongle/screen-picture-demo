@@ -2,9 +2,11 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Eleven interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel, municipal operations and greenhouse vegetable production. The gallery shows actual page captures and runs one live preview at a time.
+Twelve interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel, municipal operations, greenhouse vegetables and chili pepper cultivation. The gallery shows actual page captures and runs one live preview at a time.
 
 ![Gallery](media/home-preview.png)
+
+Chili Monitor displays a rotatable pepper plant with translucent leaf veins and ripening fruit. Select a plot to inspect its simulated environmental readings and irrigation valves. [Open Chili Monitor](https://yinweinidongle.github.io/screen-picture-demo/chili-monitor.html)
 
 Verdant Observatory pairs a rotatable tomato specimen with simulated greenhouse telemetry, irrigation and warehouse records. Switch between vein imaging and daylight to inspect the same plant. Select a greenhouse to see what share of its distribution network uses constant-temperature, ambient or cold storage. [Open Verdant Observatory](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html) · [Watch the recording](media/verdant-lab-demo.gif)
 
