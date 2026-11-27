@@ -1,10 +1,10 @@
 {
   "capturedOn": "2026-11-26",
-  "assetInventorySha256": "1cd63d99e44345cf8d1a1b19e18a7bd6383f5dfc09adbbcd919b51c148d4c428",
-  "notes": "Verdant Observatory and the eleven-screen Home gallery were recorded on 2026-11-26. The vegetable-production recording shows the 3D specimen in vein imaging and daylight modes and the three warehouse types updating on a greenhouse change. Civic Pulse was recorded on 2026-11-26. The 11-second civic GIF shows the generated metal fascia and panel artwork with source-aligned glows, a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
+  "assetInventorySha256": "7869d17b00ce6fbd281d0e23888ac7463e2caa74c9976af1f89c8efbe8a511b4",
+  "notes": "Verdant Observatory and the eleven-screen Home gallery were recorded on 2026-11-27. The vegetable-production recording shows the 70-leaflet specimen in vein imaging and daylight modes and the three warehouse types updating on a greenhouse change. Civic Pulse was recorded on 2026-11-26. The 11-second civic GIF shows the generated metal fascia and panel artwork with source-aligned glows, a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
   "files": {
-    "home-preview.png": "04034f640d9539d3db0202fe4eb64b260c01dff78e5d09056e080334b1193914",
-    "home-mobile-preview.png": "23dc25166f9960bad4c1ab107019d298b780d0a5ddf1aa7ae72f6d535b197c01",
+    "home-preview.png": "f03e933b171b9223bc0236aeb490e86fa9e037e4cb545f78a2db362307932060",
+    "home-mobile-preview.png": "38e0ddff31519620a08264067a99bfbb9dceab3278dda5ebb6ec6c1dd61d1403",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
     "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762",
@@ -15,8 +15,8 @@
     "aero-lab-livery.webp": "f879fba86b7d8c52c9aeb5405959ed3fccd69b102cc3bc1feddcfbfb66054931",
     "aero-lab-demo.gif": "e11ce35e306d2cfc3ef636ae345ecb32f5c4e708ba9f4f81acfb8cd261a86233",
     "civic-pulse-demo.gif": "e882de03b20d9fb2f2b0d4535fef692fab608520a2909e7ea1ed9cdd7620f488",
-    "verdant-lab-demo.gif": "dd82727a6d9e4a549a58299a0ab5647be9f7248ffbc88e5886d41cc161754070",
-    "verdant-leaf-study.webp": "0eb9844711f9e67cfb891b969cd3852ce50676450fd21967fc1911245c57fa51"
+    "verdant-lab-demo.gif": "04b1d361642a34e6ba8b68f10cadbfa534b54612c4b6464a6710a56f0d90c114",
+    "verdant-leaf-study.webp": "d469c6e753c87c3df6be181989571b0ce2a45b190a2ad174d11e546b5efe6529"
   },
   "previewFiles": {
     "assets/previews/agriculture.webp": "e2aceee2dea1bc7c96b81522272bbc10fa118900f4dbef07f0ea17ff89109c6d",
@@ -25,6 +25,6 @@
     "assets/previews/earth-link.webp": "00d93da56e6f7547516bc2eac86065d8bcef05d8d02cb911f616890ca6c8ffa3",
     "assets/previews/aero-lab.webp": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3",
     "assets/previews/civic-pulse.webp": "bf023fd6b0cafea052b22e6ff3b04d68bd327d8a827196bb693415dcd2934d22",
-    "assets/previews/verdant-lab.webp": "262c96b27e07021d862ceda107f8f838a93c44662bb87a6288ad7d96a9bf80e4"
+    "assets/previews/verdant-lab.webp": "f4a62dc5d6f443f4fb810996bb72e81a88e75b297eb5c33a585ada5003263f82"
   }
 }

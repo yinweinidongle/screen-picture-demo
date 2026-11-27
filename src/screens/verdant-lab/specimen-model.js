@@ -82,9 +82,10 @@ export function createSpecimenModel() {
   branch([-0.16, 0.7, 1.2, 2.0, 2.6, 3.12, 3.48].map(stemAt), 0.1, 0.028, 0, 56, 12);
   branch([1.1, 1.48, 2.12, 2.74, 3.5, 4.05, 4.42].map(crownAt), 0.082, 0.02, 0, 44, 10);
 
-  const blades = [];
-  // Each terminal blade and its basal pair share a petiolule; the clusters splay
-  // at different depths and roll independently around the central rachis.
+  const blades = [],
+    innerLeaflets = [];
+  // The front-view landmarks fix the outer tips. Opposite lateral leaflets attach
+  // at different nodes of the rachis, with smaller intercalary leaflets below them.
   const landmark = (x, y, z) => vec((x - 331) / 102, (565 - y) / 105 + 0.08 * z, z);
   function blade(at, end, halfWidth, tile, roll) {
     const d = end.clone().sub(at),
@@ -108,9 +109,9 @@ export function createSpecimenModel() {
       seed: random(),
     });
   }
-  function spray(base, h, clusters) {
+  function spray(base, h, clusters, basal) {
     const hub = landmark(...h);
-    branch(
+    const rachis = branch(
       [
         base,
         base
@@ -124,11 +125,13 @@ export function createSpecimenModel() {
       0,
       13,
     );
+    for (const [t, tip, width, roll] of basal)
+      innerLeaflets.push({ at: rachis.getPointAt(t), tip: landmark(...tip), width, roll });
     for (const [joint, tip, width, sideA, sideB] of clusters) {
       const at = landmark(...joint),
         to = landmark(...tip),
         roll = (random() - 0.53) * 1.14;
-      branch(
+      const lateral = branch(
         [
           hub,
           hub
@@ -143,13 +146,13 @@ export function createSpecimenModel() {
         11,
         7,
       );
-      blade(at, to, (width * 1.11) / 102, 0, roll);
+      blade(lateral.getPointAt(0.86), to, (width * 1.38) / 102, 0, roll);
       for (const [index, side] of [sideA, sideB].entries()) {
         if (!side) continue;
         const [x, y, z, w] = side,
           end = landmark(x, y, z);
-        const sideBase = at.clone().lerp(hub, 0.035 * (1 + index));
-        blade(sideBase, end, w / 102, 1, roll + (index === 0 ? 0.44 : -0.41));
+        const sideBase = lateral.getPointAt(index === 0 ? 0.55 : 0.74);
+        blade(sideBase, end, (w * 1.33) / 102, 1, roll + (index === 0 ? 0.44 : -0.41));
       }
     }
   }
@@ -162,6 +165,10 @@ export function createSpecimenModel() {
       [[264, 166, -0.36], [329, 112, -0.34], 21, [259, 137, -0.21, 11], [301, 171, -0.53, 10]],
       [[206, 216, -0.18], [161, 267, 0.06], 22, [174, 208, -0.38, 10], [211, 249, -0.12, 11]],
     ],
+    [
+      [0.41, [276, 179, -0.68], 13, 0.38],
+      [0.71, [228, 242, -0.91], 13, -0.41],
+    ],
   );
   spray(
     stemAt(1.17),
@@ -172,6 +179,11 @@ export function createSpecimenModel() {
       [[207, 286, -0.36], [195, 251, -0.35], 12, [190, 278, -0.47, 6], null],
       [[189, 349, -0.54], [118, 384, -0.45], 16, [140, 344, -0.62, 11], null],
     ],
+    [
+      [0.32, [245, 390, -0.84], 14, -0.28],
+      [0.57, [241, 314, -0.72], 15, 0.36],
+      [0.75, [212, 333, -0.7], 11, -0.34],
+    ],
   );
   spray(
     crownAt(2.73),
@@ -181,6 +193,10 @@ export function createSpecimenModel() {
       [[562, 276, -0.1], [601, 366, 0.03], 21, [586, 303, -0.13, 12], [551, 315, -0.31, 12]],
       [[518, 212, -0.24], [560, 170, -0.48], 20, [513, 182, -0.39, 12], [540, 217, -0.18, 10]],
       [[466, 217, -0.23], [478, 196, -0.27], 8, null, null],
+    ],
+    [
+      [0.36, [437, 203, -0.86], 14, 0.3],
+      [0.62, [497, 272, -0.75], 12, -0.5],
     ],
   );
   spray(
@@ -193,6 +209,10 @@ export function createSpecimenModel() {
       [[422, 365, -0.32], [459, 321, -0.23], 14, [424, 338, -0.33, 8], [448, 363, -0.26, 8]],
       [[384, 408, -0.11], [382, 439, -0.15], 9, null, null],
     ],
+    [
+      [0.4, [392, 352, -0.83], 14, 0.44],
+      [0.68, [399, 450, -0.66], 13, -0.48],
+    ],
   );
   spray(
     crownAt(3.49),
@@ -203,13 +223,19 @@ export function createSpecimenModel() {
       [[410, 137, -0.36], [333, 125, -0.45], 19, [379, 149, -0.48, 9], null],
       [[469, 113, -0.28], [511, 78, -0.36], 15, null, [499, 114, -0.12, 9]],
     ],
+    [
+      [0.37, [400, 136, -1.0], 14, -0.41],
+      [0.61, [478, 116, -0.81], 13, 0.39],
+    ],
   );
   function buildBlades(profiles) {
     const geometry = batch();
     leaves.length = 0;
-    const rows = 80,
-      cols = 10;
     for (const { at, d, span, across, face, halfWidth, tile, twist, curve, fold, seed } of blades) {
+      // The silhouette of a deep-lobed terminal leaflet needs more samples than
+      // the smooth outline of its smaller lateral neighbours. Venation is textured.
+      const rows = tile === 0 ? 80 : 48,
+        cols = tile === 0 ? 8 : 6;
       const outline = [],
         other = [],
         middle = [];
@@ -506,6 +532,20 @@ export function createSpecimenModel() {
       );
     }
   }
+  // These intercalary leaflets use the remaining seeds after the original
+  // trusses so changing the canopy preserves the fruit lobes and calyx poses.
+  for (const { at, tip, width, roll } of innerLeaflets) blade(at, tip, width / 102, 1, roll);
+  // A young compound leaf sits behind the paired upper berries. The left triplet
+  // peeks through the calyces; its opposing pair turns back towards the crown.
+  spray(
+    crownAt(3.66),
+    [428, 170, -0.86],
+    [
+      [[378, 171, -0.68], [344, 148, -0.48], 11, [354, 175, -0.6, 7], [373, 143, -0.65, 6]],
+      [[475, 166, -0.85], [519, 131, -0.71], 16, [487, 138, -0.98, 8], null],
+    ],
+    [],
+  );
   return {
     stem: stems.finish(),
     leaf: buildBlades(),

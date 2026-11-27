@@ -280,8 +280,9 @@ a:hover {
 }
 .specimen-shade {
   background:
-    radial-gradient(ellipse at 49% 48%, #0b365445, transparent 64%),
-    linear-gradient(0deg, #041422, #061a2a29 26%, transparent 65%, #071923a6);
+    radial-gradient(ellipse 27% 38% at 48% 63%, #07517d88, transparent),
+    radial-gradient(ellipse 53% 60% at 47% 54%, #073259bb, transparent),
+    linear-gradient(169deg, #031626, #011327 55%, #071726);
 }
 .specimen[data-mode='natural'] .glasshouse {
   opacity: 0.86;
@@ -354,13 +355,13 @@ a:hover {
   bottom: 0;
   left: -30%;
   width: 160%;
-  height: 45%;
+  height: 52%;
   transform-origin: 50% 100%;
   transform: perspective(230px) rotateX(65deg);
   background:
-    repeating-linear-gradient(90deg, #508c9b70 0 1px, transparent 1px 9%),
-    repeating-linear-gradient(0deg, #508c9b70 0 1px, transparent 1px 17%);
-  mask-image: linear-gradient(0deg, #0009, transparent 98%);
+    repeating-linear-gradient(90deg, #6096b180 0 1px, transparent 1px 9%),
+    repeating-linear-gradient(0deg, #6096b180 0 1px, transparent 1px 17%);
+  mask-image: linear-gradient(0deg, #000b, transparent 95%);
 }
 .specimen[data-mode='natural'] .specimen-shade::after {
   display: none;

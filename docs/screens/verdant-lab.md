@@ -19,7 +19,7 @@
 
 ## 渲染与素材
 
-Three.js 根据分枝曲线生成主茎、果柄和复叶。GLSL 材质为叶脉、果实经纬线和边缘高光分别着色。显影与自然光共用几何体和镜头。WebGL 不可用时，Canvas 2D 投影视图保留成像、旋转与果实选择。[植株骨架](../../src/screens/verdant-lab/specimen-model.js) · [Shader](../../src/screens/verdant-lab/specimen-shaders.js)
+Three.js 根据分枝曲线生成主茎、果柄和复叶。宽大的顶生小叶与沿叶轴错开的小叶形成前后两层，果串从叶片间露出。显影模式中，左上叶脉呈冰青色，果肩和花萼承接较亮的光，果腹与后层叶保留深蓝阴影。切到自然光可在同一镜头观察叶片的折面与透光。WebGL 不可用时，Canvas 2D 投影视图保留成像、旋转与果实选择。[植株骨架](../../src/screens/verdant-lab/specimen-model.js) · [Shader](../../src/screens/verdant-lab/specimen-shaders.js)
 
 本屏使用 OpenAI ImageGen 生成六张素材。显影模式为深裂顶叶和卵形侧叶分别制作半透明图层。沿各自轮廓构建叶面，贴图中的主脉、侧脉和网脉随曲面转向。叶片取材于黑底、叶尖朝上的单片番茄叶，纹理保留中央叶脉、侧脉与叶肉明暗。温室空间采用傍晚玻璃顶种植棚，深色空置的中央过道为植株留出轮廓。巡检图由三个等宽视角组成。[叶面纹理](../../assets/art/verdant-leaf.webp) · [显影叶片图集](../../assets/art/verdant-veins.webp) · [温室空间](../../assets/art/verdant-glasshouse.webp) · [巡检图集](../../assets/art/verdant-cameras.webp)
 
