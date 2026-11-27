@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#051722" />
+    <meta name="description" content="三维线框辣椒植株与水肥、气象、产销和基地监控演示。" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23051825'/%3E%3Cpath d='M19 9c0-3 2-4 4-4M10 26c5-3 2-14 8-16 8-2 6 14-8 16Z' fill='none' stroke='%2376e7ff' stroke-width='2'/%3E%3C/svg%3E"
+    />
+    <title>衡水市辣椒产业大数据分析平台</title>
+    <style>
+      /*__SCREEN_CSS__*/
+      /*__SCREEN_PANELS_CSS__*/
+      #chili-screen {
+        --chili-background: url('/*__CHILI_BACKGROUND__*/');
+        --chili-nav-active: url('/*__CHILI_NAV_ACTIVE__*/');
+        --chili-camera-strip: url('/*__CHILI_CAMERA__*/');
+      }
+    </style>
+  </head>
+  <body>
+    <main id="chili-screen" data-leaf="/*__CHILI_LEAF__*/">
+      <header class="chili-header">
+        <h1>衡水市辣椒产业大数据分析平台</h1>
+        <nav aria-label="大屏栏目">
+          <button class="chili-nav chili-nav-overview" data-nav="overview" aria-pressed="true">
+            市级概况
+          </button>
+          <button class="chili-nav chili-nav-industry" data-nav="industry" aria-pressed="false">
+            产业分析
+          </button>
+          <button class="chili-nav chili-nav-trade" data-nav="trade" aria-pressed="false">
+            产销分析
+          </button>
+          <button class="chili-nav chili-nav-iot" data-nav="iot" aria-pressed="false">
+            智慧物联
+          </button>
+          <button class="chili-nav chili-nav-trace" data-nav="trace" aria-pressed="false">
+            溯源分析
+          </button>
+          <button class="chili-nav chili-nav-research" data-nav="research" aria-pressed="false">
+            科教服务
+          </button>
+        </nav>
+        <a class="chili-return" href="home.html" aria-label="返回展厅">
+          <svg viewBox="0 0 24 18" aria-hidden="true">
+            <path d="M8 3 2.5 7.5 8 12M3 7.5h12.6a5 5 0 0 1 0 10H10" />
+          </svg>
+          返回
+        </a>
+        <p class="chili-demo-note">模拟数据 · 监控示意</p>
+      </header>
+
+      <form class="chili-filters" aria-label="基地筛选">
+        <label>
+          <select id="chili-company" aria-label="企业名称"></select>
+        </label>
+        <label>
+          <select id="chili-plot" aria-label="地块"></select>
+        </label>
+      </form>
+
+      <section class="chili-specimen" aria-label="辣椒数字孪生">
+        <div
+          id="chili-plant"
+          role="group"
+          tabindex="0"
+          aria-label="三维辣椒植株。拖动或使用方向键旋转，按 Home 复位。"
+        ></div>
+        <p class="chili-plant-unavailable" role="status">
+          当前浏览器无法启动 WebGL。可继续查看两侧数据。
+        </p>
+        <aside class="chili-annotation chili-cultivation">
+          <h2>栽培措施</h2>
+          <p>
+            管理上，应加强肥水管理和病虫害防治，保证茎叶正常生长，延缓衰老，延长结果期，以提高产量。
+          </p>
+        </aside>
+        <aside class="chili-annotation chili-phenology">
+          <h2>当前期特征</h2>
+          <p>
+            从第1朵花现蕾到第1个果实开始膨胀期，以后即为结果期。始花期长20–30天。结果期，开花与结果交替进行，一般为60–100天。
+          </p>
+        </aside>
+        <p class="chili-stage">成熟期</p>
+      </section>
+
+      <!--__SCREEN_PANELS__-->
+    </main>
+    <script>
+      /*__RUNTIME__*/
+    </script>
+    <script>
+      /*__MODULE_BUNDLE__*/
+    </script>
+  </body>
+</html>

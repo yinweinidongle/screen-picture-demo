@@ -453,6 +453,46 @@
       "license": "Composite of MIT scene code and project-generated artwork",
       "status": "composite",
       "sha256": "f4a62dc5d6f443f4fb810996bb72e81a88e75b297eb5c33a585ada5003263f82"
+    },
+    {
+      "path": "assets/art/chili-substrate.webp",
+      "source": "1651 × 953 dashboard chrome and floor regenerated from the project-generated chili reference, with interface content removed for live rendering.",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "5da6b24798a4d8eee3672b2031b3092aa364b3e1e2b7c42d277b39852f5e1cd8",
+      "author": "VIZ / LAB contributors"
+    },
+    {
+      "path": "assets/art/chili-nav-active.webp",
+      "source": "114 × 34 alpha crop of the project-generated chili reference's active tab, with the label removed.",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "ce8e56f2b5948cc4bcd1fd0c6ff2b19dfa61c3e465fcf0d2e9897bc374dd34e6",
+      "author": "VIZ / LAB contributors"
+    },
+    {
+      "path": "assets/art/chili-camera.webp",
+      "source": "470 × 208 camera strip cropped from the project-generated chili reference, with the caption removed.",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "1e72601e5568a2b8105181e84b520bd8cf98c77f6f3bc08f3d520b51dcbf8ff3",
+      "author": "VIZ / LAB contributors"
+    },
+    {
+      "path": "assets/art/chili-leaf-veins.webp",
+      "source": "Original ImageGen artwork, 512 × 1024 grayscale pepper leaf venation texture for the Three.js leaf shader.",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "8863724a9fdf0623019b2e75ea00b2b462ee9cd071819c03ce0221eb8aa75930",
+      "author": "VIZ / LAB contributors"
+    },
+    {
+      "path": "assets/previews/chili-monitor.webp",
+      "source": "Browser capture of the chili monitor at its 1651 × 953 reference size with the ImageGen leaf texture and highlight bloom active.",
+      "license": "Composite of MIT scene code and project-generated artwork",
+      "status": "composite",
+      "sha256": "bbcaa46fd1daa0066496cf735e6ab2eae978786a868cb5b00f0cd8016346cd1c",
+      "author": "VIZ / LAB contributors"
     }
   ]
 }
