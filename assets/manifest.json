@@ -397,6 +397,62 @@
       "license": "Composite of MIT scene code and project-generated artwork",
       "status": "composite",
       "sha256": "bf023fd6b0cafea052b22e6ff3b04d68bd327d8a827196bb693415dcd2934d22"
+    },
+    {
+      "path": "assets/art/verdant-veins.webp",
+      "source": "Original transmitted-light atlas of a lobed terminal leaf and an ovate lateral leaflet, generated from botanical reference cues and registered to curved leaf surfaces. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "89f7b66e91ba51dad2588c8f8d581e9d89a406a5384e306c6ecb617a1185374d"
+    },
+    {
+      "path": "assets/art/verdant-leaf.webp",
+      "source": "Single tomato leaflet albedo and venation map photographed in botanical plate style. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "c854b2ffab9cc53e3273876736e0f6dbefdbec73c4cd30ffaeac76e64af16192"
+    },
+    {
+      "path": "assets/art/verdant-cameras.webp",
+      "source": "Three generated inspection stills with an aisle, ripening truss and propagation benches. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "09c8ebacaba57cdf85f485639b9d268b15c878e865cdb8610009ff78dc531951"
+    },
+    {
+      "path": "assets/art/verdant-glasshouse.webp",
+      "source": "Glasshouse at dusk with quiet central aisle for the daylight model view. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "06c944136aad80bec0ff41a673c550b514b670a7f76e84ba564471594a9d325b"
+    },
+    {
+      "path": "assets/art/verdant-fascia.webp",
+      "source": "Deep-blue titanium greenhouse optical-instrument fascia with an extracted emissive atlas row. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "4db39cbec1e10bc5156cf8bb7fd0fa3736975a6098893ee302c225fedf8f9046"
+    },
+    {
+      "path": "assets/art/verdant-bezel.webp",
+      "source": "Nine-slice cool-steel instrument bezel with cyan light channels with a matching emissive atlas row. Original OpenAI ImageGen artwork. See docs/screens/verdant-lab.md.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "4ebc19c21cafc6a19266e542093cc9417229adc1d36052e30d9c95d7242d58cb"
+    },
+    {
+      "path": "assets/previews/verdant-lab.webp",
+      "source": "Actual 1920 x 1080 WebGL capture of Verdant Observatory in vein imaging mode.",
+      "author": "VIZ / LAB contributors",
+      "license": "Composite of MIT scene code and project-generated artwork",
+      "status": "composite",
+      "sha256": "262c96b27e07021d862ceda107f8f838a93c44662bb87a6288ad7d96a9bf80e4"
     }
   ]
 }

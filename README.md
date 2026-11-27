@@ -4,9 +4,9 @@
 
 **[打开 Home 展厅](https://yinweinidongle.github.io/screen-picture-demo/home.html)** · [English](docs/README.en.md) · [参与贡献](CONTRIBUTING.md) · [路线图](ROADMAP.md)
 
-十个可交互大屏，用 Three.js、TSL、GLSL 和 D3 展示市政感知树、超跑风洞、精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
+十一个可交互大屏，用 Three.js、TSL、GLSL 和 D3 展示温室番茄植株、市政感知树、超跑风洞、精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
 
-[![Home 首页的十个大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
+[![Home 首页的十一个大屏预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
 
 <details>
 <summary>手机首页预览</summary>
@@ -14,7 +14,7 @@
 <img src="docs/media/home-mobile-preview.png" alt="手机端单列卡片" width="320">
 </details>
 
-## 体验十个大屏
+## 体验十一个大屏
 
 | 场景             | 核心交互                                                   | 在线体验                                                                                  |
 | ---------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -28,6 +28,7 @@
 | 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势           | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)   |
 | 超跑风洞实验室   | 分层车漆与动漫涂装、风洞绕流、时空隧道、雷达与渐变规划路线 | [aero-lab.html](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)       |
 | 榕城 · 智慧市政  | 三维感知树、六城区联动、逐时工单流量与现场处置记录         | [civic-pulse.html](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html) |
+| 衡水 · 蔬菜产业  | 番茄果序显影、生育阶段、水肥与出入库监测                   | [verdant-lab.html](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html) |
 
 ### 01 / 智慧风电
 
@@ -74,6 +75,12 @@
 在滨江夜景中旋转三维感知树，观察信号从根部抵达四类市政服务的枝尖。选择辖区、领域或趋势时段时，对应面板的金属边框会亮起一道青色飞线。现场工单可查看承办班组与处置记录。数据使用六城区模拟快照。[操作、素材与数据口径](docs/screens/civic-pulse.md)
 
 [![实录展示榕城感知树的流光、辖区切换、照明分支与工单记录](docs/media/civic-pulse-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html)
+
+### 11 / 衡水 · 蔬菜产业大数据平台
+
+旋转三维番茄，从冰青色叶脉与果实经纬网切到温室自然光。选择生育阶段或温室，查看环境读数、灌溉与出入库记录。三枚液面球显示恒温库、普通库和冷藏库在当前仓储网络中的占比。演示数据和巡检快照均随页面提供。[操作与素材说明](docs/screens/verdant-lab.md)
+
+[![番茄植株显影、温室筛选与水肥控制实录](docs/media/verdant-lab-demo.gif)](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html)
 
 ## 本地开发
 

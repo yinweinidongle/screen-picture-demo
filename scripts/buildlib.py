@@ -350,12 +350,22 @@ class Builder:
             ("CIVIC_RIVER", "art/civic-river.webp", None),
             ("CIVIC_FASCIA", "art/civic-fascia.webp", None),
             ("CIVIC_BEZEL", "art/civic-bezel.webp", None),
+            ("VERDANT_LEAF", "art/verdant-leaf.webp", None),
+            ("VERDANT_VEINS", "art/verdant-veins.webp", None),
+            ("VERDANT_CAMERAS", "art/verdant-cameras.webp", None),
+            ("VERDANT_HOUSE", "art/verdant-glasshouse.webp", None),
+            ("VERDANT_FASCIA", "art/verdant-fascia.webp", None),
+            ("VERDANT_BEZEL", "art/verdant-bezel.webp", None),
         ]:
             token = f"/*__{marker}__*/"
             if token in content:
                 replacements[token] = self.image(f"assets/{filename}", quality)
         for file, markers in {
             "styles.css": ["CSS"],
+            "instruments.css": ["INSTRUMENTS_CSS"],
+            "title.css": ["PANEL_TITLE_CSS"],
+            "composition.css": ["COMPOSITION_CSS"],
+            "finish.css": ["FINISH_CSS"],
             "app.js": ["JS"],
             "model.js": ["MODEL_JS", "MODEL"],
             "globe.js": ["GLOBE_JS"],

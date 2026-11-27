@@ -1,0 +1,189 @@
+/* SPDX-License-Identifier: MIT */
+.vi-body.vi-trade {
+  row-gap: clamp(5px, 0.88vh, 10px);
+}
+.vi-trade .vi-totals > div {
+  align-items: baseline;
+  gap: 4px;
+}
+.vi-trade .vi-totals .vi-label {
+  width: auto;
+  margin-inline-end: 4px;
+}
+.vi-composition {
+  flex: none;
+  min-width: 0;
+}
+.vi-composition-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  min-height: 20px;
+}
+.vi-composition-head h3 {
+  margin: 0;
+}
+.vi-composition-head > span {
+  flex: none;
+  font-size: clamp(10px, 0.73vw, 13px);
+  line-height: 1.3;
+  color: var(--vi-muted);
+}
+.vi-composition-head [data-network-total] {
+  color: var(--vi-paper);
+  font-family: var(--vi-font);
+  font-weight: 550;
+}
+.vi-vessels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  padding-top: clamp(3px, 0.6vh, 9px);
+}
+.vi-vessel {
+  min-width: 0;
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  --bowl-lit: #f9d28b;
+  --bowl-hue: #e9aa53;
+  --bowl-shadow: #936324;
+  --bowl-rear: #dbad65;
+}
+.vi-vessel[data-type='ambient'] {
+  --bowl-lit: #9ce9cd;
+  --bowl-hue: #49c8a7;
+  --bowl-shadow: #24785f;
+  --bowl-rear: #5cbda6;
+}
+.vi-vessel[data-type='cold'] {
+  --bowl-lit: #a1f0fa;
+  --bowl-hue: #4bd1e9;
+  --bowl-shadow: #23758e;
+  --bowl-rear: #4dbad6;
+}
+.vi-vessel-count {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  line-height: 1;
+}
+.vi-vessel-count b {
+  font: 550 clamp(16px, 1.2vw, 25px)/1 var(--vi-font);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.015em;
+  color: #c4e5ed;
+}
+.vi-vessel-count small {
+  font-size: clamp(9px, 0.65vw, 12px);
+  color: var(--vi-muted);
+}
+.vi-bowl {
+  display: grid;
+  place-items: center;
+  position: relative;
+  isolation: isolate;
+  width: min(90%, clamp(53px, 21cqh, 99px));
+  aspect-ratio: 1;
+}
+.vi-bowl svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  grid-area: 1/1;
+}
+.vi-liquid-label {
+  grid-area: 1/1;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  color: #edf7fb;
+  font-family: var(--vi-font);
+  text-shadow:
+    0 1px 3px #0a1525,
+    0 0 6px #05152384;
+  font-variant-numeric: tabular-nums;
+}
+.vi-liquid-label b {
+  font-weight: 600;
+  font-size: clamp(13px, 1.05vw, 21px);
+  line-height: 1;
+}
+.vi-liquid-label small {
+  font-size: clamp(9px, 0.7vw, 13px);
+}
+.vi-glass-rim {
+  fill: none;
+  stroke: var(--bowl-hue);
+  stroke-opacity: 0.4;
+  stroke-width: 1.05;
+}
+.vi-glass-edge {
+  fill: none;
+  stroke: #c4e3e8;
+  stroke-opacity: 0.43;
+  stroke-width: 0.95;
+  stroke-linecap: round;
+}
+.vi-wave {
+  animation: vi-tank-ripple 5.6s linear infinite paused;
+}
+.vi-wave-far {
+  animation-duration: 8.5s;
+  animation-direction: reverse;
+}
+.vi-wave-mid {
+  animation-duration: 6.8s;
+  opacity: 0.85;
+}
+.vi-vessel:nth-child(2) .vi-wave {
+  animation-delay: -1.7s;
+}
+.vi-vessel:nth-child(3) .vi-wave {
+  animation-delay: -3.6s;
+}
+.vi-composition[data-motion='running'] .vi-wave {
+  animation-play-state: running;
+}
+.vi-composition[data-motion='running'] .vi-liquid {
+  transition: transform 0.45s ease-out;
+}
+.vi-vessel figcaption {
+  font-size: clamp(11px, 0.78vw, 15px);
+  line-height: 1.15;
+  color: var(--vi-paper);
+}
+@keyframes vi-tank-ripple {
+  to {
+    transform: translateX(-44px);
+  }
+}
+@container (max-height:245px) {
+  .vi-trade .vi-chart {
+    min-height: 62px;
+  }
+  .vi-trade .vi-chart text {
+    font-size: 12px;
+  }
+  .vi-composition-head {
+    min-height: 16px;
+  }
+  .vi-vessels {
+    padding-top: 3px;
+  }
+  .vi-vessel-count b {
+    font-size: 15px;
+  }
+  .vi-bowl {
+    width: min(90%, 46px);
+  }
+  .vi-liquid-label b {
+    font-size: 12px;
+  }
+  .vi-vessel figcaption {
+    font-size: 10px;
+  }
+}

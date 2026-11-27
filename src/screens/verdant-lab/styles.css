@@ -1,0 +1,706 @@
+:root {
+  color-scheme: dark;
+  --paper: #e1eff5;
+  --cyan: #7ce1eb;
+  --amber: #e5ad6e;
+  --muted: #9db8c3;
+  --line: #2b4c60;
+  --num: 'Bahnschrift', 'DIN Alternate', 'Roboto', sans-serif;
+  font-family: Inter, 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  color: var(--paper);
+  background: #06111c;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 45% 0%, #173447, transparent 66%), #061320;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+button,
+select,
+a {
+  font: inherit;
+  color: inherit;
+}
+button,
+select {
+  cursor: pointer;
+}
+button {
+  border: none;
+  background: none;
+}
+a {
+  text-decoration: none;
+}
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #a5f6ff;
+  outline-offset: 2px;
+}
+button:hover,
+a:hover {
+  color: #ebfbff;
+}
+[hidden],
+.symbols {
+  display: none !important;
+}
+#lab {
+  height: max(100svh, 680px);
+  max-width: 2520px;
+  margin: auto;
+  display: grid;
+  grid-template-rows: clamp(80px, 10.5vh, 125px) clamp(63px, 8vh, 89px) minmax(0, 1fr);
+  gap: clamp(9px, 1.35vh, 16px);
+  padding: clamp(6px, 0.8vh, 12px) clamp(12px, 1.45vw, 34px) clamp(11px, 1.6vh, 20px);
+}
+.mast {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 5.4%;
+  isolation: isolate;
+}
+.brand,
+.home {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand {
+  justify-self: start;
+  color: #e3f2f6;
+}
+.brand b,
+.brand small {
+  display: block;
+}
+.brand b {
+  font-size: clamp(16px, 1.25vw, 26px);
+  letter-spacing: 0.16em;
+}
+.brand small {
+  font: 600 clamp(8px, 0.65vw, 12px)/1.4 var(--num);
+  letter-spacing: 0.16em;
+  color: #9bbdce;
+}
+.logo {
+  width: clamp(28px, 2.4vw, 48px);
+  aspect-ratio: 1;
+  fill: none;
+  stroke: #80e7f2;
+  stroke-width: 1.6;
+}
+.mast-title {
+  text-align: center;
+}
+.mast-title p,
+.micro {
+  font: 600 clamp(9px, 0.62vw, 12px)/1.25 var(--num);
+  letter-spacing: 0.22em;
+  color: #89bacb;
+}
+.mast-title h1 {
+  font-weight: 640;
+  font-size: clamp(23px, 2.05vw, 43px);
+  letter-spacing: 0.15em;
+  text-indent: 0.15em;
+  line-height: 1.25;
+  color: #eefbff;
+  text-shadow:
+    0 2px 5px #020a12,
+    0 0 19px #65cee934;
+}
+.mast-title p {
+  letter-spacing: 0.32em;
+  color: #9bdded;
+}
+.home {
+  justify-self: end;
+  border: 1px solid #5a829b85;
+  background: #081924c5;
+  border-radius: 3px;
+  padding: 6px 11px;
+  font-size: 12px;
+}
+.ui-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.archive-bar {
+  position: relative;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1.38fr 1fr 1fr 1fr auto;
+  gap: clamp(8px, 1.5vw, 36px);
+  padding: 0 clamp(16px, 2.25vw, 47px);
+  border-block: 1px solid #315468;
+  background: linear-gradient(100deg, #16394b, #10283b 40%, #0d2232 80%);
+  box-shadow: inset 3px 0 #65d8e4;
+}
+.archive-stat,
+.plot-field {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.9vw, 20px);
+}
+.archive-stat {
+  border-left: 1px solid #46708980;
+  padding-left: clamp(12px, 1.55vw, 40px);
+}
+.archive-stat > span,
+.plot-field label,
+.record-date {
+  font-size: clamp(10px, 0.76vw, 14px);
+  color: #b2c9d4;
+}
+.archive-stat strong {
+  font-size: clamp(15px, 1.06vw, 23px);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.archive-stat b {
+  font: 520 clamp(21px, 1.7vw, 36px)/1 var(--num);
+  font-variant-numeric: tabular-nums;
+}
+.archive-stat small {
+  font-weight: 400;
+  font-size: 12px;
+  color: #a7c0cc;
+}
+.plot-field .ui-icon {
+  color: var(--cyan);
+  width: 24px;
+  height: 24px;
+}
+.plot-field label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.09em;
+}
+.plot-field select {
+  background: #122c3c;
+  border: 0;
+  font-size: clamp(15px, 1.05vw, 22px);
+  font-weight: 650;
+  padding: 1px 2px 1px 0;
+  max-width: 100%;
+}
+.record-date {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px 7px;
+  align-items: center;
+  justify-items: end;
+}
+.record-date i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6cdae7;
+  box-shadow: 0 0 9px #79dbe860;
+}
+.record-date time {
+  grid-column: 1/-1;
+  font: 11px var(--num);
+  color: #b4cbd6;
+  letter-spacing: 0.05em;
+}
+.deck {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.08fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 0.82fr) minmax(0, 0.18fr) minmax(0, 1fr);
+  grid-template-areas: 'water plant climate' 'trade plant climate' 'trade plant camera';
+  gap: clamp(8px, 1vw, 20px);
+}
+.instrument,
+.specimen {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 12% 1%, #19394c, transparent 76%), #0c1d2b;
+  clip-path: polygon(
+    11px 0,
+    calc(100% - 11px) 0,
+    100% 11px,
+    100% calc(100% - 11px),
+    calc(100% - 11px) 100%,
+    11px 100%,
+    0 calc(100% - 11px),
+    0 11px
+  );
+}
+.irrigation {
+  grid-area: water;
+}
+.trade {
+  grid-area: trade;
+}
+.climate {
+  grid-area: climate;
+}
+.inspection {
+  grid-area: camera;
+}
+.specimen {
+  grid-area: plant;
+  --growth: clamp(52px, 6.7vh, 74px);
+  background: #051421;
+  isolation: isolate;
+}
+.glasshouse,
+.specimen-shade {
+  position: absolute;
+  inset: 0;
+  bottom: var(--growth);
+  height: calc(100% - var(--growth));
+  width: 100%;
+  pointer-events: none;
+}
+.glasshouse {
+  object-fit: cover;
+  opacity: 0.03;
+}
+.specimen-shade {
+  background:
+    radial-gradient(ellipse at 49% 48%, #0b365445, transparent 64%),
+    linear-gradient(0deg, #041422, #061a2a29 26%, transparent 65%, #071923a6);
+}
+.specimen[data-mode='natural'] .glasshouse {
+  opacity: 0.86;
+}
+.specimen[data-mode='natural'] .specimen-shade {
+  background: linear-gradient(180deg, #06181094, transparent 23%, #081b1233 75%, #071912aa);
+}
+.specimen-head {
+  position: absolute;
+  top: clamp(16px, 1.45vw, 30px);
+  left: clamp(18px, 1.6vw, 36px);
+  right: clamp(18px, 1.6vw, 36px);
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+  z-index: 2;
+  pointer-events: none;
+}
+.specimen-head .micro {
+  color: #9bcedb;
+}
+.specimen-head h2 {
+  font-size: clamp(23px, 1.75vw, 38px);
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+  margin-top: 3px;
+}
+.specimen-head h2 span {
+  display: block;
+  font:
+    italic clamp(10px, 0.78vw, 15px)/1.35 Georgia,
+    serif;
+  letter-spacing: 0.015em;
+  color: #b4cfd8;
+}
+.imaging {
+  display: flex;
+  background: #071a28e8;
+  border: 1px solid #355f73;
+  padding: 2px;
+  border-radius: 4px;
+  pointer-events: auto;
+}
+.imaging button {
+  font-size: clamp(10px, 0.72vw, 14px);
+  padding: 4px 8px;
+  white-space: nowrap;
+  color: #b8cbd5;
+  border-radius: 2px;
+}
+.imaging button[aria-pressed='true'] {
+  background: #164658;
+  color: #e2faff;
+  box-shadow: inset 0 0 0 1px #4a96a6;
+}
+#specimen-host {
+  position: absolute;
+  inset: 2% 0 var(--growth);
+  cursor: grab;
+  touch-action: pan-y;
+  outline-offset: -5px !important;
+}
+#specimen-host:active {
+  cursor: grabbing;
+}
+.specimen-shade::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -30%;
+  width: 160%;
+  height: 45%;
+  transform-origin: 50% 100%;
+  transform: perspective(230px) rotateX(65deg);
+  background:
+    repeating-linear-gradient(90deg, #508c9b70 0 1px, transparent 1px 9%),
+    repeating-linear-gradient(0deg, #508c9b70 0 1px, transparent 1px 17%);
+  mask-image: linear-gradient(0deg, #0009, transparent 98%);
+}
+.specimen[data-mode='natural'] .specimen-shade::after {
+  display: none;
+}
+.specimen.expanded,
+.specimen:fullscreen {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  width: 100vw;
+  z-index: 12;
+  --growth: 60px;
+}
+.specimen.expanded .annotation {
+  max-width: min(21vw, 230px);
+}
+.square[aria-pressed='true'] {
+  border-color: #6298a9;
+  color: #c0e4ee;
+}
+#specimen-host canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.viewport-tools {
+  position: absolute;
+  bottom: calc(var(--growth) + 12px);
+  right: clamp(13px, 1.35vw, 29px);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+}
+.viewport-tools > span {
+  font-size: clamp(9px, 0.68vw, 12px);
+  color: #a3c1d0;
+  text-shadow: 0 1px 3px #000;
+  margin-right: 3px;
+}
+.square {
+  width: 29px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #3d6072;
+  border-radius: 3px;
+  background: #0a1f30d9;
+}
+.square .ui-icon {
+  width: 15px;
+  height: 15px;
+}
+.growth {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--growth);
+  padding: 6px clamp(18px, 1.7vw, 36px) 8px;
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 40px);
+  border-top: 1px solid #2f5265;
+  background: linear-gradient(105deg, #173248, #0b1f30 78%);
+}
+.growth-label h3 {
+  font-weight: 600;
+  font-size: clamp(14px, 1vw, 20px);
+}
+.growth-label .micro {
+  font-size: 9px;
+}
+.growth-label {
+  white-space: nowrap;
+}
+#stages {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+}
+#stages:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid #446c83;
+}
+#stages button {
+  position: relative;
+  border: 1px solid #34596e;
+  border-radius: 16px;
+  padding: 4px clamp(7px, 0.83vw, 17px);
+  background: #112a3b;
+  color: #b4cbd5;
+  font-size: clamp(11px, 0.8vw, 15px);
+  white-space: nowrap;
+}
+#stages button[aria-pressed='true'] {
+  color: #d2f6ff;
+  background: #164557;
+  border-color: #56a7b4;
+}
+#stages button i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  margin-right: 6px;
+}
+.annotation,
+.fruit-detail {
+  border-left: 2px solid #67d7e3;
+  background: linear-gradient(95deg, #041723eb, #081d2bcf);
+  color: #c9dce5;
+  font-size: clamp(10px, 0.82vw, 16px);
+  line-height: 1.52;
+  padding: 7px 10px;
+  max-width: min(25%, 170px);
+  pointer-events: none;
+}
+.annotation {
+  position: absolute;
+  z-index: 1;
+}
+.annotation b,
+.fruit-detail b {
+  display: block;
+  color: #9be5eb;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+.annotation.leaf-note {
+  right: 3.2%;
+  top: 21%;
+}
+.annotation.leaf-note b {
+  color: #e5ba89;
+}
+.annotation.stage-note {
+  left: 3%;
+  top: 56%;
+}
+.fruit-detail {
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  bottom: calc(var(--growth) + 12px);
+  border-color: #cb9470;
+}
+.fruit-detail b {
+  color: #ecbc99;
+}
+.specimen[data-annotate='off'] .annotation {
+  display: none;
+}
+@media (max-width: 1240px) {
+  .archive-bar {
+    gap: 10px;
+  }
+  .deck {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr) minmax(0, 1fr);
+  }
+  .annotation {
+    max-width: 25%;
+    font-size: 10px;
+    padding: 5px 7px;
+  }
+  .archive-stat {
+    gap: 6px;
+  }
+}
+@media (max-width: 980px) {
+  #lab {
+    height: auto;
+    min-height: 100svh;
+    grid-template-rows: 85px auto auto;
+  }
+  .archive-bar {
+    min-height: 67px;
+  }
+  .deck {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: clamp(425px, 66vw, 630px) minmax(275px, auto) minmax(315px, auto);
+    grid-template-areas: 'plant plant' 'water climate' 'trade camera';
+  }
+  .specimen {
+    --growth: 59px;
+  }
+  .archive-stat {
+    flex-direction: column;
+    align-items: start;
+    gap: 3px;
+  }
+  .record-date {
+    font-size: 10px;
+  }
+  .mast-title h1 {
+    font-size: clamp(21px, 3.1vw, 30px);
+  }
+  .annotation {
+    font-size: 12px;
+    max-width: 145px;
+  }
+}
+@media (max-width: 600px) {
+  #lab {
+    padding: 4px 8px 12px;
+    gap: 8px;
+    grid-template-rows: 66px auto auto;
+  }
+  .mast {
+    padding: 0 5%;
+  }
+  .brand {
+    gap: 2px;
+  }
+  .brand .logo {
+    display: none;
+  }
+  .brand b {
+    font-size: 13px;
+  }
+  .brand small {
+    font-size: 7px;
+  }
+  .home {
+    padding: 4px;
+  }
+  .home span {
+    display: none;
+  }
+  .mast-title p {
+    font-size: 7px;
+    letter-spacing: 0.16em;
+  }
+  .mast-title h1 {
+    font-size: clamp(16px, 4.1vw, 23px);
+    letter-spacing: 0.04em;
+  }
+  .archive-bar {
+    grid-template-columns: 1.08fr 1fr 1fr;
+    gap: 8px 6px;
+    padding: 8px 10px;
+  }
+  .archive-stat {
+    padding-left: 9px;
+  }
+  .archive-stat:nth-child(4) {
+    display: none;
+  }
+  .archive-stat b {
+    font-size: 21px;
+  }
+  .plot-field {
+    gap: 4px;
+  }
+  .plot-field .ui-icon {
+    width: 16px;
+  }
+  .plot-field select {
+    font-size: 13px;
+  }
+  .record-date {
+    display: flex;
+    justify-content: end;
+    grid-column: 1/-1;
+    gap: 6px;
+    border-top: 1px solid #35566a85;
+    padding-top: 4px;
+    font-size: 9px;
+  }
+  .record-date time {
+    font-size: 10px;
+  }
+  .deck {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .specimen {
+    order: -1;
+    height: clamp(400px, 110vw, 550px);
+    --growth: 54px;
+  }
+  .instrument {
+    height: clamp(260px, 73vw, 330px);
+  }
+  .instrument.trade {
+    height: clamp(345px, 85vw, 420px);
+  }
+  .specimen-head {
+    left: 15px;
+    right: 15px;
+    top: 14px;
+  }
+  .specimen-head h2 {
+    font-size: 22px;
+  }
+  .imaging button {
+    padding: 4px 6px;
+  }
+  .viewport-tools > span {
+    display: none;
+  }
+  .annotation {
+    font-size: 9px;
+    max-width: 81px;
+    padding: 3px 5px;
+  }
+  .annotation.leaf-note {
+    right: 3.7%;
+    top: 24%;
+  }
+  .annotation.stage-note {
+    top: 55%;
+  }
+  .annotation b {
+    font-size: 10px;
+  }
+  .growth {
+    padding-inline: 16px;
+    gap: 10px;
+  }
+  .growth-label h3 {
+    font-size: 13px;
+  }
+  #stages {
+    gap: 6px;
+  }
+  #stages button {
+    padding-inline: 7px;
+  }
+  .growth-label .micro {
+    font-size: 7px;
+  }
+}
