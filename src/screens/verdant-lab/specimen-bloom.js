@@ -35,13 +35,13 @@ export function makeBloom(renderer) {
       (light(s+stepSize*4.)+light(s-stepSize*4.))*.027630;
   } void main(){gl_FragColor=vec4(sum(st),1.);}`;
   const extract = pass(
-    'vec3 light(vec2 s){vec3 c=texture2D(source,s).rgb;return c*smoothstep(.37,.82,max(c.g,c.b));}' +
+    'vec3 light(vec2 s){vec3 c=texture2D(source,s).rgb;float luminance=dot(c,vec3(.21,.72,.07));return c*smoothstep(.31,.84,luminance);}' +
       kernel,
   );
   const soften = pass('vec3 light(vec2 s){return texture2D(source,s).rgb;}' + kernel);
   const combine =
     pass(`void main(){vec4 c=texture2D(source,st);vec3 glow=texture2D(bloom,st).rgb*strength;
-    gl_FragColor=vec4(c.rgb+glow,max(c.a,max(max(glow.r,glow.g),glow.b)));}`);
+    gl_FragColor=vec4(c.rgb+(1.-c.rgb)*glow,max(c.a,max(max(glow.r,glow.g),glow.b)));}`);
   const geo = new T.PlaneGeometry(2, 2),
     quad = new T.Mesh(geo, extract),
     scene = new T.Scene(),
@@ -70,7 +70,7 @@ export function makeBloom(renderer) {
       renderer.render(scene, camera);
       uniforms.source.value = beauty.texture;
       uniforms.bloom.value = blurred.texture;
-      uniforms.strength.value = 0.08 + 0.69 * scan;
+      uniforms.strength.value = 0.09 + 0.48 * scan;
       quad.material = combine;
       renderer.setRenderTarget(null);
       renderer.render(scene, camera);

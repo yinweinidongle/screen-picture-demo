@@ -1,4 +1,28 @@
 /* SPDX-License-Identifier: MIT */
+const wirePaths = new Map();
+
+function berryWire(meridians) {
+  if (wirePaths.has(meridians)) return wirePaths.get(meridians);
+  const path = new Path2D();
+  // Project the front hemisphere of a tilted berry; all fruits reuse these unit paths.
+  for (let j = 1 - meridians; j < meridians; j++) {
+    const angle = (j * Math.PI) / (2 * meridians);
+    const sin = Math.sin(angle);
+    const cos = Math.cos(angle);
+    for (let k = 0; k <= 16; k++) {
+      const lat = (k / 16 - 0.5) * Math.PI;
+      const x = sin * Math.cos(lat);
+      const y = -0.86 * Math.sin(lat) + 0.14 * cos * Math.cos(lat);
+      if (k === 0) path.moveTo(x, y);
+      else path.lineTo(x, y);
+    }
+    path.moveTo(cos, -0.86 * sin);
+    path.ellipse(0, -0.86 * sin, cos, cos * 0.14, 0, 0, Math.PI);
+  }
+  wirePaths.set(meridians, path);
+  return path;
+}
+
 // The optical fallback projects the same branching structure and berries as the GPU scene.
 export function paintPlate(
   ctx,
@@ -23,6 +47,7 @@ export function paintPlate(
     ctx.stroke();
   };
   const seed = model.fruits[0].top.clone();
+  const axisDepth = project(seed.set(0, 2.54, 0)).z;
   ctx.lineWidth = 1;
   for (const [r, alpha] of [
     [2.06, 0.22],
@@ -65,26 +90,27 @@ export function paintPlate(
           }
         } else {
           const weight = Math.max(0.55, 2 * r * scale);
-          line(poly, kind === 1 ? '#707a48' : scan ? '#407f79' : '#50733c', weight);
-          if (weight > 2) line(poly, scan ? '#74bcb0' : '#94a866', weight * 0.32);
+          line(poly, kind === 1 ? '#707a48' : scan ? '#3f7e99' : '#50733c', weight);
+          if (weight > 2) line(poly, scan ? '#a5e6ec' : '#94a866', weight * 0.25);
         }
       },
     });
   }
   for (const leaf of model.leaves) {
     const outline = leaf.outline.filter((_, i) => i % 2 === 0).map(screen),
-      rib = leaf.middle.map(screen);
+      rib = leaf.middle.map(screen),
+      depth = screen(leaf.depth).z;
     draws.push({
-      z: screen(leaf.depth).z,
+      z: depth,
       paint() {
-        const color = scan ? '#386371' : '#3d703e',
-          shade = scan ? '#173b3e' : '#23452b';
+        const color = scan ? '#376078' : '#4a7440',
+          shade = scan ? '#10293f' : '#213c30';
         const last = rib[rib.length - 1],
           g = ctx.createLinearGradient(rib[0].x, rib[0].y, last.x, last.y);
         g.addColorStop(0, shade);
         g.addColorStop(0.57, color);
         g.addColorStop(1, shade);
-        line(outline, scan ? '#75b7a9' : '#829b57', 0.65, true, g);
+        line(outline, scan ? '#88b7c8' : '#829b57', 0.65, true, g);
         if (scan && optical) {
           const head = rib[rib.length - 1],
             foot = rib[0],
@@ -97,6 +123,11 @@ export function paintPlate(
             sh = optical.height;
           ctx.save();
           ctx.clip();
+          // Grazing light picks out the upper canopy. The same atlas recedes on rear leaflets.
+          ctx.globalAlpha = Math.min(
+            1,
+            Math.max(0.36, 0.64 + leaf.depth.y * 0.053 + (axisDepth - depth) * 6.5),
+          );
           ctx.transform(
             dx / sw,
             dy / sw,
@@ -109,12 +140,12 @@ export function paintPlate(
           ctx.restore();
           return;
         }
-        line(rib, scan ? '#aed2b6' : '#aec17a', 0.85);
+        line(rib, scan ? '#bcdae4' : '#aec17a', 0.85);
         for (let i = 4; i < rib.length - 5; i += 4) {
           const p = rib[i],
             l = screen(leaf.outline[i + 4]),
             r = screen(leaf.outline[leaf.outline.length - i - 5]);
-          line([l, p, r], scan ? '#689e93' : '#64864b', 0.62);
+          line([l, p, r], scan ? '#7095ab' : '#64864b', 0.62);
         }
       },
     });
@@ -127,12 +158,12 @@ export function paintPlate(
       paint() {
         const hue = Math.max(7, 87 - (f.age + (stage - 2) * 0.58) * 86);
         const g = ctx.createRadialGradient(c.x - r * 0.38, c.y - r * 0.48, 0, c.x, c.y, r);
+        const red = i === model.fruits.length - 1 && stage > 1;
         if (scan) {
-          const red = i === model.fruits.length - 1 && stage > 1;
-          g.addColorStop(0, red ? '#b58184' : '#78b7bf');
-          g.addColorStop(0.25, red ? '#672d38' : '#305664');
-          g.addColorStop(0.67, red ? '#391520' : '#102433');
-          g.addColorStop(1, red ? '#783a3d' : '#233c51');
+          g.addColorStop(0, red ? '#e4b8aa' : '#a1dfed');
+          g.addColorStop(0.24, red ? '#9d4143' : '#377797');
+          g.addColorStop(0.65, red ? '#481e2c' : '#102a45');
+          g.addColorStop(1, red ? '#914648' : '#2c5e70');
         } else
           for (const [t, l] of [
             [0, 79],
@@ -146,33 +177,18 @@ export function paintPlate(
         ctx.ellipse(c.x, c.y, r, r * 0.86, 0, 0, Math.PI * 2);
         ctx.fillStyle = g;
         ctx.fill();
-        ctx.strokeStyle = i === picked ? '#d3f2b8' : scan ? '#97c7b3' : '#8d8a55';
+        ctx.strokeStyle =
+          i === picked ? '#e8f6ba' : scan ? (red ? '#f0b5ac' : '#9edee9') : '#8d8a55';
         ctx.lineWidth = 0.95;
         ctx.stroke();
         if (scan) {
           ctx.save();
           ctx.clip();
-          ctx.strokeStyle =
-            'rgba(138,206,227,' + (0.18 + 0.065 * Math.sin(clock * 1.2 + i * 0.55)) + ')';
-          ctx.lineWidth = 0.65;
-          for (let j = 1; j < 5; j++) {
-            ctx.beginPath();
-            ctx.ellipse(c.x, c.y, (r * j) / 5, r * 0.86, 0, 0, Math.PI * 2);
-            ctx.stroke();
-          }
-          for (let j = -3; j <= 3; j++) {
-            ctx.beginPath();
-            ctx.ellipse(
-              c.x,
-              c.y + r * j * 0.21,
-              r * Math.sqrt(1 - j * j * 0.04),
-              r * 0.072,
-              0,
-              0,
-              Math.PI * 2,
-            );
-            ctx.stroke();
-          }
+          ctx.strokeStyle = 'rgba(153,219,241,' + (0.47 + 0.045 * Math.sin(clock + i)) + ')';
+          ctx.translate(c.x, c.y);
+          ctx.scale(r, r);
+          ctx.lineWidth = 0.6 / r;
+          ctx.stroke(berryWire(r < 14 ? 4 : 8));
           ctx.restore();
         }
         const tip = screen(f.top);

@@ -34,8 +34,16 @@ float line(float x){
   return 1.-smoothstep(width*.12,width*.92,abs(fract(x+.5)-.5));
 }
 float noise2(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.54);}
+// Integrate a periodic line over a pixel. Fine meridians merge smoothly at the pole.
+float thread(float turns,float thickness){
+  float footprint=max(fwidth(turns),.0001);
+  vec2 limits=turns+vec2(-.5,.5)*footprint+.5*thickness;
+  vec2 coverage=floor(limits)*thickness+min(fract(limits),vec2(thickness));
+  return clamp((coverage.y-coverage.x)/footprint,0.,1.);
+}
 void main(){
-  vec3 V=normalize(cameraPosition-P), n=normalize(N);
+  vec3 V=isOrthographic?vec3(viewMatrix[0][2],viewMatrix[1][2],viewMatrix[2][2]):normalize(cameraPosition-P);
+  vec3 n=normalize(N);
   if(dot(n,V)<0.)n=-n;
   vec3 L=normalize(vec3(-.58,.78,.76));
   float light=max(0.,dot(n,L)), rim=pow(1.-clamp(dot(n,V),0.,1.),2.8);
@@ -50,6 +58,10 @@ const leaf = /* glsl */ `
   vec3 green=mix(vec3(.033,.12,.051),vec3(.14,.36,.145),light);
   col=mix(green,green*.48+sampleColor*(.40+.76*light),mapped);
   col+=vec3(.12,.16,.07)*ridge*.22+vec3(.15,.28,.13)*rim*.35;
+  // The lower surface transmits the broad daylight through lamina between veins.
+  vec3 backLight=normalize(vec3(-.56,.75,-.68));
+  float transmission=max(0.,dot(-n,backLight))*(1.-.42*ridge);
+  col+=sampleColor*vec3(.38,.29,.09)*transmission*(.44+.56*light);
   vec2 atlasUV=vec2((clamp(leafUV.x,.001,.999)+tag.x)*.5,leafUV.y);
   vec4 optical=texture2D(opticalMap,atlasUV,-.95);
   if(opticalReady>.5 && optical.a<.30)discard;
@@ -59,11 +71,16 @@ const leaf = /* glsl */ `
   vec3 vascular=max(vec3(0.),optical.rgb-broad);
   float grazing=pow(max(dot(n,normalize(L+V)),0.),12.);
   float heightLight=smoothstep(.70,3.65,local.y);
-  float canopy=mix(.71,1.08,heightLight)*(.83+.21*(1.-tag.y));
-  vec3 developed=pow(max(optical.rgb,vec3(0.)),vec3(.80))*(.91+light*.32)
-    +vascular*vec3(1.85,2.15,2.09);
-  vec3 jade=developed*(.62+.51*light+.14*grazing)*canopy;
-  jade+=vec3(.10,.21,.24)*(grazing*.16+rim*.45)*optical.a;
+  float keyPool=1.-smoothstep(1.25,4.15,length((P.xy-vec2(-1.10,3.35))*vec2(1.,.70)));
+  float depthFill=mix(.72,1.02,smoothstep(-1.25,.22,P.z));
+  col*=mix(.61,1.,keyPool)*depthFill;
+  col+=vec3(.028,.035,.019)*grazing;
+  float canopy=(.54+.56*keyPool+.23*heightLight)*depthFill*(.92+.12*(1.-tag.y));
+  vec3 paper=pow(max(optical.rgb,vec3(0.)),vec3(.78))*vec3(.86,1.045,1.08);
+  vec3 jade=paper*(.49+.62*light+.22*transmission+.12*grazing)*canopy;
+  jade+=vec3(.003,.041,.057)*keyPool*(.45+.55*light)*optical.a;
+  jade+=vascular*vec3(1.38,1.90,1.93)*(.73+.41*keyPool);
+  jade+=vec3(.072,.22,.25)*(grazing*.15+rim*.57)*optical.a*depthFill;
   jade+=vec3(.07,.14,.16)*band*max(0.,dot(optical.rgb,vec3(.18,.61,.21))-.15);
   jade=mix(vec3(.044,.102,.142)+vec3(.27,.55,.62)*(texL*1.12+ridge*.35+rim*.24),jade,opticalReady);
   float peak=max(jade.b,max(jade.r,jade.g));
@@ -74,7 +91,11 @@ const fruit = /* glsl */ `
   if(tag.x>.5){
     col=mix(vec3(.039,.19,.082),vec3(.31,.48,.14),light)*(.8+.2*st.y);
     col+=vec3(.16,.31,.12)*(1.-smoothstep(.025,.22,abs(st.x-.5)))*.6;
-    col=mix(col,vec3(.13,.34,.42)+vec3(.55,.79,.82)*(light*.65+rim*.98)+(1.-smoothstep(.03,.34,abs(st.x-.5)))*vec3(.17,.25,.28),scan);
+    float keel=1.-smoothstep(.03,.28,abs(st.x-.5));
+    float margin=smoothstep(.23,.5,abs(st.x-.5));
+    vec3 calyx=vec3(.13,.30,.35)+vec3(.72,.73,.70)*(.48*light+.87*rim)
+      +keel*vec3(.27,.40,.41)+vec3(.17,.36,.39)*(pow(st.y,2.)+.61*margin);
+    col=mix(col,calyx,scan);
   } else {
     float age=clamp(tag.y+(stage-2.)*.57+sin(plot*2.+tag.z)*.042,0.,1.);
     vec3 skin=mix(vec3(.42,.59,.14),vec3(.94,.57,.105),smoothstep(.25,.58,age));
@@ -93,18 +114,28 @@ const fruit = /* glsl */ `
     col+=vec3(.37,.52,.39)*strip*.5;
     vec3 contour=mix(vec3(.85,.48,.18),vec3(.39,.95,.84),.68*scan);
     col+=contour*rim*(.57+.20*light);
-    float grid=max(line(st.x*63.),line(st.y*38.));
+    float warp=st.x*58.,weft=st.y*34.;
+    float grid=max(thread(warp,.15),thread(weft,.13));
+    float meridian=max(thread(warp/4.,.063),thread(weft/4.,.061));
     float highlight=1.-step(.4,abs(featured-tag.z));
     float north=pow(max(n.y*.5+.5,0.),4.2),left=clamp(.56-.50*n.x+.36*n.y,.12,1.);
-    float wire=grid*(.070+.23*north+.20*rim);
-    vec3 cold=vec3(.014,.040,.095)+vec3(.011,.046,.082)*light+vec3(.035,.10,.12)*bloom;
-    cold+=vec3(.29,.61,.69)*wire+vec3(.48,.91,.97)*rim*(.08+1.35*clamp(.46+.62*n.y-.31*n.x,0.,1.))+vec3(.29,.63,.72)*north*.78;
+    // A cool light between the middle trusses illuminates the wire from behind.
+    vec2 distanceToLamp=(P.xy-vec2(-.18,2.38))*vec2(.83,.96);
+    float caustic=exp(-dot(distanceToLamp,distanceToLamp));
+    float wire=(.24+.17*north+.14*rim+.20*caustic)*grid+.25*meridian;
+    float fresnel=pow(1.-clamp(dot(n,V),0.,1.),1.72);
+    vec3 lamp=normalize(vec3(-.18,2.38,-.40)-P);
+    float scattering=caustic*(.23+.72*max(0.,dot(-lamp,n)));
+    vec3 cold=vec3(.013,.039,.091)+vec3(.008,.040,.073)*light+vec3(.065,.33,.35)*scattering;
+    cold+=vec3(.33,.60,.70)*wire+vec3(.38,.84,.92)*fresnel*(.42+.65*left)
+      +vec3(.20,.51,.59)*north*(.52+.33*left);
+    cold+=vec3(.47,.71,.75)*fresnel*fresnel*(.43+.55*left+.33*caustic);
     cold+=vec3(.045,.25,.29)*band*(rim+.16);
     float redAge=smoothstep(.42,.86,age);
     vec3 redPigment=mix(vec3(.17,.30,.12),vec3(.43,.066,.109),redAge);
-    vec3 red=redPigment*(.19+.53*light+.22*north)+vec3(.29,.46,.53)*wire;
-    red+=vec3(.56,.85,.92)*(north*.58+rim*left*.81);
-    red+=mix(vec3(.28,.62,.18),vec3(1.,.235,.14),redAge)*pow(max(n.x*.5+.5,0.),3.5)*(.35+.75*rim);
+    vec3 red=redPigment*(.17+.45*light+.13*north)+vec3(.44,.53,.62)*wire;
+    red+=vec3(.50,.75,.91)*(north*.43+fresnel*(.20+.67*left));
+    red+=mix(vec3(.28,.62,.18),vec3(.94,.20,.15),redAge)*pow(max(n.x*.5+.5,0.),3.5)*(.35+.72*rim);
     col=mix(col,mix(cold,red,highlight),scan);
     float selected=(1.-step(.1,abs(tag.z-picked)))*exp(-max(0.,clock-signalAt)*1.7);
     col+=selected*vec3(.53,.78,.40)*(rim+.12*grid);
@@ -115,12 +146,14 @@ const stem = /* glsl */ `
   col=fiber*(.36+.70*light)+vec3(.25,.37,.16)*rim*.63;
   vec3 mint=tag.x>.5?vec3(.055,.12,.15):vec3(.16,.42,.49);
   float twist=st.x*11.+.68*sin(local.y*4.+st.x*6.);
-  float striae=max(line(twist)*.27,line(local.y*9.+.23*sin(st.x*6.28))*.18);
+  float striae=max(thread(twist,.15)*.31,thread(local.y*6.4+.16*sin(st.x*6.28),.088)*.25);
   float fiberLight=.48+.45*sin(local.y*1.7+.4);
   vec3 hollow=mint*(.27+.57*light)+vec3(.45,.89,.96)*(rim*(1.02+.28*light)+.16*band+striae+.23*fiberLight*line(twist*.46));
   float fork=exp(-15.*pow(local.y-1.16,2.)-10.*local.x*local.x)+exp(-17.*pow(local.y-2.68,2.)-13.*pow(local.x-.63,2.));
   float main=1.-smoothstep(.1,.53,abs(local.x-max(0.,local.y-1.1)*.41));
-  hollow+=vec3(.21,.64,.81)*(fork*(.40+.56*light)+main*(.073+.20*striae));
+  hollow+=vec3(.23,.57,.72)*(fork*(.20+.32*light)+main*(.064+.20*striae));
+  vec2 shaft=(P.xy-vec2(.18,2.25))*vec2(1.55,.83);
+  hollow+=vec3(.19,.42,.48)*exp(-dot(shaft,shaft))*(.27+.44*light+.19*rim);
   hollow*=mix(.25,1.,smoothstep(-.12,.84,local.y));
   surfaceAlpha=mix(1.,smoothstep(-.15,.50,local.y),scan);
   if(tag.x>.5 && scan>.98)discard;
