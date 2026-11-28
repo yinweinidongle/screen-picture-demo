@@ -18,7 +18,8 @@ const seek = $('seek'),
   orbit = $('orbit'),
   panels = $('panels');
 const elapsed = $('elapsed');
-const cameraMenu = $('camera-menu');
+const options = $('options'),
+  actions = $('station-actions');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const compact = matchMedia('(max-width:700px), (max-height:520px)');
 const params = new URLSearchParams(location.search);
@@ -41,19 +42,23 @@ const track = new Audio();
 track.preload = 'none';
 track.loop = true;
 const shotButtons = cameraShots.map((shot, i) => {
-  const b = document.createElement('button');
-  b.type = 'button';
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.setAttribute('aria-label', '切换至' + shot.label);
+  button.title = shot.name;
   const number = document.createElement('span');
+  number.className = 'shot-number';
   number.textContent = String(i + 1).padStart(2, '0');
-  b.append(number, document.createTextNode(shot.name));
-  b.setAttribute('aria-label', '切换至' + shot.name);
-  b.onclick = () => {
+  const title = document.createElement('span');
+  title.className = 'shot-name';
+  title.textContent = shot.label;
+  button.append(number, title);
+  button.onclick = () => {
     setFree(false);
     seekTo(shot.from);
-    closeMenu();
   };
-  $('shots').append(b);
-  return b;
+  $('shots').append(button);
+  return button;
 });
 function value(el, text) {
   if (el.textContent !== text) el.textContent = text;
@@ -69,6 +74,7 @@ function playLabel() {
 }
 function showPanels(visible) {
   $('instruments').hidden = !visible;
+  station.dataset.panels = visible ? 'open' : 'closed';
   control(panels, 'panels', visible ? '收起仪表' : '展开仪表', visible);
   if (presentationReady) renderHud();
 }
@@ -86,21 +92,29 @@ const curve = Array.from({ length: 97 }, (_, i) => {
 }).join(' ');
 $('velocity-curve').setAttribute('d', curve);
 $('curve-area').setAttribute('d', curve + ' L248 59H2Z');
-function closeMenu(returnFocus = true) {
-  if (!cameraMenu.open) return;
-  cameraMenu.open = false;
-  if (returnFocus) cameraMenu.querySelector('summary').focus();
+function setOptions(open, restoreFocus = false) {
+  options.setAttribute('aria-expanded', String(open));
+  actions.dataset.open = String(open);
+  if (restoreFocus) options.focus();
 }
+options.onclick = () => setOptions(options.getAttribute('aria-expanded') !== 'true');
+actions.addEventListener('click', (event) => {
+  if (compact.matches && event.target.closest('button,a')) setOptions(false, true);
+});
 document.addEventListener(
   'pointerdown',
   (event) => {
-    if (cameraMenu.open && !cameraMenu.contains(event.target)) closeMenu(false);
+    if (!event.target.closest('.utilities')) setOptions(false);
   },
   { signal: lifecycle.signal },
 );
-cameraMenu.addEventListener('focusout', (event) => {
-  if (event.relatedTarget && !cameraMenu.contains(event.relatedTarget)) closeMenu(false);
-});
+document.addEventListener(
+  'focusin',
+  (event) => {
+    if (!event.target.closest('.utilities')) setOptions(false);
+  },
+  { signal: lifecycle.signal },
+);
 const peak = telemetryAt(STOP_TIME / 2).deceleration;
 value($('peak-brake'), peak.toFixed(2));
 value($('scan-interval'), MATERIAL_START.toFixed(2) + ' – ' + MATERIAL_END.toFixed(2) + ' s');
@@ -150,9 +164,11 @@ function renderHud() {
   const pin = 9 + 231 * trackFraction;
   dashboard.train.setAttribute('transform', 'translate(' + pin.toFixed(2) + ' 39)');
   dashboard.journey.setAttribute('d', 'M9 39H' + pin.toFixed(2));
-  value(dashboard.trackProgress, Math.round(trackFraction * 100) + '%');
+  value(dashboard.trackProgress, (trackFraction * 100).toFixed(1));
   dashboard.ring.style.strokeDashoffset = String(100 - scan * 100);
   const activePhase = time < MATERIAL_START ? 0 : time < MATERIAL_END ? 1 : 2;
+  value($('mini-speed'), speed.toFixed(1));
+  value($('mini-phase'), dashboard.phases[activePhase].textContent);
   dashboard.phases.forEach((phase, i) => {
     phase.dataset.state = i < activePhase ? 'done' : i === activePhase ? 'active' : 'upcoming';
   });
@@ -238,14 +254,13 @@ function setFree(enabled) {
   free = enabled;
   engine.setFree(enabled);
   orbit.setAttribute('aria-pressed', String(free));
-  value(orbit.querySelector('span'), free ? '返回运镜' : '自由观察');
+  const orbitLabel = free ? '返回运镜' : '自由观察';
+  control(orbit, 'orbit', orbitLabel, free);
+  value(orbit.querySelector('span'), orbitLabel);
   renderHud();
   invalidate();
 }
-orbit.onclick = () => {
-  setFree(!free);
-  closeMenu();
-};
+orbit.onclick = () => setFree(!free);
 play.onclick = () => {
   if (free) setFree(false);
   setPlaying(!playing);
@@ -306,8 +321,8 @@ document.addEventListener(
 document.addEventListener(
   'keydown',
   (event) => {
-    if (event.key === 'Escape' && cameraMenu.open) {
-      closeMenu();
+    if (event.key === 'Escape' && options.getAttribute('aria-expanded') === 'true') {
+      setOptions(false, true);
       return;
     }
     if (event.key === 'Escape' && free) {
@@ -357,6 +372,7 @@ function fallback() {
   free = false;
   orbit.disabled = true;
   orbit.setAttribute('aria-pressed', 'false');
+  control(orbit, 'orbit', '自由观察', false);
   value(orbit.querySelector('span'), '自由观察');
   station.dataset.renderer = 'fallback';
   value($('render-status'), '静态场景 · 仪表可交互');

@@ -520,11 +520,11 @@
     },
     {
       "path": "assets/art/wangshu-fascia.webp",
-      "source": "Transparent lunar-orbit station fascia generated with OpenAI ImageGen for this dashboard, cropped to the ornament bounds and encoded as RGBA WebP.",
+      "source": "Transparent titanium-and-glass station fascia generated with OpenAI ImageGen for this dashboard, cropped to the rail-light fascia and encoded as RGBA WebP.",
       "author": "VIZ / LAB contributors",
       "license": "Project-generated art, separate from the code-only MIT grant",
       "status": "generated",
-      "sha256": "19b4b6f894564439dd34dea718f81d3cf790b196d0d1f41f98ec10f70bcd2cec"
+      "sha256": "8cd7cf8c6c42d343280f4859b49d160e4b091c5b1b4072b8b6b8304a9cce4614"
     },
     {
       "path": "assets/art/wangshu-platform.webp",
@@ -540,7 +540,7 @@
       "author": "VIZ / LAB contributors",
       "license": "Capture of owner-authorized scene and gallery interface; see docs/licensing/wangshu-station-assets.txt",
       "status": "composite",
-      "sha256": "6cacef1ab3d6f7c7cc7b556a6c9b7b6672bd7b01f36894f263d66a94c7abe41f"
+      "sha256": "c42be21543bafbb74fca2c0d5f1d2d93be3e65cb985e7bddf0e42d7ab0109f90"
     }
   ]
 }

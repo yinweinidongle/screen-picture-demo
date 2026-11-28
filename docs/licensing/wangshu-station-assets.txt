@@ -9,7 +9,7 @@ surface. See scripts/prepare_wangshu_station.py. The platform still and gallery
 thumbnail are captures of the adapted scene. The supplied media are separate
 from the repository's code-only MIT grant; no broader media license is asserted.
 
-The transparent lunar-rail fascia was created with OpenAI ImageGen for this
+The transparent titanium-and-glass rail fascia was created with OpenAI ImageGen for this
 dashboard and follows the separate generated-art policy in THIRD_PARTY_NOTICES.md.
 
 Three.js and the bundled meshoptimizer decoder have separate MIT notices.

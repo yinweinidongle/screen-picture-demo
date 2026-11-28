@@ -6,7 +6,7 @@ Thirteen interactive scenes cover wind energy, a factory, population, inspection
 
 ![Gallery](media/home-preview.png)
 
-At Wangshu Station, follow the WS 700 through four camera moves from the header menu or scrub the velocity curve and inspect the holographic scan in free orbit. The speed trace, deceleration histogram, track locator and hologram phase dial follow the same 19-second arrival as the train. [Open Wangshu Station](https://yinweinidongle.github.io/screen-picture-demo/wangshu-station.html)
+At Wangshu Station, follow the WS 700 using the four camera buttons at the bottom of the scene or scrub the velocity curve and inspect the holographic scan in free orbit. The speed trace, deceleration histogram, track locator and hologram phase dial follow the same 19-second arrival as the train. [Open Wangshu Station](https://yinweinidongle.github.io/screen-picture-demo/wangshu-station.html)
 
 Chili Monitor displays a rotatable pepper plant with translucent leaf veins and ripening fruit. Select a plot to inspect its simulated environmental readings and irrigation valves. [Open Chili Monitor](https://yinweinidongle.github.io/screen-picture-demo/chili-monitor.html)
 

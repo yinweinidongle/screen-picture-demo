@@ -28,72 +28,83 @@
       </div>
       <header class="mast">
         <div class="mast-art" aria-hidden="true"><img src="/*__WANGSHU_HEADER__*/" alt="" /></div>
-        <div class="identity">
-          <span class="railmark" aria-hidden="true"><i></i><i></i><i></i></span>
-          <div>
-            <h1>望舒站</h1>
-            <span class="english">WANGSHU STATION</span>
-          </div>
+        <div class="line-sign">
+          <span class="line-tag"><b>02</b><small>站台</small></span>
+          <div><strong>月环线</strong><span class="roman">LUNAR LINE</span></div>
         </div>
-        <div class="line-id">
-          <span class="line-orbit" aria-hidden="true"></span>月环线<span class="line-en"
-            >LUNAR LINE</span
-          >
+        <div class="identity">
+          <h1>望舒站</h1>
+          <span class="roman">WANGSHU STATION</span>
         </div>
         <div class="utilities">
-          <span class="service"><i></i>进站模拟</span>
-          <button type="button" class="icon-button" id="play" aria-label="播放" title="播放">
+          <button type="button" class="tool" id="play" aria-label="播放" title="播放">
             <svg aria-hidden="true"><use href="#i-play" /></svg>
           </button>
-          <details class="camera-menu" id="camera-menu">
-            <summary aria-label="镜头选择" title="镜头选择">
-              <svg aria-hidden="true"><use href="#i-camera" /></svg><span>镜头</span>
-            </summary>
-            <div class="glass camera-pop">
-              <div class="pop-title">
-                <strong>镜头选择</strong><output id="elapsed" aria-live="off">00:00.0</output>
-              </div>
-              <div id="shots" class="shots" role="group" aria-label="选择镜头"></div>
-              <button id="orbit" type="button" aria-pressed="false" disabled>
-                <svg aria-hidden="true"><use href="#i-orbit" /></svg><span>自由观察</span>
-              </button>
-            </div>
-          </details>
           <button
-            id="panels"
-            class="icon-button"
             type="button"
+            class="tool"
+            id="panels"
             aria-controls="instruments"
-            aria-pressed="true"
             aria-label="收起仪表"
             title="收起仪表"
+            aria-pressed="true"
           >
             <svg aria-hidden="true"><use href="#i-panels" /></svg>
           </button>
           <button
-            id="sound"
-            class="icon-button"
             type="button"
-            aria-pressed="false"
-            aria-label="打开环境音"
-            title="打开环境音"
+            class="tool"
+            id="options"
+            aria-expanded="false"
+            aria-controls="station-actions"
+            aria-label="更多操作"
+            title="更多操作"
           >
-            <svg aria-hidden="true"><use href="#i-mute" /></svg>
+            <svg aria-hidden="true"><use href="#i-options" /></svg>
           </button>
-          <button
-            id="fullscreen"
-            class="icon-button"
-            type="button"
-            aria-label="进入全屏"
-            title="进入全屏"
-          >
-            <svg aria-hidden="true"><use href="#i-full" /></svg>
-          </button>
-          <a class="back" href="home.html" aria-label="返回展厅"
-            ><svg aria-hidden="true"><use href="#i-back" /></svg><span>展厅</span></a
-          >
+          <div id="station-actions" class="actions">
+            <button
+              type="button"
+              class="tool"
+              id="orbit"
+              aria-label="自由观察"
+              title="自由观察"
+              aria-pressed="false"
+              disabled
+            >
+              <svg aria-hidden="true"><use href="#i-orbit" /></svg><span>自由观察</span>
+            </button>
+            <button
+              type="button"
+              class="tool"
+              id="sound"
+              aria-label="打开环境音"
+              title="打开环境音"
+              aria-pressed="false"
+            >
+              <svg aria-hidden="true"><use href="#i-mute" /></svg
+              ><span class="mobile-label">环境音</span>
+            </button>
+            <button
+              type="button"
+              class="tool"
+              id="fullscreen"
+              aria-label="进入全屏"
+              title="进入全屏"
+            >
+              <svg aria-hidden="true"><use href="#i-full" /></svg
+              ><span class="mobile-label">全屏显示</span>
+            </button>
+            <a class="tool back" href="home.html" aria-label="返回展厅" title="返回展厅"
+              ><svg aria-hidden="true"><use href="#i-back" /></svg
+              ><span class="mobile-label">返回展厅</span></a
+            >
+          </div>
         </div>
       </header>
+      <div class="mobile-summary" aria-hidden="true">
+        <span>车速 <b id="mini-speed">—</b> km/h</span><span id="mini-phase">实体进站</span>
+      </div>
       <div id="instruments" class="instruments">
         <div class="column left-column">
           <section class="glass telemetry" aria-labelledby="train-title">
@@ -114,11 +125,15 @@
               <svg class="speed-icon" aria-hidden="true"><use href="#i-train" /></svg>
             </div>
             <div class="plot-title">
-              <span>速度曲线</span><span class="plot-hint">拖动回看</span>
+              <span>速度曲线</span
+              ><span class="plot-hint"
+                ><output id="elapsed" aria-live="off">00:00.0</output> · 拖动回看</span
+              >
             </div>
             <div class="plot-control">
               <svg
                 class="plot"
+                preserveAspectRatio="none"
                 viewBox="0 0 252 70"
                 role="img"
                 aria-label="列车实际速度随模拟时间逐渐降低"
@@ -163,6 +178,7 @@
             </div>
             <svg
               class="brake-chart"
+              preserveAspectRatio="none"
               viewBox="0 0 252 54"
               role="img"
               aria-label="各时刻制动减速度，亮色表示已通过的区段"
@@ -185,6 +201,10 @@
             <div class="platform-name">
               <span class="platform-code">02</span>
               <div><b>望舒站台</b><small>WANGSHU CENTRAL</small></div>
+            </div>
+            <div class="readout position-readout">
+              <span class="reading-label">进站完成度</span>
+              <div><strong id="track-progress">0</strong><small>%</small></div>
             </div>
             <svg
               class="station-plan"
@@ -231,7 +251,7 @@
               </g>
             </svg>
             <div class="axis rail-labels">
-              <span>进站口</span><span id="track-progress">0%</span><span>停车点</span>
+              <span>进站口</span><span>112 m</span><span>停车点</span>
             </div>
           </section>
           <section class="glass scan-panel" aria-labelledby="scan-title">
@@ -258,13 +278,15 @@
           </section>
         </div>
       </div>
+      <nav id="shots" class="shot-nav" aria-label="镜头导航"></nav>
       <span id="render-status" role="status">正在载入三维场景…</span>
       <noscript><p>启用 JavaScript 可观看三维进站动画和仪表。</p></noscript>
     </main>
     <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <symbol id="i-camera" viewBox="0 0 24 24">
-        <rect x="3" y="6" width="13" height="12" rx="2" />
-        <path d="m16 10 5-3v10l-5-3Z" />
+      <symbol id="i-options" viewBox="0 0 24 24">
+        <circle cx="5" cy="12" r="1.3" />
+        <circle cx="12" cy="12" r="1.3" />
+        <circle cx="19" cy="12" r="1.3" />
       </symbol>
       <symbol id="i-panels" viewBox="0 0 24 24">
         <rect x="3" y="4.5" width="18" height="15" rx="2" />

@@ -1,10 +1,10 @@
 {
   "capturedOn": "2026-11-28",
-  "assetInventorySha256": "e0b7d4b8185f8ff58e7bc781f439866b41fe0a1b401dd70fd1aa35f93d978f00",
-  "notes": "The 13-screen Home gallery and Wangshu Station preview were captured on 2026-11-28. The Wangshu preview shows the image-generated lunar fascia and both instrument columns at 15.55 seconds. Verdant Observatory and the eleven-screen Home gallery were recorded on 2026-11-27. The vegetable-production recording shows the 70-leaflet specimen in vein imaging and daylight modes and the three warehouse types updating on a greenhouse change. Civic Pulse was recorded on 2026-11-26. The 11-second civic GIF shows the generated metal fascia and panel artwork with source-aligned glows, a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
+  "assetInventorySha256": "9245602eab3ef1704bce719c1d299afade1bbea27e6692ba843f0d7fac18d960",
+  "notes": "The 13-screen Home gallery and Wangshu Station preview were captured on 2026-11-28. The Wangshu preview shows the image-generated rail-light fascia, aligned instrument columns and four camera navigation buttons at 15.55 seconds. Verdant Observatory and the eleven-screen Home gallery were recorded on 2026-11-27. The vegetable-production recording shows the 70-leaflet specimen in vein imaging and daylight modes and the three warehouse types updating on a greenhouse change. Civic Pulse was recorded on 2026-11-26. The 11-second civic GIF shows the generated metal fascia and panel artwork with source-aligned glows, a district and service selection, a camera orbit and an individual work order. Home and the current AERO / LAB captures show the CC BY 4.0 Lamborghini Aventador by Arion Digital. The 19.58-second GIF was recorded from the interactive page on 2026-11-25 and includes an animated paint reveal, silver crosswind ribbons, an interactive orbit through the multicolour tunnel, successive pairs of detached radar dashes disappearing against traffic and guardrails and traffic-dependent routes in three scenarios. The earlier AERO WebP recording features Khronos Car Concept. Orbital Relay was captured on 2026-11-24 with a fixed camera. Its day and night captures share one view and signal phase. The Astra previews date to 2026-10-21. Earlier recordings retain their original capture dates.",
   "files": {
-    "home-preview.png": "ab8a5c4220b3ccc41e016e7d8ae3e62ff6f22be55570502aebe23b613e5621e9",
-    "home-mobile-preview.png": "6809442f95517e6babc9d3350684cb7d1a8de1555c6d94da323f809e83e47a3b",
+    "home-preview.png": "5174804a8fc1eec78c58bfc035bd6e49a07cecf937f39c8be7849c0d9d6d655c",
+    "home-mobile-preview.png": "66414f67bd39277982a93f4a16c2eadc60bd38ee809730a99a7d363cb9e3b832",
     "factory-demo.gif": "e6082d03653ee2fbf0a4bf678c1d35b3f2e39e49a216fcbec0da983267319c2a",
     "population-demo.gif": "9f8769a8d5dc1f14f6d1a05e49e7d98abd91f26002d5ecdc637c17e7caf1efa5",
     "inspection-demo.gif": "fc4b57b20db66b6c2d956fa15f9c44821b6ea28c048319737c3730ecfdef3762",
@@ -26,6 +26,6 @@
     "assets/previews/aero-lab.webp": "664a378247ed6a579bace7ef177c70507ecae7aeb37e85d7dc46c64e5a17dbc3",
     "assets/previews/civic-pulse.webp": "bf023fd6b0cafea052b22e6ff3b04d68bd327d8a827196bb693415dcd2934d22",
     "assets/previews/verdant-lab.webp": "f4a62dc5d6f443f4fb810996bb72e81a88e75b297eb5c33a585ada5003263f82",
-    "assets/previews/wangshu-station.webp": "6cacef1ab3d6f7c7cc7b556a6c9b7b6672bd7b01f36894f263d66a94c7abe41f"
+    "assets/previews/wangshu-station.webp": "c42be21543bafbb74fca2c0d5f1d2d93be3e65cb985e7bddf0e42d7ab0109f90"
   }
 }

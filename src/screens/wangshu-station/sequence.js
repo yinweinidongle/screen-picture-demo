@@ -5,6 +5,7 @@ import * as T from 'three';
 const shots = [
   {
     name: '穹顶俯移',
+    label: '穹顶俯览',
     duration: 5,
     follow: false,
     lenses: [46, 39],
@@ -23,6 +24,7 @@ const shots = [
   },
   {
     name: '站台低位跟拍',
+    label: '站台跟拍',
     duration: 5.75,
     follow: true,
     lenses: [37, 42],
@@ -41,6 +43,7 @@ const shots = [
   },
   {
     name: '沿车窗侧移',
+    label: '车窗侧移',
     duration: 3.75,
     follow: true,
     lenses: [39, 42],
@@ -59,6 +62,7 @@ const shots = [
   },
   {
     name: '绕车头升起',
+    label: '车头环绕',
     duration: 4.5,
     follow: true,
     lenses: [42.5, 38.4],

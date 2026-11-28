@@ -27,13 +27,37 @@ test('station fills the viewport and its camera, train and instruments share the
   expect(
     await page.locator('.mast-art img').evaluate((img) => img.complete && img.naturalWidth > 0),
   ).toBe(true);
+  const nav = page.getByRole('navigation', { name: '镜头导航' });
+  await expect(nav.getByRole('button')).toHaveCount(4);
+  const geometry = await page.evaluate(() => {
+    const rects = (selector) =>
+      [...document.querySelectorAll(selector)].map((el) => {
+        const box = el.getBoundingClientRect();
+        return [box.top, box.bottom];
+      });
+    const bounds = document.querySelector('#shots').getBoundingClientRect();
+    return {
+      left: rects('.left-column section'),
+      right: rects('.right-column section'),
+      center: bounds.left + bounds.width / 2,
+    };
+  });
+  expect(geometry.left).toEqual(geometry.right);
+  expect(geometry.center).toBeCloseTo(480);
   await expect(page.locator('#deceleration')).toHaveText('1.07');
   await expect(page.locator('#brake-bars rect')).toHaveCount(26);
-  await page.locator('#camera-menu summary').click();
-  await page.getByRole('button', { name: '切换至绕车头升起' }).click();
-  await expect(page.locator('#elapsed')).toHaveText('00:14.5');
+  for (const [label, clock] of [
+    ['穹顶俯览', '00:00.0'],
+    ['站台跟拍', '00:05.0'],
+    ['车窗侧移', '00:10.8'],
+    ['车头环绕', '00:14.5'],
+  ]) {
+    const button = nav.getByRole('button', { name: '切换至' + label });
+    await button.click();
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#elapsed')).toHaveText(clock);
+  }
   await expect(page.locator('#scan')).toHaveText('74%');
-  await page.locator('#camera-menu summary').click();
   await page.getByRole('button', { name: '自由观察' }).click();
   await expect(page.locator('#orbit')).toHaveAttribute('aria-pressed', 'true');
   await page.keyboard.press('Escape');
@@ -69,12 +93,21 @@ test('offline mobile view keeps its poster, controls and readings if WebGL is un
     await page.locator('.poster').evaluate((image) => image.complete && image.naturalWidth > 0),
   ).toBe(true);
   await expect(page.locator('#instruments')).toBeHidden();
+  await expect(page.getByRole('navigation', { name: '镜头导航' }).getByRole('button')).toHaveCount(
+    4,
+  );
+  await page.getByRole('button', { name: '更多操作' }).click();
+  await expect(page.getByRole('button', { name: '打开环境音' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: '更多操作' })).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  );
   await page.getByRole('button', { name: '展开仪表' }).click();
   await expect(page.locator('#instruments')).toBeVisible();
   await page.getByRole('slider').fill('19');
   await expect(page.locator('#remaining')).toHaveText('0.0');
-  await page.locator('#camera-menu summary').click();
-  await page.getByRole('button', { name: '切换至穹顶俯移' }).click();
+  await page.getByRole('button', { name: '切换至穹顶俯览' }).click();
   await expect(page.locator('#speed')).toHaveText('46.1');
   await expect(page.locator('#remaining')).toHaveText('112.0');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
