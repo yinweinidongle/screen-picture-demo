@@ -728,7 +728,7 @@ noscript p {
     --nav-floor: 11px;
   }
   .glass {
-    padding: 10px 14px;
+    padding: clamp(5px, calc(6vh - 26px), 10px) 14px;
   }
   .panel-cap {
     padding-bottom: 6px;

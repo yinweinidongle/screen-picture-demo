@@ -111,4 +111,10 @@ test('offline mobile view keeps its poster, controls and readings if WebGL is un
   await expect(page.locator('#speed')).toHaveText('46.1');
   await expect(page.locator('#remaining')).toHaveText('112.0');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  await page.setViewportSize({ width: 701, height: 521 });
+  await expect(page.locator('#instruments')).toBeVisible();
+  const clipped = await page
+    .locator('.column section')
+    .evaluateAll((cards) => cards.some((card) => card.scrollHeight > card.clientHeight + 2));
+  expect(clipped).toBe(false);
 });
