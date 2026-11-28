@@ -142,5 +142,17 @@
     "preview": "assets/previews/chili-monitor.webp",
     "tags": ["Three.js", "线框 Shader", "地块监测"],
     "renderer": "generic"
+  },
+  {
+    "id": "wangshu-station",
+    "title": "望舒站 · 夜行进站观测",
+    "description": "跟随 WS 700 驶入夜间站台，沿制动曲线回看列车与站台的全息扫描。",
+    "category": "3d",
+    "label": "WANGSHU STATION",
+    "width": 1920,
+    "height": 1080,
+    "preview": "assets/previews/wangshu-station.webp",
+    "tags": ["列车运镜", "进站遥测", "全息扫描"],
+    "renderer": "generic"
   }
 ]

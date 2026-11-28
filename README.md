@@ -4,7 +4,7 @@
 
 **[打开 Home 展厅](https://yinweinidongle.github.io/screen-picture-demo/home.html)** · [English](docs/README.en.md) · [参与贡献](CONTRIBUTING.md) · [路线图](ROADMAP.md)
 
-十二个可交互大屏，用 Three.js、TSL、GLSL 和 D3 展示辣椒与番茄植株、市政感知树、超跑风洞、精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
+十三个可交互大屏，用 Three.js、TSL、GLSL 和 D3 展示夜间列车进站、辣椒与番茄植株、市政感知树、超跑风洞、精密机组、立体厂区、地球与运营地图。Home 卡片提供实际截图和实时场景预览，每次只运行一个场景。
 
 [![Home 展厅预览](docs/media/home-preview.png)](https://yinweinidongle.github.io/screen-picture-demo/home.html)
 
@@ -14,22 +14,23 @@
 <img src="docs/media/home-mobile-preview.png" alt="手机端单列卡片" width="320">
 </details>
 
-## 体验十二个大屏
+## 体验十三个大屏
 
-| 场景             | 核心交互                                                   | 在线体验                                                                                      |
-| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| 智慧风电         | 透明机舱、部件点选、启停、环绕、线框、爆炸拆解与发电流光   | [wind.html](https://yinweinidongle.github.io/screen-picture-demo/wind.html)                   |
-| 智慧工厂         | 真实三维厂区、建筑点选、日夜扫光、极细发光网格与菲涅耳光   | [factory.html](https://yinweinidongle.github.io/screen-picture-demo/factory.html)             |
-| 全国人口         | 拖动地球、人口迁徙、分布模式、省级数据与图表交互           | [population.html](https://yinweinidongle.github.io/screen-picture-demo/population.html)       |
-| AI 智能巡检      | 地图厚度与辉光、省份悬停、车辆详情、轨迹回放与事件筛选     | [inspection.html](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)       |
-| 禾境 · 智慧农业  | 温室与农田、模拟灌溉、作物监测、区域指标与农事确认         | [agriculture.html](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html)     |
-| NEXUS · 智慧工业 | 机械臂车间、班次计划、设备效率、工单与维护提醒             | [industry.html](https://yinweinidongle.github.io/screen-picture-demo/industry.html)           |
-| 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情           | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)                   |
-| 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势           | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)       |
-| 超跑风洞实验室   | 分层车漆与动漫涂装、风洞绕流、时空隧道、雷达与渐变规划路线 | [aero-lab.html](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)           |
-| 榕城 · 智慧市政  | 三维感知树、六城区联动、逐时工单流量与现场处置记录         | [civic-pulse.html](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html)     |
-| 衡水 · 蔬菜产业  | 番茄果序显影、生育阶段、水肥与出入库监测                   | [verdant-lab.html](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html)     |
-| 衡水 · 辣椒产业  | 旋转线框辣椒、切换地块、调节水肥开关和查看气象读数         | [chili-monitor.html](https://yinweinidongle.github.io/screen-picture-demo/chili-monitor.html) |
+| 场景             | 核心交互                                                   | 在线体验                                                                                          |
+| ---------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 智慧风电         | 透明机舱、部件点选、启停、环绕、线框、爆炸拆解与发电流光   | [wind.html](https://yinweinidongle.github.io/screen-picture-demo/wind.html)                       |
+| 智慧工厂         | 真实三维厂区、建筑点选、日夜扫光、极细发光网格与菲涅耳光   | [factory.html](https://yinweinidongle.github.io/screen-picture-demo/factory.html)                 |
+| 全国人口         | 拖动地球、人口迁徙、分布模式、省级数据与图表交互           | [population.html](https://yinweinidongle.github.io/screen-picture-demo/population.html)           |
+| AI 智能巡检      | 地图厚度与辉光、省份悬停、车辆详情、轨迹回放与事件筛选     | [inspection.html](https://yinweinidongle.github.io/screen-picture-demo/inspection.html)           |
+| 禾境 · 智慧农业  | 温室与农田、模拟灌溉、作物监测、区域指标与农事确认         | [agriculture.html](https://yinweinidongle.github.io/screen-picture-demo/agriculture.html)         |
+| NEXUS · 智慧工业 | 机械臂车间、班次计划、设备效率、工单与维护提醒             | [industry.html](https://yinweinidongle.github.io/screen-picture-demo/industry.html)               |
+| 星屿 · 智慧园区  | 楼宇空间、绿色能源、安防态势、事件确认与对象详情           | [park.html](https://yinweinidongle.github.io/screen-picture-demo/park.html)                       |
+| 全球链路监测     | 地球昼夜切换、跨洲飞线拖尾、地面站聚焦与吞吐趋势           | [earth-link.html](https://yinweinidongle.github.io/screen-picture-demo/earth-link.html)           |
+| 超跑风洞实验室   | 分层车漆与动漫涂装、风洞绕流、时空隧道、雷达与渐变规划路线 | [aero-lab.html](https://yinweinidongle.github.io/screen-picture-demo/aero-lab.html)               |
+| 榕城 · 智慧市政  | 三维感知树、六城区联动、逐时工单流量与现场处置记录         | [civic-pulse.html](https://yinweinidongle.github.io/screen-picture-demo/civic-pulse.html)         |
+| 衡水 · 蔬菜产业  | 番茄果序显影、生育阶段、水肥与出入库监测                   | [verdant-lab.html](https://yinweinidongle.github.io/screen-picture-demo/verdant-lab.html)         |
+| 衡水 · 辣椒产业  | 旋转线框辣椒、切换地块、调节水肥开关和查看气象读数         | [chili-monitor.html](https://yinweinidongle.github.io/screen-picture-demo/chili-monitor.html)     |
+| 望舒站 · 夜行    | 四段运镜、速度与制动图、站台位置、扫描相位与自由观察       | [wangshu-station.html](https://yinweinidongle.github.io/screen-picture-demo/wangshu-station.html) |
 
 ### 01 / 智慧风电
 
@@ -88,6 +89,12 @@
 拖动辣椒植株，可以看到果肩的高光、叶片背光时的细脉，以及一颗转红的成熟果。选择企业和地块可查看模拟水肥状态与环境读数。[操作与素材说明](docs/screens/chili-monitor.md)
 
 [![辣椒产业大屏实际画面](assets/previews/chili-monitor.webp)](https://yinweinidongle.github.io/screen-picture-demo/chili-monitor.html)
+
+### 13 / 望舒站 · 夜行进站观测
+
+WS 700 驶入 02 站台时，车速曲线与剩余距离随列车同步变化。在左侧速度曲线上拖到第 9 秒可以看见青色扫描掠过车头，切到自由观察可绕车查看实体与投影的交界。[镜头与操作说明](docs/screens/wangshu-station.md)
+
+[![望舒站实时三维画面，半透明列车仪表叠在夜间站台上](assets/previews/wangshu-station.webp)](https://yinweinidongle.github.io/screen-picture-demo/wangshu-station.html)
 
 ## 本地开发
 

@@ -493,6 +493,54 @@
       "status": "composite",
       "sha256": "bbcaa46fd1daa0066496cf735e6ab2eae978786a868cb5b00f0cd8016346cd1c",
       "author": "VIZ / LAB contributors"
+    },
+    {
+      "path": "assets/models/wangshu-station.glb.gz",
+      "source": "Owner-supplied wangshu-three station.glb with its original Blender train animation, meshopt geometry and embedded scene media. The original lunar photo was removed and replaced with a procedural albedo.",
+      "author": "Wangshu Station project owner",
+      "license": "Owner-authorized adaptation and publication in the gallery; see docs/licensing/wangshu-station-assets.txt",
+      "status": "original",
+      "sha256": "46206c8c1079c631af45463ea6fd6d94b6e5a1bedee8a0ad11fb283a4c8b443a"
+    },
+    {
+      "path": "assets/environments/wangshu-midnight.jpg",
+      "source": "Midnight equirectangular environment supplied with the Wangshu Station scene.",
+      "author": "Wangshu Station project owner",
+      "license": "Owner-authorized adaptation and publication in the gallery; see docs/licensing/wangshu-station-assets.txt",
+      "status": "original",
+      "sha256": "4991e97d746c1f991c3352f13c0b68392e418fd40995266ddcfcc75b8859be22"
+    },
+    {
+      "path": "assets/audio/wangshu-arrival.m4a",
+      "source": "Original synthesized stereo arrival soundtrack supplied with the wangshu-three project.",
+      "author": "Wangshu Station project owner",
+      "license": "Owner-authorized adaptation and publication in the gallery; see docs/licensing/wangshu-station-assets.txt",
+      "status": "original",
+      "sha256": "718f5623d495b3d741f9f780753e4510193f28700b26e25af75f0eade2153062"
+    },
+    {
+      "path": "assets/art/wangshu-fascia.webp",
+      "source": "Transparent lunar-orbit station fascia generated with OpenAI ImageGen for this dashboard, cropped to the ornament bounds and encoded as RGBA WebP.",
+      "author": "VIZ / LAB contributors",
+      "license": "Project-generated art, separate from the code-only MIT grant",
+      "status": "generated",
+      "sha256": "19b4b6f894564439dd34dea718f81d3cf790b196d0d1f41f98ec10f70bcd2cec"
+    },
+    {
+      "path": "assets/art/wangshu-platform.webp",
+      "source": "1600 × 900 real-time WebGL station capture at 6.6 seconds, with instruments hidden, used during loading and when WebGL is unavailable.",
+      "author": "VIZ / LAB contributors",
+      "license": "Capture of owner-authorized scene and gallery interface; see docs/licensing/wangshu-station-assets.txt",
+      "status": "composite",
+      "sha256": "c4fea613b617a755ce00a4998bfb701378bf59fe4e4a85f30123c2d29db013f8"
+    },
+    {
+      "path": "assets/previews/wangshu-station.webp",
+      "source": "1440 × 810 gallery thumbnail from a real 1600 × 900 browser capture at 15.55 seconds, showing the generated header and holographic train.",
+      "author": "VIZ / LAB contributors",
+      "license": "Capture of owner-authorized scene and gallery interface; see docs/licensing/wangshu-station-assets.txt",
+      "status": "composite",
+      "sha256": "6cacef1ab3d6f7c7cc7b556a6c9b7b6672bd7b01f36894f263d66a94c7abe41f"
     }
   ]
 }

@@ -13,6 +13,8 @@ const types = {
   '.jpg': 'image/jpeg',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
+  '.gz': 'application/gzip',
+  '.m4a': 'audio/mp4',
   '.glb': 'model/gltf-binary',
   '.zip': 'application/zip',
   '.md': 'text/plain; charset=utf-8',

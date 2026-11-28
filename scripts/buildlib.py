@@ -315,6 +315,22 @@ class Builder:
             replacements["/*__RELAY_LOCATOR__*/"] = self.resource(
                 locator_mask(), "relay-landmask", "png"
             )
+        if "/*__WANGSHU_MODEL__*/" in content:
+            extra_notices.extend(
+                [
+                    "docs/licensing/wangshu-station-assets.txt",
+                    "docs/licensing/meshoptimizer-MIT.txt",
+                ]
+            )
+            for token, filename, mime in [
+                ("WANGSHU_MODEL", "models/wangshu-station.glb.gz", "application/gzip"),
+                ("WANGSHU_SKY", "environments/wangshu-midnight.jpg", "image/jpeg"),
+                ("WANGSHU_AUDIO", "audio/wangshu-arrival.m4a", "audio/mp4"),
+            ]:
+                asset = safe_path("assets/" + filename)
+                replacements[f"/*__{token}__*/"] = self.resource(
+                    asset.read_bytes(), asset.stem, asset.suffix[1:], mime
+                )
         if "/*__AERO_CAR__*/" in content:
             extra_notices.append("docs/licensing/aero-lab-assets.txt")
             extra_notices.append("docs/licensing/barlow-condensed-OFL.txt")
@@ -356,6 +372,8 @@ class Builder:
             ("VERDANT_HOUSE", "art/verdant-glasshouse.webp", None),
             ("VERDANT_FASCIA", "art/verdant-fascia.webp", None),
             ("VERDANT_BEZEL", "art/verdant-bezel.webp", None),
+            ("WANGSHU_HEADER", "art/wangshu-fascia.webp", None),
+            ("WANGSHU_POSTER", "art/wangshu-platform.webp", None),
             ("CHILI_BACKGROUND", "art/chili-substrate.webp", None),
             ("CHILI_NAV_ACTIVE", "art/chili-nav-active.webp", None),
             ("CHILI_CAMERA", "art/chili-camera.webp", None),
@@ -491,7 +509,7 @@ class Builder:
         notices = [
             f"docs/licensing/{entry['id']}-assets.txt"
             for entry in entries
-            if entry["id"] in {"earth-link", "aero-lab"}
+            if entry["id"] in {"earth-link", "aero-lab", "wangshu-station"}
         ]
         self.finish("home.html", content, notices)
         shutil.copyfile(self.out / "home.html", self.out / "index.html")

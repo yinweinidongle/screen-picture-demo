@@ -2,9 +2,11 @@
 
 [Live gallery](https://yinweinidongle.github.io/screen-picture-demo/home.html) · [中文](../README.md) · [Contributing](../CONTRIBUTING.md)
 
-Twelve interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel, municipal operations, greenhouse vegetables and chili pepper cultivation. The gallery shows actual page captures and runs one live preview at a time.
+Thirteen interactive scenes cover wind energy, a factory, population, inspection, agriculture, an automated workshop, a smart campus, a global relay network, a supercar wind tunnel, municipal operations, greenhouse vegetables, chili pepper cultivation and a night train arrival. The gallery shows actual page captures and runs one live preview at a time.
 
 ![Gallery](media/home-preview.png)
+
+At Wangshu Station, follow the WS 700 through four camera moves from the header menu or scrub the velocity curve and inspect the holographic scan in free orbit. The speed trace, deceleration histogram, track locator and hologram phase dial follow the same 19-second arrival as the train. [Open Wangshu Station](https://yinweinidongle.github.io/screen-picture-demo/wangshu-station.html)
 
 Chili Monitor displays a rotatable pepper plant with translucent leaf veins and ripening fruit. Select a plot to inspect its simulated environmental readings and irrigation valves. [Open Chili Monitor](https://yinweinidongle.github.io/screen-picture-demo/chili-monitor.html)
 
