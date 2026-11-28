@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101b24" />
+    <meta name="description" content="跟随 WS 700 驶入望舒站，观察列车制动、站台位置与全息扫描。" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='6' fill='%23edb865'/%3E%3Cpath d='M8 28 17 12h5L13 28zm10 0 9-16h5l-9 16z' fill='%23131d23'/%3E%3C/svg%3E"
+    />
+    <title>望舒站 · 夜行进站观测</title>
+    <style>
+      /*__SCREEN_CSS__*/
+    </style>
+  </head>
+  <body>
+    <main
+      id="station"
+      data-renderer="loading"
+      data-model="/*__WANGSHU_MODEL__*/"
+      data-sky="/*__WANGSHU_SKY__*/"
+      data-audio="/*__WANGSHU_AUDIO__*/"
+    >
+      <div class="viewport">
+        <img class="poster" src="/*__WANGSHU_POSTER__*/" alt="" />
+        <div id="scene" aria-label="望舒站与 WS 700 列车三维场景"></div>
+      </div>
+      <header class="mast">
+        <div class="mast-art" aria-hidden="true"><img src="/*__WANGSHU_HEADER__*/" alt="" /></div>
+        <div class="line-sign">
+          <span class="line-tag"><b>02</b><small>站台</small></span>
+          <div><strong>月环线</strong><span class="roman">LUNAR LINE</span></div>
+        </div>
+        <div class="identity">
+          <h1>望舒站</h1>
+          <span class="roman">WANGSHU STATION</span>
+        </div>
+        <div class="utilities">
+          <button type="button" class="tool" id="play" aria-label="播放" title="播放">
+            <svg aria-hidden="true"><use href="#i-play" /></svg>
+          </button>
+          <button
+            type="button"
+            class="tool"
+            id="panels"
+            aria-controls="instruments"
+            aria-label="收起仪表"
+            title="收起仪表"
+            aria-pressed="true"
+          >
+            <svg aria-hidden="true"><use href="#i-panels" /></svg>
+          </button>
+          <button
+            type="button"
+            class="tool"
+            id="options"
+            aria-expanded="false"
+            aria-controls="station-actions"
+            aria-label="更多操作"
+            title="更多操作"
+          >
+            <svg aria-hidden="true"><use href="#i-options" /></svg>
+          </button>
+          <div id="station-actions" class="actions">
+            <button
+              type="button"
+              class="tool"
+              id="orbit"
+              aria-label="自由观察"
+              title="自由观察"
+              aria-pressed="false"
+              disabled
+            >
+              <svg aria-hidden="true"><use href="#i-orbit" /></svg><span>自由观察</span>
+            </button>
+            <button
+              type="button"
+              class="tool"
+              id="sound"
+              aria-label="打开环境音"
+              title="打开环境音"
+              aria-pressed="false"
+            >
+              <svg aria-hidden="true"><use href="#i-mute" /></svg
+              ><span class="mobile-label">环境音</span>
+            </button>
+            <button
+              type="button"
+              class="tool"
+              id="fullscreen"
+              aria-label="进入全屏"
+              title="进入全屏"
+            >
+              <svg aria-hidden="true"><use href="#i-full" /></svg
+              ><span class="mobile-label">全屏显示</span>
+            </button>
+            <a class="tool back" href="home.html" aria-label="返回展厅" title="返回展厅"
+              ><svg aria-hidden="true"><use href="#i-back" /></svg
+              ><span class="mobile-label">返回展厅</span></a
+            >
+          </div>
+        </div>
+      </header>
+      <div class="mobile-summary" aria-hidden="true">
+        <span>车速 <b id="mini-speed">—</b> km/h</span><span id="mini-phase">实体进站</span>
+      </div>
+      <div id="instruments" class="instruments">
+        <div class="column left-column">
+          <section class="glass telemetry" aria-labelledby="train-title">
+            <div class="panel-cap">
+              <span class="accent-rule"></span>
+              <h2 id="train-title">列车遥测</h2>
+              <span class="en">TELEMETRY</span>
+            </div>
+            <div class="consist">
+              <div class="train-name">WS <b>700</b></div>
+              <span id="motion" class="status-pill">进站中</span>
+            </div>
+            <div class="speed">
+              <div>
+                <span class="speed-label">当前速度</span><strong id="speed">—</strong
+                ><small>km/h</small>
+              </div>
+              <svg class="speed-icon" aria-hidden="true"><use href="#i-train" /></svg>
+            </div>
+            <div class="plot-title">
+              <span>速度曲线</span
+              ><span class="plot-hint"
+                ><output id="elapsed" aria-live="off">00:00.0</output> · 拖动回看</span
+              >
+            </div>
+            <div class="plot-control">
+              <svg
+                class="plot"
+                preserveAspectRatio="none"
+                viewBox="0 0 252 70"
+                role="img"
+                aria-label="列车实际速度随模拟时间逐渐降低"
+              >
+                <defs>
+                  <linearGradient id="curve-fill" x1="0" x2="0" y1="0" y2="1">
+                    <stop stop-color="#efb766" stop-opacity=".34" />
+                    <stop offset="1" stop-color="#efb766" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <path class="gridline" d="M2 5H248M2 32H248M2 59H248" />
+                <path id="curve-area" fill="url(#curve-fill)" />
+                <path id="velocity-curve" fill="none" />
+                <path id="curve-cursor" />
+                <circle id="curve-dot" r="3.5" />
+              </svg>
+              <input
+                id="seek"
+                type="range"
+                min="0"
+                max="19"
+                step="0.05"
+                value="0"
+                aria-label="在速度曲线上回看进站"
+                title="拖动速度曲线回看"
+              />
+            </div>
+            <div class="axis"><span>0 s</span><span>19 s</span></div>
+            <div class="odometer">
+              <div><span>已行驶</span><strong id="travelled">—</strong> m</div>
+              <div><span>距停车点</span><strong id="remaining">—</strong> m</div>
+            </div>
+          </section>
+          <section class="glass brake" aria-labelledby="brake-title">
+            <div class="panel-cap">
+              <span class="accent-rule"></span>
+              <h2 id="brake-title">制动分析</h2>
+              <span class="en">BRAKING</span>
+            </div>
+            <div class="chart-heading">
+              <span>当前减速度</span><span><b id="deceleration">—</b> m/s²</span>
+            </div>
+            <svg
+              class="brake-chart"
+              preserveAspectRatio="none"
+              viewBox="0 0 252 54"
+              role="img"
+              aria-label="各时刻制动减速度，亮色表示已通过的区段"
+            >
+              <path class="gridline" d="M2 5H250M2 28H250M2 51H250" />
+              <g id="brake-bars"></g>
+            </svg>
+            <div class="axis">
+              <span>0 s</span><span>峰值 <b id="peak-brake"></b> m/s²</span><span>19 s</span>
+            </div>
+          </section>
+        </div>
+        <div class="column right-column">
+          <section class="glass platform" aria-labelledby="platform-title">
+            <div class="panel-cap">
+              <span class="accent-rule"></span>
+              <h2 id="platform-title">站台定位</h2>
+              <span class="en">PLATFORM</span>
+            </div>
+            <div class="platform-name">
+              <span class="platform-code">02</span>
+              <div><b>望舒站台</b><small>WANGSHU CENTRAL</small></div>
+            </div>
+            <div class="readout position-readout">
+              <span class="reading-label">进站完成度</span>
+              <div><strong id="track-progress">0</strong><small>%</small></div>
+            </div>
+            <svg
+              class="station-plan"
+              viewBox="0 0 252 80"
+              role="img"
+              aria-label="从进站口至停车点的列车位置示意"
+            >
+              <defs>
+                <pattern
+                  id="platform-tiles"
+                  width="7"
+                  height="7"
+                  patternUnits="userSpaceOnUse"
+                  patternTransform="rotate(38)"
+                >
+                  <path d="M0 0V7" stroke="#89c1c3" stroke-opacity=".50" stroke-width="1.7" />
+                </pattern>
+              </defs>
+              <path
+                d="M9 11H182l15 10h44v6H9zM9 63H237v7H84L72 75H9z"
+                fill="url(#platform-tiles)"
+                stroke="#8aafb1"
+                stroke-width=".8"
+              />
+              <path
+                d="M9 34H242M9 43H242M9 52H242M9 58H242M33 57L65 39h43"
+                fill="none"
+                stroke="#b2cbca"
+                stroke-opacity=".64"
+                stroke-width=".9"
+              />
+              <path
+                d="M9 39H239"
+                stroke="#9ddee0"
+                stroke-opacity=".65"
+                stroke-width="1.2"
+                stroke-dasharray="2 4"
+              />
+              <path id="journey-line" d="M9 39H9" fill="none" stroke="#f6c47a" stroke-width="2" />
+              <path d="M240 29v20" stroke="#9ce0db" stroke-width="2" />
+              <g id="train-pin">
+                <circle r="8" fill="#ffcd78" fill-opacity=".18" />
+                <path d="M-5-3h6l4 3-4 3h-6Z" fill="#ffe0a6" stroke="#785a39" />
+              </g>
+            </svg>
+            <div class="axis rail-labels">
+              <span>进站口</span><span>112 m</span><span>停车点</span>
+            </div>
+          </section>
+          <section class="glass scan-panel" aria-labelledby="scan-title">
+            <div class="panel-cap">
+              <span class="accent-rule"></span>
+              <h2 id="scan-title">全息成像</h2>
+              <span class="en">PHASE SCAN</span>
+            </div>
+            <div class="scan-body">
+              <div class="dial">
+                <svg viewBox="0 0 90 90" aria-hidden="true">
+                  <circle cx="45" cy="45" r="41" class="dial-ticks" />
+                  <circle cx="45" cy="45" r="34" class="dial-track" />
+                  <circle cx="45" cy="45" r="34" pathLength="100" id="scan-ring" /></svg
+                ><strong id="scan">0%</strong>
+              </div>
+              <ol id="phases">
+                <li><i></i>实体进站</li>
+                <li><i></i>扫描过渡</li>
+                <li><i></i>投影成形</li>
+              </ol>
+            </div>
+            <div class="scan-legend"><span>扫描区间</span><b id="scan-interval"></b></div>
+          </section>
+        </div>
+      </div>
+      <nav id="shots" class="shot-nav" aria-label="镜头导航"></nav>
+      <span id="render-status" role="status">正在载入三维场景…</span>
+      <noscript><p>启用 JavaScript 可观看三维进站动画和仪表。</p></noscript>
+    </main>
+    <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="i-options" viewBox="0 0 24 24">
+        <circle cx="5" cy="12" r="1.3" />
+        <circle cx="12" cy="12" r="1.3" />
+        <circle cx="19" cy="12" r="1.3" />
+      </symbol>
+      <symbol id="i-panels" viewBox="0 0 24 24">
+        <rect x="3" y="4.5" width="18" height="15" rx="2" />
+        <path d="M9 5v14m6-10h3m-3 4h3" />
+      </symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24">
+        <path d="M3 9h4l5-4v14l-5-4H3zM16 9l5 6m0-6-5 6" />
+      </symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24">
+        <path d="M3 9h4l5-4v14l-5-4H3zM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" />
+      </symbol>
+      <symbol id="i-full" viewBox="0 0 24 24">
+        <path d="M4 9V4h5m6 0h5v5m0 6v5h-5m-6 0H4v-5" />
+      </symbol>
+      <symbol id="i-exit-full" viewBox="0 0 24 24">
+        <path d="M9 4v5H4m16 0h-5V4m0 16v-5h5M4 15h5v5" />
+      </symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="m11 6-6 6 6 6m-5-6h14" /></symbol>
+      <symbol id="i-train" viewBox="0 0 46 27">
+        <path d="M3 21h34c5 0 6-2 2-5L28 8c-2-1-4-2-7-2H5m-2 9h18m-12-4h8m7-1 9 6H24zm-18 14h32" />
+      </symbol>
+      <symbol id="i-orbit" viewBox="0 0 24 24">
+        <ellipse cx="12" cy="12" rx="10" ry="4.7" transform="rotate(-28 12 12)" />
+        <circle cx="12" cy="12" r="2.4" />
+        <path d="M6 6.7a8 8 0 0 1 13.2 6m-1.5 4.5a8 8 0 0 1-13-6" />
+      </symbol>
+      <symbol id="i-play" viewBox="0 0 24 24">
+        <path d="m8 5 11 7-11 7Z" fill="currentColor" stroke="none" />
+      </symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24">
+        <path d="M8 5v14m8-14v14" stroke-width="3.1" />
+      </symbol>
+    </svg>
+    <script>
+      /*__RUNTIME__*/
+    </script>
+    <script>
+      /*__MODULE_BUNDLE__*/
+    </script>
+  </body>
+</html>
